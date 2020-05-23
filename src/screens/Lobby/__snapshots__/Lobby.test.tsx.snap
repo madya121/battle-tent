@@ -9,9 +9,14 @@ exports[`Lobby screen should render 1`] = `
       </h1>
     </header>
     <div>
-      <h5>
-        LOBBY
-      </h5>
+      <button>
+        Find match
+      </button>
+      <button
+        disabled=""
+      >
+        Invite
+      </button>
     </div>
   </div>
 </DocumentFragment>

@@ -4,7 +4,12 @@ import Lobby from './Lobby';
 
 describe('Lobby screen', () => {
   it('should render', () => {
-    const { asFragment } = render(<Lobby />);
+    const { asFragment } = render(
+      <Lobby
+        onFindMatch={jest.fn()}
+        onInviteMatch={jest.fn()}
+      />
+    );
     expect(asFragment()).toMatchSnapshot();
   });
 });
