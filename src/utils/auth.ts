@@ -1,11 +1,15 @@
-export const fakeAuth = {
-  isAuthenticated: false,
-  authenticate(onAuthenticatedCallback: () => void) {
-    fakeAuth.isAuthenticated = true;
+class Auth {
+  isAuthenticated = false;
+
+  authenticate(onAuthenticatedCallback = () => { }) {
+    this.isAuthenticated = true;
     setTimeout(onAuthenticatedCallback, 100); // fake async
-  },
-  signout(onSignoutCallback: () => void) {
-    fakeAuth.isAuthenticated = false;
+  }
+
+  signout(onSignoutCallback = () => { }) {
+    this.isAuthenticated = false;
     setTimeout(onSignoutCallback, 100);
   }
-};
+}
+
+export default new Auth();

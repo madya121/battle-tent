@@ -5,7 +5,7 @@ exports[`Login screen should render 1`] = `
   <div>
     <header>
       <h1>
-        Battle Tent
+        Welcome to Battle Tent
       </h1>
     </header>
     <div>

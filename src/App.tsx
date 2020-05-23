@@ -9,20 +9,7 @@ import {
 } from "react-router-dom";
 import Login from './screens/Login';
 import Lobby from './screens/Lobby';
-import { fakeAuth } from './utils/auth';
-
-
-
-// First, visit the public page. Then, visit the protected
-// page. You're not yet logged in, so you are redirected
-// to the login page. After you login, you are redirected
-// back to the protected page.
-//
-// Notice the URL change each time. If you click the back
-// button at this point, would you expect to go back to the
-// login page? No! You're already logged in. Try it out,
-// and you'll see you go back to the page you visited
-// just *before* logging in, the public page.
+import Auth from './utils/auth';
 
 export default function App() {
   return (
@@ -48,18 +35,18 @@ export default function App() {
 
 function AuthButton() {
   const history = useHistory();
-  return fakeAuth.isAuthenticated ? (
+  return Auth.isAuthenticated ? (
     <p>
       Welcome username
       <button
         onClick={() => {
-          fakeAuth.signout(() => history.push('/'));
+          Auth.signout(() => history.push('/'));
         }}
       >
         Change name
       </button>
     </p>
-  ) : null;
+  ) : <p>Guest</p>;
 }
 
 /** A wrapper for <Route> that redirects to the login screen
@@ -70,7 +57,7 @@ function PrivateRoute({ children, ...rest }: RouteProps) {
   return (
     <Route
       {...rest}
-      render={({ location }) => fakeAuth.isAuthenticated
+      render={({ location }) => Auth.isAuthenticated
         ? children
         : (
           <Redirect

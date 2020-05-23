@@ -3,10 +3,13 @@
 exports[`App should render 1`] = `
 <DocumentFragment>
   <div>
+    <p>
+      Guest
+    </p>
     <div>
       <header>
         <h1>
-          Battle Tent
+          Welcome to Battle Tent
         </h1>
       </header>
       <div>
