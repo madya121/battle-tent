@@ -1,28 +1,40 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
+import socketIOClient from 'socket.io-client';
 import { Button } from '../../components/basics';
-import Modal, { ModalProps } from '../../components/Modal';
 import LoadingIndicator from '../../components/LoadingIndicator';
-import { NavigationContext, ScreenState } from '../../navigation';
+import * as Steps from './steps';
+import { QuitModal } from './QuitModal';
+import { BattleStep } from './enums';
+import Pokemon from '../../types/Pokemon';
+import Trainer from '../../types/Trainer';
+import { SOCKET_ENDPOINT } from './constants';
 
 export default function Battle() {
   const [isLoading, setIsLoading] = useState(false);
   const [quitModalShown, setQuitModalShown] = useState(false);
+  const [activeStep, setActiveStep] = useState(BattleStep.ChooseParty);
+  const [pokemonList, setPokemonList] = useState<Pokemon[]>([]);
+  const [opponent, setOpponent] = useState<Trainer | undefined>(undefined);
 
   useEffect(() => {
-    fetchOpponent();
+    addOpponentListener();
+    fetchPokemon()
+      .catch(e => {
+        console.error(e);
+        alert(e);
+      })
+      .finally(() => setIsLoading(false));
   }, []);
 
-  async function fetchOpponent() {
+  async function fetchPokemon() {
     setIsLoading(true);
-    try {
-      const response = await fetch('');
-      if (response.status !== 200) throw response;
-    } catch (e) {
-      console.error(e);
-      alert(e);
-    }
-    // setIsLoading(false);
-    setTimeout(() => setIsLoading(false), 500);
+    const response = await fetch('');
+    if (response.status !== 200) throw response;
+    setPokemonList([]);
+  }
+  async function addOpponentListener() {
+    const socket = socketIOClient(SOCKET_ENDPOINT);
+    socket.on('get_opponent', setOpponent);
   }
 
   function openQuitModal() {
@@ -32,33 +44,33 @@ export default function Battle() {
     setQuitModalShown(false);
   }
 
+  function Step() {
+    function ChooseParty() {
+      return (
+        <Steps.ChooseParty
+          pokemonList={pokemonList}
+          setActiveStep={setActiveStep}
+        />
+      );
+    }
+    switch (activeStep) {
+      case BattleStep.ChooseParty: return <ChooseParty />;
+      case BattleStep.ChooseMoves: return <Steps.ChooseMoves />;
+      default: return <ChooseParty />;
+    }
+  }
+
   return (
     <div>
       <QuitModal shown={quitModalShown} onClose={closeQuitModal} />
       <header>
         <h1>Battle!</h1>
-      </header>
-      {isLoading ? <LoadingIndicator /> :
+        {opponent && opponent.name}
         <div>
           <Button onClick={openQuitModal}>Quit</Button>
         </div>
-      }
+      </header>
+      {isLoading ? <LoadingIndicator /> : <Step />}
     </div>
-  );
-}
-
-function QuitModal({ shown, onClose }: Omit<ModalProps, 'children'>) {
-  const navigate = useContext(NavigationContext);
-
-  function quit() {
-    navigate(ScreenState.Lobby);
-  }
-
-  return (
-    <Modal shown={shown} onClose={onClose}>
-      Do you really wish to quit?
-      <Button onClick={quit}>Yes</Button>
-      <Button onClick={onClose}>No</Button>
-    </Modal>
   );
 }
