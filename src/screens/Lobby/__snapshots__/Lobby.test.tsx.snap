@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Lobby screen should render 1`] = `
+<DocumentFragment>
+  <div>
+    <header>
+      <h1>
+        Battle Tent
+      </h1>
+    </header>
+    <div>
+      <h5>
+        LOBBY
+      </h5>
+    </div>
+  </div>
+</DocumentFragment>
+`;

@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Login screen should render 1`] = `
+<DocumentFragment>
+  <div>
+    <header>
+      <h1>
+        Battle Tent
+      </h1>
+    </header>
+    <div>
+      <h5>
+        What is your display name?
+      </h5>
+      <input />
+      <button>
+        Enter
+      </button>
+    </div>
+  </div>
+</DocumentFragment>
+`;
