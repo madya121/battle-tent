@@ -1,14 +1,22 @@
 import React from 'react';
+import MaterialModal from '@material-ui/core/Modal';
 
 export interface ModalProps {
-  isVisible?: boolean;
+  shown?: boolean;
   onClose: () => void;
-  children: React.ReactElement | string | (React.ReactElement | string)[];
+  children: React.ReactChild | React.ReactChild[];
 }
 
-export default function Modal({ isVisible, onClose, ...props }: ModalProps) {
-  // <div isVisible={isVisible} onClose={onClose} {...props} />
+export default function Modal({
+  shown = true,
+  onClose,
+  children,
+}: ModalProps) {
   return (
-    <></>
+    <MaterialModal open={shown} onClose={onClose}>
+      <>
+        {children}
+      </>
+    </MaterialModal>
   );
 }

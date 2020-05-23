@@ -5,7 +5,7 @@ import LoadingIndicator from '../../components/LoadingIndicator';
 import { NavigationContext, ScreenState } from '../../navigation';
 
 export default function Lobby() {
-  const [isInviteModalVisible, setIsInviteModalVisible] = useState(false);
+  const [inviteModalShown, setInviteModalShown] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useContext(NavigationContext);
 
@@ -20,7 +20,7 @@ export default function Lobby() {
       alert(e);
     }
     // setIsLoading(false);
-    // setTimeout(() => setIsLoading(false), 1500)
+    setTimeout(() => setIsLoading(false), 1500)
   }
   async function onInviteMatch() {
     setIsLoading(true);
@@ -35,16 +35,16 @@ export default function Lobby() {
   }
 
   function openInviteModal() {
-    setIsInviteModalVisible(true);
+    setInviteModalShown(true);
     onInviteMatch();
   }
   function closeInviteModal() {
-    setIsInviteModalVisible(false);
+    setInviteModalShown(false);
   }
 
   return (
     <div>
-      <InviteModal isVisible={isInviteModalVisible} onClose={closeInviteModal} />
+      <InviteModal shown={inviteModalShown} onClose={closeInviteModal} />
       <header>
         <h1>Battle Tent</h1>
       </header>
@@ -58,9 +58,9 @@ export default function Lobby() {
   );
 }
 
-function InviteModal({ isVisible, onClose }: Omit<ModalProps, 'children'>) {
+function InviteModal({ shown, onClose }: Omit<ModalProps, 'children'>) {
   return (
-    <Modal isVisible={isVisible} onClose={onClose}>
+    <Modal shown={shown} onClose={onClose}>
       Who do you want to invite?
       <Input />
     </Modal>

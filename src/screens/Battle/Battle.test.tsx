@@ -4,9 +4,7 @@ import Battle from './Battle';
 
 describe('Battle screen', () => {
   it('should render', () => {
-    const { asFragment } = render(
-      <Battle />
-    );
+    const { asFragment } = render(<Battle />);
     expect(asFragment()).toMatchSnapshot();
   });
 });

@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Button } from '../../components/basics';
 import Modal, { ModalProps } from '../../components/Modal';
 import LoadingIndicator from '../../components/LoadingIndicator';
+import { NavigationContext, ScreenState } from '../../navigation';
 
 export default function Battle() {
   const [isLoading, setIsLoading] = useState(false);
-  const [isQuitModalVisible, setIsQuitModalVisible] = useState(false);
+  const [quitModalShown, setQuitModalShown] = useState(false);
 
   useEffect(() => {
     fetchOpponent();
@@ -25,33 +26,39 @@ export default function Battle() {
   }
 
   function openQuitModal() {
-    setIsQuitModalVisible(true);
+    setQuitModalShown(true);
   }
   function closeQuitModal() {
-    setIsQuitModalVisible(false);
+    setQuitModalShown(false);
   }
 
   return (
     <div>
-      <QuitModal isVisible={isQuitModalVisible} onClose={closeQuitModal} />
+      <QuitModal shown={quitModalShown} onClose={closeQuitModal} />
       <header>
         <h1>Battle!</h1>
       </header>
       {isLoading ? <LoadingIndicator /> :
         <div>
-          <button onClick={openQuitModal}>Quit</button>
+          <Button onClick={openQuitModal}>Quit</Button>
         </div>
       }
     </div>
   );
 }
 
-function QuitModal({ isVisible, onClose }: Omit<ModalProps, 'children'>) {
+function QuitModal({ shown, onClose }: Omit<ModalProps, 'children'>) {
+  const navigate = useContext(NavigationContext);
+
+  function quit() {
+    navigate(ScreenState.Lobby);
+  }
+
   return (
-    <Modal isVisible={isVisible} onClose={onClose}>
+    <Modal shown={shown} onClose={onClose}>
       Do you really wish to quit?
-      <Button>Yes</Button>
-      <Button>No</Button>
+      <Button onClick={quit}>Yes</Button>
+      <Button onClick={onClose}>No</Button>
     </Modal>
   );
 }
