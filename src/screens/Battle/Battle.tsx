@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import socketIOClient from 'socket.io-client';
 import { Button } from '../../components/basics';
 import LoadingIndicator from '../../components/LoadingIndicator';
 import * as Steps from './steps';
 import { QuitModal } from './QuitModal';
+import { fetchOpponent } from '../../apis/battleApi';
 import { BattleStep } from './enums';
 import Pokemon from '../../types/Pokemon';
 import Trainer from '../../types/Trainer';
-import { SOCKET_ENDPOINT } from './constants';
 
 export default function Battle() {
   const [isLoading, setIsLoading] = useState(false);
@@ -17,24 +16,32 @@ export default function Battle() {
   const [opponent, setOpponent] = useState<Trainer | undefined>(undefined);
 
   useEffect(() => {
-    addOpponentListener();
-    fetchPokemon()
-      .catch(e => {
-        console.error(e);
-        alert(e);
-      })
-      .finally(() => setIsLoading(false));
+    setIsLoading(true);
+    Promise.all([
+      getOpponent(),
+      getPokemonList(),
+    ]).finally(() => setIsLoading(false));
   }, []);
 
-  async function fetchPokemon() {
-    setIsLoading(true);
-    const response = await fetch('');
-    if (response.status !== 200) throw response;
-    setPokemonList([]);
+  async function getOpponent() {
+    try {
+      const response = await fetchOpponent();
+      setOpponent(response.data);
+    } catch (e) {
+      console.error(e);
+      alert(e);
+    }
   }
-  async function addOpponentListener() {
-    const socket = socketIOClient(SOCKET_ENDPOINT);
-    socket.on('get_opponent', setOpponent);
+
+  async function getPokemonList() {
+    try {
+      const response = await fetch('');
+      if (response.status !== 200) throw response;
+      setPokemonList([]);
+    } catch (e) {
+      console.error(e);
+      alert(e);
+    }
   }
 
   function openQuitModal() {

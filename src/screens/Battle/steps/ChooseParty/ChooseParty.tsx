@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import socketIOClient from 'socket.io-client';
 import Pokemon from '../../../../types/Pokemon';
 import { Button } from '../../../../components/basics';
 import { BattleStep } from '../../enums';
-import { SOCKET_ENDPOINT } from '../../constants';
+import { sendChoosenParty } from '../../../../apis/battleApi';
 
 export interface ChoosePartyProps {
   pokemonList: Pokemon[];
@@ -20,14 +19,13 @@ export default function ChooseParty({ pokemonList, setActiveStep }: ChoosePartyP
     setChoosen(updatedChoosen);
   }
 
-  function onConfirmParty() {
-    const socket = socketIOClient(SOCKET_ENDPOINT);
-    socket.emit('player_selects_pokemon', choosen);
-    socket.on('player_selects_pokemon', (ACK: boolean) => {
-      socket.removeListener('player_selects_pokemon');
-      if (ACK) setActiveStep(BattleStep.ChooseMoves);
-      else alert('and error occured!');
-    });
+  async function onConfirmParty() {
+    const response = await sendChoosenParty(choosen);
+    if (response.error) {
+      console.error(response.error);
+      alert('and error occured!');
+    }
+    else setActiveStep(BattleStep.ChooseMoves);
   }
 
   return (
