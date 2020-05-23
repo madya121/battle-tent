@@ -1,21 +1,14 @@
-import React from 'react';
-import { useHistory, useLocation } from 'react-router';
+import React, { useContext } from 'react';
 import Auth from '../../utils/auth';
+import { NavigationContext, ScreenState } from '../../navigation';
+import { Input, Button } from '../../components/basics';
 
 export default function Login() {
-  const history = useHistory();
-  const location = useLocation();
-  const defaultLocationState = { from: { pathname: '/' } };
-  const { from } = (location.state || defaultLocationState) as { from: Location };
+  const navigate = useContext(NavigationContext);
 
   function onLogin() {
     Auth.authenticate(() => {
-      // After you login, you are redirected back to the protected page.
-      history.replace(from);
-      // Notice the URL change each time. If you click the back button
-      // at this point, would you expect to go back to the login page? No!
-      // You're already logged in. You'll see you go back to the page
-      // you visited just *before* logging in, the public page.
+      navigate(ScreenState.Lobby);
     });
   }
 
@@ -26,8 +19,8 @@ export default function Login() {
       </header>
       <div>
         <h5>What is your display name?</h5>
-        <input />
-        <button onClick={onLogin}>Enter</button>
+        <Input />
+        <Button onClick={onLogin}>Enter</Button>
       </div>
     </div>
   );

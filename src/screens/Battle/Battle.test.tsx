@@ -1,11 +1,11 @@
 import React from 'react';
 import { render } from '@testing-library/react';
-import Lobby from './Lobby';
+import Battle from './Battle';
 
-describe('Lobby screen', () => {
+describe('Battle screen', () => {
   it('should render', () => {
     const { asFragment } = render(
-      <Lobby />
+      <Battle />
     );
     expect(asFragment()).toMatchSnapshot();
   });
