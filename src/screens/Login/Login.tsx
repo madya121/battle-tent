@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import Auth from '../../utils/auth';
 import { NavigationContext, ScreenState } from '../../navigation';
 import { Input, Button } from '../../components/basics';
+import { LayoutContainer } from './Login.styled';
 
 export default function Login() {
   const navigate = useContext(NavigationContext);
@@ -13,15 +14,16 @@ export default function Login() {
   }
 
   return (
-    <div>
+    <LayoutContainer>
       <header>
-        <h1>Welcome to Battle Tent</h1>
+        <div>Welcome to</div>
+        <h1>Battle Tent</h1>
       </header>
-      <div>
+      <main>
         <h5>What is your display name?</h5>
-        <Input />
+        <Input autoFocus placeholder="...Trainer123" />
         <Button onClick={onLogin}>Enter</Button>
-      </div>
-    </div>
+      </main>
+    </LayoutContainer>
   );
 }

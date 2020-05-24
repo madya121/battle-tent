@@ -3,10 +3,11 @@ import { Button } from '../../components/basics';
 import LoadingIndicator from '../../components/LoadingIndicator';
 import * as Steps from './steps';
 import { QuitModal } from './QuitModal';
-import { fetchOpponent } from '../../apis/battleApi';
+import { fetchOpponent, fetchPokemonList } from '../../apis/battleApi';
 import { BattleStep } from './enums';
 import Pokemon from '../../types/Pokemon';
 import Trainer from '../../types/Trainer';
+import { LayoutContainer, TopArea, OpponentInfo, OpponentAvatar } from './Battle.styled';
 
 export default function Battle() {
   const [isLoading, setIsLoading] = useState(false);
@@ -35,9 +36,8 @@ export default function Battle() {
 
   async function getPokemonList() {
     try {
-      const response = await fetch('');
-      if (response.status !== 200) throw response;
-      setPokemonList([]);
+      const response = await fetchPokemonList();
+      setPokemonList(response.data);
     } catch (e) {
       console.error(e);
       alert(e);
@@ -68,16 +68,18 @@ export default function Battle() {
   }
 
   return (
-    <div>
+    <LayoutContainer>
       <QuitModal shown={quitModalShown} onClose={closeQuitModal} />
-      <header>
-        <h1>Battle!</h1>
-        {opponent && opponent.name}
-        <div>
-          <Button onClick={openQuitModal}>Quit</Button>
-        </div>
-      </header>
-      {isLoading ? <LoadingIndicator /> : <Step />}
-    </div>
+      <TopArea>
+        <OpponentInfo>
+          <OpponentAvatar />
+          <div>{opponent && opponent.name}</div>
+        </OpponentInfo>
+        <Button onClick={openQuitModal}>Quit</Button>
+      </TopArea>
+      <main>
+        {isLoading ? <LoadingIndicator /> : <Step />}
+      </main>
+    </LayoutContainer>
   );
 }

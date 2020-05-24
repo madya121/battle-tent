@@ -3,6 +3,7 @@ import Pokemon from '../../../../types/Pokemon';
 import { Button } from '../../../../components/basics';
 import { BattleStep } from '../../enums';
 import { sendChoosenParty } from '../../../../apis/battleApi';
+import { TileContainer, Tile, TileDetail } from './ChooseParty.styled';
 
 export interface ChoosePartyProps {
   pokemonList: Pokemon[];
@@ -31,13 +32,21 @@ export default function ChooseParty({ pokemonList, setActiveStep }: ChoosePartyP
   return (
     <div>
       <h5>Choose your Pokémon</h5>
-      {pokemonList.map(({ ndex, image, name, types }) => (
-        <div onClick={() => selectUnselect(ndex)} key={ndex}>
-          <img src={image} alt={name} />
-          {name}
-          {types}
-        </div>
-      ))}
+      <TileContainer>
+        {pokemonList.map(({ ndex, image, name, types }) => (
+          <Tile onClick={() => selectUnselect(ndex)} key={ndex}>
+            <img src={image} alt={name} />
+            <TileDetail>
+              <div>
+                {name}
+              </div>
+              <div>
+                {types}
+              </div>
+            </TileDetail>
+          </Tile>
+        ))}
+      </TileContainer>
       <Button onClick={onConfirmParty}>Battle</Button>
     </div>
   );

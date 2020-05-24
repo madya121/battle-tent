@@ -4,6 +4,7 @@ import Modal, { ModalProps } from '../../components/Modal';
 import LoadingIndicator from '../../components/LoadingIndicator';
 import { NavigationContext, ScreenState } from '../../navigation';
 import Auth from '../../utils/auth';
+import { LayoutContainer } from './Lobby.styled';
 
 export default function Lobby() {
   const [inviteModalShown, setInviteModalShown] = useState(false);
@@ -49,7 +50,7 @@ export default function Lobby() {
   }
 
   return (
-    <div>
+    <LayoutContainer>
       <InviteModal shown={inviteModalShown} onClose={closeInviteModal} />
       <header>
         <h1>Battle Tent</h1>
@@ -61,7 +62,7 @@ export default function Lobby() {
           <Button onClick={onSignOut}>Change name</Button>
         </div>
       }
-    </div>
+    </LayoutContainer>
   );
 }
 
