@@ -9,13 +9,45 @@ exports[`Lobby screen should render 1`] = `
       </h1>
     </header>
     <div>
-      <button>
-        Find match
+      <button
+        class="MuiButtonBase-root MuiButton-root MuiButton-text"
+        tabindex="0"
+        type="button"
+      >
+        <span
+          class="MuiButton-label"
+        >
+          Find match
+        </span>
+        <span
+          class="MuiTouchRipple-root"
+        />
       </button>
       <button
+        class="MuiButtonBase-root MuiButton-root MuiButton-text Mui-disabled Mui-disabled"
         disabled=""
+        tabindex="-1"
+        type="button"
       >
-        Invite
+        <span
+          class="MuiButton-label"
+        >
+          Invite
+        </span>
+      </button>
+      <button
+        class="MuiButtonBase-root MuiButton-root MuiButton-text"
+        tabindex="0"
+        type="button"
+      >
+        <span
+          class="MuiButton-label"
+        >
+          Change name
+        </span>
+        <span
+          class="MuiTouchRipple-root"
+        />
       </button>
     </div>
   </div>

@@ -16,19 +16,21 @@ enum Event {
 
 export function fetchOpponent(): Promise<ApiResponse<Trainer>> {
   return new Promise((resolve, reject) => {
-    socket.on('get_opponent', (ACK: boolean, data: Trainer) => {
-      socket.removeListener(Event.PlayerSelectsPokemon);
-      ACK ? resolve({ data }) : reject({ error: true });
-    });
+    // socket.on('get_opponent', (ACK: boolean, data: Trainer) => {
+    //   socket.removeListener(Event.PlayerSelectsPokemon);
+    //   ACK ? resolve({ data }) : reject({ error: true });
+    // });
+    setTimeout(() => resolve({ data: { name: 'abc' } }), 2000);
   });
 }
 
 export function sendChoosenParty(pokemonNdexs: Array<Pokemon['ndex']>): Promise<ApiResponse> {
   socket.emit(Event.PlayerSelectsPokemon, pokemonNdexs);
   return new Promise((resolve, reject) => {
-    socket.on(Event.PlayerSelectsPokemon, (ACK: boolean) => {
-      socket.removeListener(Event.PlayerSelectsPokemon);
-      ACK ? resolve() : reject({ error: true });
-    });
+    // socket.on(Event.PlayerSelectsPokemon, (ACK: boolean) => {
+    //   socket.removeListener(Event.PlayerSelectsPokemon);
+    //   ACK ? resolve() : reject({ error: true });
+    // });
+    setTimeout(resolve, 2000);
   });
 }

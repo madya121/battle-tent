@@ -3,6 +3,7 @@ import { Input, Button } from '../../components/basics';
 import Modal, { ModalProps } from '../../components/Modal';
 import LoadingIndicator from '../../components/LoadingIndicator';
 import { NavigationContext, ScreenState } from '../../navigation';
+import Auth from '../../utils/auth';
 
 export default function Lobby() {
   const [inviteModalShown, setInviteModalShown] = useState(false);
@@ -42,6 +43,11 @@ export default function Lobby() {
     setInviteModalShown(false);
   }
 
+  function onSignOut() {
+    Auth.signout();
+    navigate(ScreenState.Login);
+  }
+
   return (
     <div>
       <InviteModal shown={inviteModalShown} onClose={closeInviteModal} />
@@ -52,6 +58,7 @@ export default function Lobby() {
         <div>
           <Button onClick={onFindMatch}>Find match</Button>
           <Button disabled onClick={openInviteModal}>Invite</Button>
+          <Button onClick={onSignOut}>Change name</Button>
         </div>
       }
     </div>

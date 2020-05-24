@@ -3,24 +3,32 @@
 exports[`App should render 1`] = `
 <DocumentFragment>
   <div>
-    <p>
-      Guest
-    </p>
+    <header>
+      <h1>
+        Welcome to Battle Tent
+      </h1>
+    </header>
     <div>
-      <header>
-        <h1>
-          Welcome to Battle Tent
-        </h1>
-      </header>
-      <div>
-        <h5>
-          What is your display name?
-        </h5>
-        <input />
-        <button>
+      <h5>
+        What is your display name?
+      </h5>
+      <input
+        value=""
+      />
+      <button
+        class="MuiButtonBase-root MuiButton-root MuiButton-text"
+        tabindex="0"
+        type="button"
+      >
+        <span
+          class="MuiButton-label"
+        >
           Enter
-        </button>
-      </div>
+        </span>
+        <span
+          class="MuiTouchRipple-root"
+        />
+      </button>
     </div>
   </div>
 </DocumentFragment>
