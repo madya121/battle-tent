@@ -4,7 +4,7 @@ import { NavigationContext, ScreenState } from '../../navigation';
 import { Input, Button } from '../../components/basics';
 import { LayoutContainer } from './Login.styled';
 import { TITLE_SCREEN_BGM_PATH } from '../../constants/paths/audio';
-import { fadeAudio } from '../../utils/audio';
+import Music from '../../Music';
 
 const titleScreenBgm = new Audio(TITLE_SCREEN_BGM_PATH);
 
@@ -18,10 +18,9 @@ export default function Login() {
   }
 
   useEffect(() => {
-    titleScreenBgm.volume = .2;
-    titleScreenBgm.play();
+    Music.play(titleScreenBgm);
     return () => {
-      fadeAudio(titleScreenBgm)
+      Music.stop();
     }
   }, []);
 

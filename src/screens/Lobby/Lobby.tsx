@@ -1,22 +1,33 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Input, Button } from '../../components/basics';
 import Modal, { ModalProps } from '../../components/Modal';
 import LoadingIndicator from '../../components/LoadingIndicator';
 import { NavigationContext, ScreenState } from '../../navigation';
 import Auth from '../../utils/auth';
 import { LayoutContainer } from './Lobby.styled';
+import { LOBBY_BGM_PATH } from '../../constants/paths/audio';
+import Music from '../../Music';
+
+const LobbyScreenBgm = new Audio(LOBBY_BGM_PATH);
 
 export default function Lobby() {
   const [inviteModalShown, setInviteModalShown] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useContext(NavigationContext);
 
+  useEffect(() => {
+    Music.play(LobbyScreenBgm);
+    return () => {
+      Music.stop();
+    }
+  }, []);
+
   async function onFindMatch() {
     setIsLoading(true);
     try {
       const response = await fetch('');
       if (response.status !== 200) throw response;
-      setTimeout(() => navigate(ScreenState.Battle), 1500)
+      setTimeout(() => navigate(ScreenState.Battle), 1500);
     } catch (e) {
       console.error(e);
       alert(e);
