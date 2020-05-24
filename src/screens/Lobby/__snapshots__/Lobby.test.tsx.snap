@@ -2,7 +2,9 @@
 
 exports[`Lobby screen should render 1`] = `
 <DocumentFragment>
-  <div>
+  <div
+    class="sc-AxirZ sc-fzplWN iSSJWi"
+  >
     <header>
       <h1>
         Battle Tent
@@ -10,7 +12,7 @@ exports[`Lobby screen should render 1`] = `
     </header>
     <div>
       <button
-        class="MuiButtonBase-root MuiButton-root MuiButton-text"
+        class="MuiButtonBase-root MuiButton-root MuiButton-text sc-AxjAm faKiNC"
         tabindex="0"
         type="button"
       >
@@ -24,7 +26,7 @@ exports[`Lobby screen should render 1`] = `
         />
       </button>
       <button
-        class="MuiButtonBase-root MuiButton-root MuiButton-text Mui-disabled Mui-disabled"
+        class="MuiButtonBase-root MuiButton-root MuiButton-text sc-AxjAm faKiNC Mui-disabled Mui-disabled"
         disabled=""
         tabindex="-1"
         type="button"
@@ -36,7 +38,7 @@ exports[`Lobby screen should render 1`] = `
         </span>
       </button>
       <button
-        class="MuiButtonBase-root MuiButton-root MuiButton-text"
+        class="MuiButtonBase-root MuiButton-root MuiButton-text sc-AxjAm faKiNC"
         tabindex="0"
         type="button"
       >

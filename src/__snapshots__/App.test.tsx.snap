@@ -2,21 +2,26 @@
 
 exports[`App should render 1`] = `
 <DocumentFragment>
-  <div>
+  <div
+    class="sc-AxirZ sc-AxiKw dOnIda"
+  >
     <header>
+      <div>
+        Welcome to
+      </div>
       <h1>
-        Welcome to Battle Tent
+        Battle Tent
       </h1>
     </header>
-    <div>
+    <main>
       <h5>
         What is your display name?
       </h5>
       <input
-        value=""
+        placeholder="...Trainer123"
       />
       <button
-        class="MuiButtonBase-root MuiButton-root MuiButton-text"
+        class="MuiButtonBase-root MuiButton-root MuiButton-text sc-AxjAm faKiNC"
         tabindex="0"
         type="button"
       >
@@ -29,7 +34,7 @@ exports[`App should render 1`] = `
           class="MuiTouchRipple-root"
         />
       </button>
-    </div>
+    </main>
   </div>
 </DocumentFragment>
 `;

@@ -5,10 +5,12 @@ import Trainer from '../types/Trainer';
 
 const socket = socketIOClient(SOCKET_ENDPOINT);
 
-interface ApiResponse<T = never> {
+type ApiResponse<T = void> = T extends void ? {
+  error?: any;
+} : {
   data: T
   error?: any;
-}
+};
 
 enum Event {
   PlayerSelectsPokemon = 'player_selects_pokemon',
@@ -40,7 +42,7 @@ export function sendChoosenParty(pokemonNdexs: Array<Pokemon['ndex']>): Promise<
     //   socket.removeListener(Event.PlayerSelectsPokemon);
     //   ACK ? resolve() : reject({ error: true });
     // });
-    setTimeout(resolve, 2000);
+    setTimeout(() => resolve({}), 2000);
   });
 }
 
