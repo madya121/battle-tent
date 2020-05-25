@@ -3,7 +3,7 @@ import { Button } from '../../components/basics';
 import LoadingIndicator from '../../components/LoadingIndicator';
 import * as Steps from './steps';
 import { QuitModal } from './QuitModal';
-import { fetchOpponent, fetchPokemonList } from '../../apis/battleApi';
+import { subscribeOpponent, fetchPokemonList } from '../../apis/battleApi';
 import { BattleStep } from './enums';
 import Pokemon from '../../types/Pokemon';
 import Trainer from '../../types/Trainer';
@@ -18,21 +18,15 @@ export default function Battle() {
 
   useEffect(() => {
     setIsLoading(true);
-    Promise.all([
-      getOpponent(),
-      getPokemonList(),
-    ]).finally(() => setIsLoading(false));
+    getPokemonList().finally(() => setIsLoading(false));
   }, []);
 
-  async function getOpponent() {
-    try {
-      const response = await fetchOpponent();
-      setOpponent(response.data);
-    } catch (e) {
-      console.error(e);
-      alert(e);
+  useEffect(function registerSubscriptions() {
+    const subscription = subscribeOpponent(setOpponent);
+    return function clearSubscriptions() {
+      subscription.off();
     }
-  }
+  }, []);
 
   async function getPokemonList() {
     try {
