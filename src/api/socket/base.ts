@@ -2,7 +2,7 @@ import io from 'socket.io-client';
 import Pokemon from '../../types/Pokemon';
 
 export const socket = io.connect(
-  process.env.SOCKET_ENDPOINT || '',
+  process.env.REACT_APP_SOCKET_ENDPOINT || '',
   { path: '/ws/' }
 );
 

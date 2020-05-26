@@ -2,6 +2,10 @@
 Pokemon battle tent
 
 
+## Setting up
+
+- Clone `.env` to `.env.local` and fill in the variables
+
 ### `yarn start`
 
 Runs the app in the development mode.<br />
