@@ -1,6 +1,6 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { NavigationContext, ScreenState } from '../../navigation';
-import { subscribeLoggedIn, login } from '../../apis/battleApi';
+import { subscribeLoggedIn, emitLogin } from '../../api';
 import { Input, Button } from '../../components/basics';
 import { LayoutContainer } from './Login.styled';
 import { TITLE_SCREEN_BGM_PATH } from '../../constants/paths/audio';
@@ -13,23 +13,24 @@ export default function Login() {
 
   const navigate = useContext(NavigationContext);
 
-  function onLogin() {
-    login(username);
+  function onClickLogin() {
+    emitLogin(username);
   }
 
   useEffect(() => {
     Music.play(titleScreenBgm);
-
-    const s = subscribeLoggedIn(() => {
-      navigate(ScreenState.Lobby);
-    });
-
     return () => {
       Music.stop();
-
-      s.off();
     }
   }, []);
+
+  // subscriptions
+  useEffect(function subscribe() {
+    const s = subscribeLoggedIn(() => navigate(ScreenState.Lobby));
+    return function unsubscribe() {
+      s.off();
+    }
+  }, [navigate]);
 
   return (
     <LayoutContainer>
@@ -39,8 +40,12 @@ export default function Login() {
       </header>
       <main>
         <h5>What is your display name?</h5>
-        <Input autoFocus placeholder="...Trainer123" onChange={(e) => setUsername(e.target.value)} />
-        <Button onClick={onLogin}>Enter</Button>
+        <Input
+          autoFocus
+          placeholder="...Trainer123"
+          onChange={e => setUsername(e.target.value)}
+        />
+        <Button onClick={onClickLogin}>Enter</Button>
       </main>
     </LayoutContainer>
   );

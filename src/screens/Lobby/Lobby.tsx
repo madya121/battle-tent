@@ -7,41 +7,45 @@ import Auth from '../../utils/auth';
 import { LayoutContainer } from './Lobby.styled';
 import { LOBBY_BGM_PATH } from '../../constants/paths/audio';
 import Music from '../../Music';
-import { subscribeFindingMatch, subscribeJoinedTheRoom, findMatch } from '../../apis/battleApi';
+import {
+  subscribeFindingMatch,
+  subscribeJoinedTheRoom,
+  emitFindMatch,
+} from '../../api';
 
 const LobbyScreenBgm = new Audio(LOBBY_BGM_PATH);
 
 export default function Lobby() {
   const [inviteModalShown, setInviteModalShown] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isFindingMatch, setIsFindingMatch] = useState(false);
   const navigate = useContext(NavigationContext);
 
   useEffect(() => {
     Music.play(LobbyScreenBgm);
-
-    const sFindingMatch = subscribeFindingMatch(() => {
-      setIsLoading(true);
-    });
-
-    const sJoinedTheRoom = subscribeJoinedTheRoom(() => {
-      setIsLoading(false);
-
-      navigate(ScreenState.Battle);
-    });
-
     return () => {
       Music.stop();
-
-      sFindingMatch.off();
-      sJoinedTheRoom.off();
     }
   }, []);
 
-  async function onFindMatch() {
-    findMatch();
+  // subscriptions
+  useEffect(function subscribe() {
+    const sFindingMatch = subscribeFindingMatch(() => setIsFindingMatch(true));
+    const sJoinedTheRoom = subscribeJoinedTheRoom(() => {
+      setIsFindingMatch(false);
+      navigate(ScreenState.Battle);
+    });
+    return function unsubscribe() {
+      sFindingMatch.off();
+      sJoinedTheRoom.off();
+    }
+  }, [navigate]);
+
+  async function onClickFindMatch() {
+    emitFindMatch();
   }
+
   async function onInviteMatch() {
-    setIsLoading(true);
+    setIsFindingMatch(true);
     try {
       const response = await fetch('');
       if (response.status !== 200) throw response;
@@ -49,13 +53,14 @@ export default function Lobby() {
       console.error(e);
       alert(e);
     }
-    setIsLoading(false);
+    setIsFindingMatch(false);
   }
 
   function openInviteModal() {
     setInviteModalShown(true);
     onInviteMatch();
   }
+
   function closeInviteModal() {
     setInviteModalShown(false);
   }
@@ -71,9 +76,9 @@ export default function Lobby() {
       <header>
         <h1>Battle Tent</h1>
       </header>
-      {isLoading ? <LoadingIndicator /> :
+      {isFindingMatch ? <LoadingIndicator /> :
         <div>
-          <Button onClick={onFindMatch}>Find match</Button>
+          <Button onClick={onClickFindMatch}>Find match</Button>
           <Button disabled onClick={openInviteModal}>Invite</Button>
           <Button onClick={onSignOut}>Change name</Button>
         </div>

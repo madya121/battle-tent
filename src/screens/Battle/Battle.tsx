@@ -3,11 +3,19 @@ import { Button } from '../../components/basics';
 import LoadingIndicator from '../../components/LoadingIndicator';
 import * as Steps from './steps';
 import { QuitModal } from './QuitModal';
-import { subscribeOpponent, fetchPokemonList } from '../../apis/socket/battleApi';
+import {
+  fetchPokemonList,
+  subscribePlayerJoinedTheRoom,
+} from '../../api';
 import { BattleStep } from './enums';
 import Pokemon from '../../types/Pokemon';
 import Trainer from '../../types/Trainer';
-import { LayoutContainer, TopArea, OpponentInfo, OpponentAvatar } from './Battle.styled';
+import {
+  LayoutContainer,
+  TopArea,
+  OpponentInfo,
+  OpponentAvatar,
+} from './Battle.styled';
 
 export default function Battle() {
   const [isLoading, setIsLoading] = useState(false);
@@ -21,9 +29,10 @@ export default function Battle() {
     getPokemonList().finally(() => setIsLoading(false));
   }, []);
 
-  useEffect(function registerSubscriptions() {
-    const subscription = subscribeOpponent(setOpponent);
-    return function clearSubscriptions() {
+  // subscriptions
+  useEffect(function subscribe() {
+    const subscription = subscribePlayerJoinedTheRoom(setOpponent);
+    return function unsubscribe() {
       subscription.off();
     }
   }, []);
