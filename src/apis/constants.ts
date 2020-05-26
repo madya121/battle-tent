@@ -1,1 +1,1 @@
-export const SOCKET_ENDPOINT = 'http://127.0.0.1:3460';
+export const SOCKET_ENDPOINT = 'http://128.199.77.63/';

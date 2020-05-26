@@ -3,7 +3,7 @@ import { SOCKET_ENDPOINT } from '../constants';
 import Pokemon from '../../types/Pokemon';
 import Trainer from '../../types/Trainer';
 
-const socket = io(SOCKET_ENDPOINT);
+const socket = io.connect(SOCKET_ENDPOINT, { path: '/ws/' });
 
 enum OutboundEvent {
   Login = 'login',
@@ -13,16 +13,16 @@ enum OutboundEvent {
 
 enum InboundEvent {
   // login - lobby
-  LoggedIn = 'player_login',
+  LoggedIn = 'logged_in',
   // lobby
-  ListPlayers = 'list_players',
-  FindingMatch = 'player_find_match',
+  ListPlayers = 'players_list',
+  FindingMatch = 'finding_match',
   // lobby - room
-  JoinedTheRoom = 'joining_room',
+  JoinedTheRoom = 'joined_the_room',
   // room
-  LeftTheRoom = 'leaving_room',
-  PlayerJoinedTheRoom = 'player_joining_room',
-  PlayerLeftTheRoom = 'player_leaving_room',
+  LeftTheRoom = 'left_the_room',
+  PlayerJoinedTheRoom = 'player_joined_the_room',
+  PlayerLeftTheRoom = 'player_left_the_room',
 }
 
 interface InboundEventValue {
@@ -52,6 +52,15 @@ interface InboundEventValue {
   }
 }
 
+/** OUTBOUND **/
+export function login(name: string) {
+  socket.emit(OutboundEvent.Login, name);
+}
+export function findMatch() {
+  socket.emit(OutboundEvent.FindMatch);
+}
+
+/** INBOUND **/
 export function subscribePlayers(callback: (players: InboundEventValue['ListPlayers']) => void) {
   socket.on(InboundEvent.ListPlayers, callback);
   return { off: () => socket.off(InboundEvent.ListPlayers) };
