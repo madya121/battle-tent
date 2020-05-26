@@ -7,6 +7,7 @@ import Auth from '../../utils/auth';
 import { LayoutContainer } from './Lobby.styled';
 import { LOBBY_BGM_PATH } from '../../constants/paths/audio';
 import Music from '../../Music';
+import { subscribeFindingMatch, subscribeJoinedTheRoom, findMatch } from '../../apis/battleApi';
 
 const LobbyScreenBgm = new Audio(LOBBY_BGM_PATH);
 
@@ -17,23 +18,27 @@ export default function Lobby() {
 
   useEffect(() => {
     Music.play(LobbyScreenBgm);
+
+    const sFindingMatch = subscribeFindingMatch(() => {
+      setIsLoading(true);
+    });
+
+    const sJoinedTheRoom = subscribeJoinedTheRoom(() => {
+      setIsLoading(false);
+
+      navigate(ScreenState.Battle);
+    });
+
     return () => {
       Music.stop();
+
+      sFindingMatch.off();
+      sJoinedTheRoom.off();
     }
   }, []);
 
   async function onFindMatch() {
-    setIsLoading(true);
-    try {
-      const response = await fetch('');
-      if (response.status !== 200) throw response;
-      setTimeout(() => navigate(ScreenState.Battle), 1500);
-    } catch (e) {
-      console.error(e);
-      alert(e);
-    }
-    // setIsLoading(false);
-    setTimeout(() => setIsLoading(false), 1500)
+    findMatch();
   }
   async function onInviteMatch() {
     setIsLoading(true);
