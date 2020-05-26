@@ -3,7 +3,7 @@ import { SOCKET_ENDPOINT } from './constants';
 import Pokemon from '../types/Pokemon';
 import Trainer from '../types/Trainer';
 
-const socket = io(SOCKET_ENDPOINT);
+const socket = io.connect(SOCKET_ENDPOINT, {path: '/ws/'});
 
 type ApiResponse<T = void> = T extends void ? {
   error?: any;
@@ -19,13 +19,13 @@ enum OutboundEvent {
 }
 
 enum InboundEvent {
-  ListPlayers = 'list_players',
-  LoggedIn = 'player_login',
-  FindingMatch = 'player_find_match',
-  JoinedTheRoom = 'joining_room',
-  LeftTheRoom = 'leaving_room',
-  PlayerJoinedTheRoom = 'player_joining_room',
-  PlayerLeftTheRoom = 'player_leaving_room',
+  ListPlayers = 'players_list',
+  LoggedIn = 'logged_in',
+  FindingMatch = 'finding_match',
+  JoinedTheRoom = 'joined_the_room',
+  LeftTheRoom = 'left_the_room',
+  PlayerJoinedTheRoom = 'player_joined_the_room',
+  PlayerLeftTheRoom = 'player_left_the_room',
 }
 
 interface InboundEventValue {
@@ -55,6 +55,15 @@ interface InboundEventValue {
   }
 }
 
+/** OUTBOUND **/
+export function login(name: string) {
+  socket.emit(OutboundEvent.Login, name);
+}
+export function findMatch() {
+  socket.emit(OutboundEvent.FindMatch);
+}
+
+/** INBOUND **/
 export function subscribePlayers(callback: (players: InboundEventValue['ListPlayers']) => void) {
   socket.on(InboundEvent.ListPlayers, callback);
   return { off: () => socket.off(InboundEvent.ListPlayers) };
