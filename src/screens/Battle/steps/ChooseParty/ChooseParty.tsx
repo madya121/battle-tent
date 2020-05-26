@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Pokemon from '../../../../types/Pokemon';
 import { Button } from '../../../../components/basics';
 import { BattleStep } from '../../enums';
-import { sendChoosenParty } from '../../../../apis/battleApi';
+import { sendChoosenParty } from '../../../../apis/socket/battleApi';
 import { TileContainer, Tile, TileDetail } from './ChooseParty.styled';
 
 export interface ChoosePartyProps {

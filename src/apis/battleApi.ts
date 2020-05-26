@@ -1,16 +1,9 @@
 import io from 'socket.io-client';
-import { SOCKET_ENDPOINT } from './constants';
-import Pokemon from '../types/Pokemon';
-import Trainer from '../types/Trainer';
+import { SOCKET_ENDPOINT } from '../constants';
+import Pokemon from '../../types/Pokemon';
+import Trainer from '../../types/Trainer';
 
 const socket = io(SOCKET_ENDPOINT);
-
-type ApiResponse<T = void> = T extends void ? {
-  error?: any;
-} : {
-  data: T
-  error?: any;
-};
 
 enum OutboundEvent {
   Login = 'login',
@@ -19,10 +12,14 @@ enum OutboundEvent {
 }
 
 enum InboundEvent {
-  ListPlayers = 'list_players',
+  // login - lobby
   LoggedIn = 'player_login',
+  // lobby
+  ListPlayers = 'list_players',
   FindingMatch = 'player_find_match',
+  // lobby - room
   JoinedTheRoom = 'joining_room',
+  // room
   LeftTheRoom = 'leaving_room',
   PlayerJoinedTheRoom = 'player_joining_room',
   PlayerLeftTheRoom = 'player_leaving_room',
@@ -75,17 +72,17 @@ export function subscribeLeftTheRoom(callback: (status: InboundEventValue['LeftT
   socket.on(InboundEvent.LeftTheRoom, callback);
   return { off: () => socket.off(InboundEvent.LeftTheRoom) };
 }
-export function PlayersubscribeJoinedTheRoom(callback: (status: InboundEventValue['PlayerJoinedTheRoom']) => void) {
+export function subscribePlayerJoinedTheRoom(callback: (status: InboundEventValue['PlayerJoinedTheRoom']) => void) {
   socket.on(InboundEvent.PlayerJoinedTheRoom, callback);
   return { off: () => socket.off(InboundEvent.PlayerJoinedTheRoom) };
 }
-export function PlayersubscribeLeftTheRoom(callback: (status: InboundEventValue['PlayerLeftTheRoom']) => void) {
+export function subscribePlayerLeftTheRoom(callback: (status: InboundEventValue['PlayerLeftTheRoom']) => void) {
   socket.on(InboundEvent.PlayerLeftTheRoom, callback);
   return { off: () => socket.off(InboundEvent.PlayerLeftTheRoom) };
 }
 
 export function subscribeOpponent(callback: (opponent: Trainer) => void) {
-  const a = socket.on('get_opponent', callback);
+  socket.on('get_opponent', callback);
   return { off: () => socket.off('get_opponent') };
 }
 
@@ -102,13 +99,17 @@ export function sendChoosenParty(pokemonNdexs: Array<Pokemon['ndex']>): Promise<
 
 export function fetchPokemonList(): Promise<ApiResponse<Pokemon[]>> {
   return new Promise((resolve, reject) => {
-    // socket.on('get_opponent', (ACK: boolean, data: Trainer) => {
-    //   socket.removeListener(OutboundEvent.SelectsPokemon);
-    //   ACK ? resolve({ data }) : reject({ error: true });
-    // });
     setTimeout(() => resolve({ data: dummyPokemonList }), 2000);
   });
 }
+
+type ApiResponse<T = void> = T extends void ? {
+  error?: any;
+} : {
+  data: T
+  error?: any;
+};
+
 const dummyMove = {
   name: 'Vine Whip',
   description: 'long string',

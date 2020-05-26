@@ -3,7 +3,7 @@ import { Button } from '../../components/basics';
 import LoadingIndicator from '../../components/LoadingIndicator';
 import * as Steps from './steps';
 import { QuitModal } from './QuitModal';
-import { subscribeOpponent, fetchPokemonList } from '../../apis/battleApi';
+import { subscribeOpponent, fetchPokemonList } from '../../apis/socket/battleApi';
 import { BattleStep } from './enums';
 import Pokemon from '../../types/Pokemon';
 import Trainer from '../../types/Trainer';
