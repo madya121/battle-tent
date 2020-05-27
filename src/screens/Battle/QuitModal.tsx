@@ -1,13 +1,12 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { Button } from '../../components/basics';
 import Modal, { ModalProps } from '../../components/Modal';
-import { NavigationContext, ScreenState } from '../../navigation';
+import { emitLeaveRoom } from '../../api';
 
-export function QuitModal({ shown, onClose }: Omit<ModalProps, 'children'>) {
-  const navigate = useContext(NavigationContext);
-
+export default function QuitModal({ shown, onClose }: Omit<ModalProps, 'children'>) {
   function quit() {
-    navigate(ScreenState.Lobby);
+    emitLeaveRoom();
+    onClose();
   }
 
   return (

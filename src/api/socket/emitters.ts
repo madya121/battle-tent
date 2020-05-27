@@ -18,8 +18,14 @@ export function emitLeaveRoom() {
   socket.emit(OutboundEvent.LeaveRoom);
 }
 
-export function emitSelectsPokemon(
-  pokemonNdexs: OutboundEventParams['SelectPokemon']
+export function emitSelectParty(
+  pokemonNdexs: OutboundEventParams['SelectParty']
 ) {
-  socket.emit(OutboundEvent.SelectPokemon, pokemonNdexs);
+  socket.emit(OutboundEvent.SelectParty, pokemonNdexs);
+}
+
+export function emitChat(
+  message: OutboundEventParams['Chat']
+) {
+  socket.emit(OutboundEvent.Chat, message);
 }

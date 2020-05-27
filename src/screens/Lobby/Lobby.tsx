@@ -9,8 +9,10 @@ import { LOBBY_BGM_PATH } from '../../constants/paths/audio';
 import Music from '../../Music';
 import {
   subscribeFindingMatch,
+  subscribeCancelledFindingMatch,
   subscribeJoinedTheRoom,
   emitFindMatch,
+  emitCancelFindMatch,
 } from '../../api';
 
 const LobbyScreenBgm = new Audio(LOBBY_BGM_PATH);
@@ -30,6 +32,9 @@ export default function Lobby() {
   // subscriptions
   useEffect(function subscribe() {
     const sFindingMatch = subscribeFindingMatch(() => setIsFindingMatch(true));
+    const sCancelledFindingMatch = subscribeCancelledFindingMatch(() => {
+      setIsFindingMatch(false);
+    });
     const sJoinedTheRoom = subscribeJoinedTheRoom(() => {
       setIsFindingMatch(false);
       navigate(ScreenState.Battle);
@@ -37,11 +42,16 @@ export default function Lobby() {
     return function unsubscribe() {
       sFindingMatch.off();
       sJoinedTheRoom.off();
+      sCancelledFindingMatch.off();
     }
   }, [navigate]);
 
   async function onClickFindMatch() {
     emitFindMatch();
+  }
+
+  async function onClickCancelFindMatch() {
+    emitCancelFindMatch();
   }
 
   async function onInviteMatch() {
@@ -76,13 +86,18 @@ export default function Lobby() {
       <header>
         <h1>Battle Tent</h1>
       </header>
-      {isFindingMatch ? <LoadingIndicator /> :
+      {isFindingMatch ? (
+        <>
+          <LoadingIndicator />
+          <Button onClick={onClickCancelFindMatch}>Cancel Find Match</Button>
+        </>
+      ) :
         <div>
-          <Button onClick={onClickFindMatch}>Find match</Button>
+          <Button onClick={onClickFindMatch}>Find Match</Button>
           <Button disabled onClick={openInviteModal}>Invite</Button>
-          <Button onClick={onSignOut}>Change name</Button>
         </div>
       }
+      <Button onClick={onSignOut}>Change name</Button>
     </LayoutContainer>
   );
 }

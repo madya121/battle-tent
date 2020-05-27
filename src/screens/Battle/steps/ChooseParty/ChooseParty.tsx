@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Pokemon from '../../../../types/Pokemon';
 import { Button } from '../../../../components/basics';
 import { BattleStep } from '../../enums';
-import { emitSelectsPokemon } from '../../../../api';
+import { emitSelectParty } from '../../../../api';
 import { TileContainer, Tile, TileDetail } from './ChooseParty.styled';
 import { find, equals, append, without } from 'ramda';
 
@@ -22,7 +22,7 @@ export default function ChooseParty({ pokemonList, setActiveStep }: ChoosePartyP
   }
 
   async function onConfirmParty() {
-    emitSelectsPokemon(choosen);
+    emitSelectParty(choosen);
     setActiveStep(BattleStep.ChooseMoves);
   }
 

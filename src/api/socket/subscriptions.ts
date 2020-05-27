@@ -21,6 +21,13 @@ export function subscribeFindingMatch(
   return { off: () => socket.off(InboundEvent.FindingMatch) };
 }
 
+export function subscribeCancelledFindingMatch(
+  callback: (status: InboundEventParams['CancelledFindingMatch']) => void
+) {
+  socket.on(InboundEvent.CancelledFindingMatch, callback);
+  return { off: () => socket.off(InboundEvent.CancelledFindingMatch) };
+}
+
 export function subscribeJoinedTheRoom(
   callback: (status: InboundEventParams['JoinedTheRoom']) => void
 ) {
@@ -47,4 +54,14 @@ export function subscribePlayerLeftTheRoom(
 ) {
   socket.on(InboundEvent.PlayerLeftTheRoom, callback);
   return { off: () => socket.off(InboundEvent.PlayerLeftTheRoom) };
+}
+
+export function subscribeChat(
+  callback: (chat: InboundEventParams['Chat']) => void
+) {
+  socket.on(InboundEvent.Chat, callback);
+  setInterval(() => {
+    callback({ name: 'test-chat', message: 'this is a test chat, goblok' });
+  }, 2000);
+  return { off: () => socket.off(InboundEvent.Chat) };
 }

@@ -1,15 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Button } from '../../components/basics';
 import LoadingIndicator from '../../components/LoadingIndicator';
 import * as Steps from './steps';
-import { QuitModal } from './QuitModal';
+import QuitModal from './QuitModal';
 import {
   fetchPokemonList,
   subscribePlayerJoinedTheRoom,
+  subscribePlayerLeftTheRoom,
+  subscribeLeftTheRoom,
 } from '../../api';
 import { BattleStep } from './enums';
 import Pokemon from '../../types/Pokemon';
 import Trainer from '../../types/Trainer';
+import { NavigationContext, ScreenState } from '../../navigation';
+import ChatPanel from './ChatPanel';
 import {
   LayoutContainer,
   TopArea,
@@ -23,6 +27,7 @@ export default function Battle() {
   const [activeStep, setActiveStep] = useState(BattleStep.ChooseParty);
   const [pokemonList, setPokemonList] = useState<Pokemon[]>([]);
   const [opponent, setOpponent] = useState<Trainer | undefined>(undefined);
+  const navigate = useContext(NavigationContext);
 
   useEffect(() => {
     setIsLoading(true);
@@ -31,20 +36,24 @@ export default function Battle() {
 
   // subscriptions
   useEffect(function subscribe() {
-    const subscription = subscribePlayerJoinedTheRoom(setOpponent);
+    const sPlayerJoinedTheRoom = subscribePlayerJoinedTheRoom(setOpponent);
+    const sPlayerLeftTheRoom = subscribePlayerLeftTheRoom(({ name }) => {
+      const message = `Player ${name} left the room!`;
+      alert(message);
+    });
+    const sLeftTheRoom = subscribeLeftTheRoom(() => {
+      navigate(ScreenState.Lobby);
+    });
     return function unsubscribe() {
-      subscription.off();
+      sPlayerJoinedTheRoom.off();
+      sPlayerLeftTheRoom.off();
+      sLeftTheRoom.off();
     }
-  }, []);
+  }, [navigate]);
 
   async function getPokemonList() {
-    try {
-      const response = await fetchPokemonList();
-      setPokemonList(response.data);
-    } catch (e) {
-      console.error(e);
-      alert(e);
-    }
+    const response = await fetchPokemonList();
+    setPokemonList(response.data);
   }
 
   function openQuitModal() {
@@ -82,6 +91,7 @@ export default function Battle() {
       </TopArea>
       <main>
         {isLoading ? <LoadingIndicator /> : <Step />}
+        <ChatPanel />
       </main>
     </LayoutContainer>
   );
