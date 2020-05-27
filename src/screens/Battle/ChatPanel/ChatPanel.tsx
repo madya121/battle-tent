@@ -13,7 +13,7 @@ export default function ChatPanel() {
 
   useEffect(function subscribe() {
     function pushLog(newLog: ChatLog) {
-      setLogs([...logs, newLog]);
+      setLogs(logs => [...logs, newLog]);
     }
 
     const sChat = subscribeChat(({ name, message }) => {
@@ -31,7 +31,7 @@ export default function ChatPanel() {
       sChat.off();
       sPlayerLeftTheRoom.off();
     }
-  }, [logs]);
+  }, []);
 
   function onClickSend() {
     emitChat(message);
@@ -79,7 +79,7 @@ const ChatRow = styled.div<{ type: string }>`
 `;
 
 const ChatInput = styled(Input)`
-  width: 100%;
+  flex: 1;
 `;
 
 function getChatRowColor(type: string) {
