@@ -3,7 +3,7 @@ import Pokemon from '../../types/Pokemon';
 
 export const socket = io.connect(
   process.env.REACT_APP_SOCKET_ENDPOINT || '',
-  { path: '/ws/' }
+  { path: '/ws/', transports: ['websocket'] }
 );
 
 enum PlayerState {
@@ -16,6 +16,8 @@ enum PlayerState {
 export enum OutboundEvent {
   Login = 'login',
   FindMatch = 'find_match',
+  CancelFindMatch = 'cancel_find_match',
+  LeaveRoom = 'leave_room',
   SelectPokemon = 'player_selects_pokemon',
 }
 

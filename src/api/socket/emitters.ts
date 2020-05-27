@@ -10,6 +10,14 @@ export function emitFindMatch() {
   socket.emit(OutboundEvent.FindMatch);
 }
 
+export function emitCancelFindMatch() {
+  socket.emit(OutboundEvent.CancelFindMatch);
+}
+
+export function emitLeaveRoom() {
+  socket.emit(OutboundEvent.LeaveRoom);
+}
+
 export function emitSelectsPokemon(
   pokemonNdexs: OutboundEventParams['SelectPokemon']
 ) {
