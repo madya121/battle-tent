@@ -1,4 +1,4 @@
-async function fadeAudio(audio: HTMLAudioElement) {
+async function fadeAudio(audio: HTMLAudioElement, delay = 2000) {
   // This fade interval last for 1 seconds. If the audio already reached
   // the last 1 seconds, let it finish by itself
   const reachedEndOfPlayback = audio.currentTime === audio.duration - 1;
@@ -22,12 +22,12 @@ async function fadeAudio(audio: HTMLAudioElement) {
       } else {
         audio.volume -= subtraction;
       }
-    }, 200);
+    }, delay / 10);
   });
 }
 
 class Music {
-  masterVolume = .2;
+  masterVolume = .1;
   currentlyPlaying: HTMLAudioElement = new Audio();
 
   /**
@@ -37,16 +37,19 @@ class Music {
     this.masterVolume = volume;
   }
 
-  async stop() {
+  async stop({ delay }: { delay?: number } = {}) {
     if (this.currentlyPlaying) {
-      await fadeAudio(this.currentlyPlaying);
+      await fadeAudio(this.currentlyPlaying, delay);
       this.currentlyPlaying.pause();
       this.currentlyPlaying.currentTime = 0;
     }
   }
 
-  async play(audio: HTMLAudioElement, loop?: boolean) {
-    await this.stop();
+  async play(
+    audio: HTMLAudioElement,
+    { loop, delay }: { loop?: boolean; delay?: number; } = {}
+  ) {
+    await this.stop({ delay });
     this.currentlyPlaying = audio;
     this.currentlyPlaying.volume = this.masterVolume;
     if (loop !== undefined) this.currentlyPlaying.loop = loop;

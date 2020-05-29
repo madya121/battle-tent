@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
-import Login from '../screens/Login';
-import Lobby from '../screens/Lobby';
-import Battle from '../screens/Battle';
+import TitleScreen from '../screens/Title';
+import LoginScreen from '../screens/Login';
+import LobbyScreen from '../screens/Lobby';
+import BattleScreen from '../screens/Battle';
 import { NavigationContext, ScreenState } from '.';
 
 export default function UrlRouter() {
@@ -20,13 +21,14 @@ export default function UrlRouter() {
 }
 
 function StateRouter() {
-  const [screenState, setScreenState] = useState(ScreenState.Login);
+  const [screenState, setScreenState] = useState(ScreenState.Title);
 
   function ActiveScreen() {
     switch (screenState) {
-      case ScreenState.Lobby: return <Lobby />;
-      case ScreenState.Battle: return <Battle />;
-      default: return <Login />;
+      case ScreenState.Login: return <LoginScreen />;
+      case ScreenState.Lobby: return <LobbyScreen />;
+      case ScreenState.Battle: return <BattleScreen />;
+      default: return <TitleScreen />;
     }
   }
 

@@ -18,7 +18,7 @@ export default function Login() {
   }
 
   useEffect(() => {
-    Music.play(titleScreenBgm);
+    Music.play(titleScreenBgm, { delay: 0 });
     return () => {
       Music.stop();
     }
