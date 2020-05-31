@@ -1,5 +1,6 @@
 import io from 'socket.io-client';
 import Pokemon from '../../types/Pokemon';
+import Player from '../../types/Player';
 
 export const socket = io.connect(
   process.env.REACT_APP_SOCKET_ENDPOINT || '',
@@ -47,11 +48,13 @@ export enum InboundEvent {
 export interface InboundEventParams {
   ListPlayers: Array<{
     state: PlayerState;
-    name: string; // player's name
+    name: string; // player's name // TODO deprecate
+    player?: Player;
   }>;
   LoggedIn: {
     state: PlayerState.MainMenu;
-    name: string;
+    name: string; // TODO deprecate
+    player?: Player;
   };
   FindingMatch: {
     state: PlayerState.FindingMatch;
@@ -68,6 +71,7 @@ export interface InboundEventParams {
   }
   PlayerJoinedTheRoom: {
     name: string; // another player's name that joined the room
+    players: Player[];
   }
   PlayerLeftTheRoom: {
     name: string; // another player's name that left the room

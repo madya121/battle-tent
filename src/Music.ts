@@ -1,33 +1,45 @@
-async function fadeAudio(audio: HTMLAudioElement, delay = 2000) {
-  // This fade interval last for 1 seconds. If the audio already reached
-  // the last 1 seconds, let it finish by itself
-  const reachedEndOfPlayback = audio.currentTime === audio.duration - 1;
+async function fadeAudio(audio: HTMLAudioElement, delay = 2000, targetVolume = 0) {
+  // This fade interval last for the {delay} duration. If the audio already reached
+  // the last {delay} seconds, let it finish by itself
+  // Also check if the audio already reached the {targetVolume}
+  function shouldNotFade(audio: HTMLAudioElement, delay: number, targetVolume: number) {
+    const reachedEndOfPlayback = audio.currentTime >= audio.duration - delay;
+    const volumeReachedTarget = audio.volume === targetVolume;
+    return reachedEndOfPlayback && volumeReachedTarget;
+  }
 
-  // Only fade if past the fade out point or not at zero already
-  const volumeReachedZero = audio.volume <= 0.0;
+  if (shouldNotFade(audio, delay, targetVolume)) return;
+  // the total difference between current volume and target volume
+  // if its a fadeIn, the value will be positive, and vice versa.
+  const delta = targetVolume - audio.volume;
 
-  if (reachedEndOfPlayback || volumeReachedZero) return;
-
-  // subtract audio by percentages
-  const subtraction = audio.volume / 10;
+  // change the audio gradually by 10% of the total difference per instance
+  const numberOfInstances = 10;
+  const changePerInstance = delta / numberOfInstances;
 
   return new Promise(resolve => {
-    const fadeAudio = setInterval(() => {
+    const fadeAudioInterval = setInterval(() => {
       // Stop all the intervalling when the volume is about to reach zero
       // and reset the audio to the initial state
-      if (audio.volume < subtraction) {
-        audio.volume = 0;
-        clearInterval(fadeAudio);
+      const result = audio.volume + changePerInstance;
+      const hasReachedTarget =
+        Math.abs(changePerInstance) >= Math.abs(targetVolume - result);
+      if (hasReachedTarget) {
+        audio.volume = targetVolume;
+        clearInterval(fadeAudioInterval);
         resolve();
       } else {
-        audio.volume -= subtraction;
+        audio.volume = result;
       }
-    }, delay / 10);
+    }, delay / numberOfInstances);
   });
 }
+// TODO this fadeAudio can be called twice at the same time,
+// resulting 2 different intervals set and may cause any unexpected behavior
 
 class Music {
-  masterVolume = .1;
+  readonly defaultMasterVolume = .1;
+  masterVolume = this.defaultMasterVolume;
   currentlyPlaying: HTMLAudioElement = new Audio();
 
   /**
@@ -35,11 +47,12 @@ class Music {
   */
   setMasterVolume(volume: number) {
     this.masterVolume = volume;
+    fadeAudio(this.currentlyPlaying, 500, volume)
   }
 
   async stop({ delay }: { delay?: number } = {}) {
     if (this.currentlyPlaying) {
-      await fadeAudio(this.currentlyPlaying, delay);
+      await fadeAudio(this.currentlyPlaying, delay, 0);
       this.currentlyPlaying.pause();
       this.currentlyPlaying.currentTime = 0;
     }
