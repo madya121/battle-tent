@@ -3,7 +3,6 @@ import { Input, Button } from '../../components/basics';
 import Modal, { ModalProps } from '../../components/Modal';
 import LoadingIndicator from '../../components/LoadingIndicator';
 import { NavigationContext, ScreenState } from '../../navigation';
-import Auth from '../../utils/auth';
 import { LayoutContainer } from './Lobby.styled';
 import { LOBBY_BGM_PATH } from '../../constants/paths/audio';
 import Music from '../../Music';
@@ -14,6 +13,7 @@ import {
   emitFindMatch,
   emitCancelFindMatch,
 } from '../../api';
+import Navbar from '../../components/Navbar';
 
 const LobbyScreenBgm = new Audio(LOBBY_BGM_PATH);
 
@@ -24,9 +24,6 @@ export default function Lobby() {
 
   useEffect(() => {
     Music.play(LobbyScreenBgm);
-    return () => {
-      Music.stop();
-    }
   }, []);
 
   // subscriptions
@@ -75,29 +72,26 @@ export default function Lobby() {
     setInviteModalShown(false);
   }
 
-  function onSignOut() {
-    Auth.signout();
-    navigate(ScreenState.Login);
-  }
-
   return (
     <LayoutContainer>
-      <InviteModal shown={inviteModalShown} onClose={closeInviteModal} />
       <header>
+        <Navbar />
         <h1>Battle Tent</h1>
       </header>
-      {isFindingMatch ? (
-        <>
-          <LoadingIndicator />
-          <Button onClick={onClickCancelFindMatch}>Cancel Find Match</Button>
-        </>
-      ) :
-        <div>
-          <Button onClick={onClickFindMatch}>Find Match</Button>
-          <Button disabled onClick={openInviteModal}>Invite</Button>
-        </div>
-      }
-      <Button onClick={onSignOut}>Change name</Button>
+      <main>
+        <InviteModal shown={inviteModalShown} onClose={closeInviteModal} />
+        {isFindingMatch ? (
+          <>
+            <LoadingIndicator />
+            <Button onClick={onClickCancelFindMatch}>Cancel Find Match</Button>
+          </>
+        ) :
+          <div>
+            <Button onClick={onClickFindMatch}>Find Match</Button>
+            <Button disabled onClick={openInviteModal}>Invite</Button>
+          </div>
+        }
+      </main>
     </LayoutContainer>
   );
 }

@@ -11,7 +11,7 @@ import {
 } from '../../api';
 import { BattleStep } from './enums';
 import Pokemon from '../../types/Pokemon';
-import Trainer from '../../types/Trainer';
+import Player from '../../types/Player';
 import { NavigationContext, ScreenState } from '../../navigation';
 import ChatPanel from './ChatPanel';
 import {
@@ -20,14 +20,17 @@ import {
   OpponentInfo,
   OpponentAvatar,
 } from './Battle.styled';
+import { find } from 'ramda';
+import { PlayerContext } from '../../auth';
 
 export default function Battle() {
   const [isLoading, setIsLoading] = useState(false);
   const [quitModalShown, setQuitModalShown] = useState(false);
   const [activeStep, setActiveStep] = useState(BattleStep.ChooseParty);
   const [pokemonList, setPokemonList] = useState<Pokemon[]>([]);
-  const [opponent, setOpponent] = useState<Trainer | undefined>(undefined);
+  const [opponent, setOpponent] = useState<Player | undefined>(undefined);
   const navigate = useContext(NavigationContext);
+  const [player] = useContext(PlayerContext);
 
   useEffect(() => {
     setIsLoading(true);
@@ -36,20 +39,30 @@ export default function Battle() {
 
   // subscriptions
   useEffect(function subscribe() {
-    const sPlayerJoinedTheRoom = subscribePlayerJoinedTheRoom(setOpponent);
-    const sPlayerLeftTheRoom = subscribePlayerLeftTheRoom(({ name }) => {
-      const message = `Player ${name} left the room!`;
-      alert(message);
+    const sPlayerJoinedTheRoom = subscribePlayerJoinedTheRoom(({
+      players
+      // name: lastJoinedPlayerName, // TODO for Toast
+    }) => {
+      const checkMatchingName = ({ name }: Player) => name !== player?.name;
+      const opponent = find(checkMatchingName, players);
+      console.log('player, players, opp', player, players, opponent)
+      setOpponent(opponent);
     });
+
+    const sPlayerLeftTheRoom = subscribePlayerLeftTheRoom(({ name }) => {
+      alert(`Player ${name} left the room!`);
+    });
+
     const sLeftTheRoom = subscribeLeftTheRoom(() => {
       navigate(ScreenState.Lobby);
     });
+
     return function unsubscribe() {
       sPlayerJoinedTheRoom.off();
       sPlayerLeftTheRoom.off();
       sLeftTheRoom.off();
     }
-  }, [navigate]);
+  }, [navigate, player]);
 
   async function getPokemonList() {
     const response = await fetchPokemonList();
