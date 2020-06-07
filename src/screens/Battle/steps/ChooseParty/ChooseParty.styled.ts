@@ -6,8 +6,8 @@ export const TileContainer = styled.div`
   margin: 16px;
 `;
 
-export const Tile = styled.div`
-  border: 1px solid white;
+export const Tile = styled.div<{ choosen?: boolean }>`
+  border: 1px solid ${props => props.choosen ? 'yellow' : 'white'};
   margin: 8px;
 `;
 

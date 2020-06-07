@@ -1,7 +1,7 @@
 import io from 'socket.io-client';
 import Pokemon from '../../types/Pokemon';
 import Player from '../../types/Player';
-import { QuickChatOption } from '../../screens/Battle/QuickChatPanel/enums';
+import { QuickChatOption } from '../../screens/Battle/QuickChatPanel/constants';
 
 export const socket = io.connect(
   process.env.REACT_APP_SOCKET_ENDPOINT || '',

@@ -1,17 +1,27 @@
 import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
-import { IconButton } from '../../../components/basics';
-import { Sms as ChatIcon, Duo } from '@material-ui/icons';
+import { Sms as ChatIcon } from '@material-ui/icons';
 import {
   emitChat,
   subscribeChat,
 } from '../../../api';
-import { QuickChatOption } from './enums';
+import {
+  QuickChatOption,
+  quickChatOptionDisplay,
+  availableOptions,
+} from './constants';
+import {
+  Container,
+  OptionModal,
+  QuickChatBalloon,
+  ModalToggle,
+  Option,
+} from './QuickChatPanel.styled';
 
 export default function QuickChatPanel() {
   const [playerQuickChat, setPlayerQuickChat] = useState(QuickChatOption.None);
   const [isOptionShown, setIsOptionShown] = useState(false);
   const [clearChatCount, setClearChatCount] = useState(0);
+  const [modalRef, setModalRef] = useState<HTMLDivElement | null>(null);
 
   useEffect(function subscribe() {
     const sChat = subscribeChat(({ name, message }) => {
@@ -23,11 +33,26 @@ export default function QuickChatPanel() {
     }
   }, []);
 
-  useEffect(() => {
+  useEffect(function clearQuickChat() {
     if (clearChatCount <= 0) {
       setPlayerQuickChat(QuickChatOption.None);
     }
   }, [clearChatCount]);
+
+  useEffect(function closeModalListener() {
+    function onClickOutsideModal(event: MouseEvent) {
+      if (
+        isOptionShown &&
+        modalRef &&
+        !modalRef.contains(event.target as Node)
+      ) {
+        setIsOptionShown(false);
+      }
+    }
+
+    window.addEventListener('click', onClickOutsideModal);
+    return () => window.removeEventListener('click', onClickOutsideModal);
+  }, [modalRef, isOptionShown]);
 
   function showQuickChat(option: QuickChatOption) {
     setPlayerQuickChat(option);
@@ -37,38 +62,23 @@ export default function QuickChatPanel() {
     }, 2500);
   }
 
-  function onClickSend() {
-    emitChat(playerQuickChat);
+  function onClickSend(option: QuickChatOption) {
     setIsOptionShown(false);
-    showQuickChat(QuickChatOption.OK); // TODO remove this dummy
+    emitChat(option);
+    showQuickChat(option); // TODO remove this dummy
   }
 
   return (
     <Container>
-      <OptionModal shown={isOptionShown}>
-        <IconButton onClick={onClickSend}><Duo /></IconButton>
-        <IconButton onClick={onClickSend}><Duo /></IconButton>
-        <IconButton onClick={onClickSend}><Duo /></IconButton>
-        <IconButton onClick={onClickSend}><Duo /></IconButton>
-        <IconButton onClick={onClickSend}><Duo /></IconButton>
-        <IconButton onClick={onClickSend}><Duo /></IconButton>
-        <IconButton onClick={onClickSend}><Duo /></IconButton>
-        <IconButton onClick={onClickSend}><Duo /></IconButton>
-        <IconButton onClick={onClickSend}><Duo /></IconButton>
-        <IconButton onClick={onClickSend}><Duo /></IconButton>
-        <IconButton onClick={onClickSend}><Duo /></IconButton>
-        <IconButton onClick={onClickSend}><Duo /></IconButton>
-        <IconButton onClick={onClickSend}><Duo /></IconButton>
-        <IconButton onClick={onClickSend}><Duo /></IconButton>
-        <IconButton onClick={onClickSend}><Duo /></IconButton>
-        <IconButton onClick={onClickSend}><Duo /></IconButton>
-        <IconButton onClick={onClickSend}><Duo /></IconButton>
-        <IconButton onClick={onClickSend}><Duo /></IconButton>
-        <IconButton onClick={onClickSend}><Duo /></IconButton>
-        <IconButton onClick={onClickSend}><Duo /></IconButton>
+      <OptionModal shown={isOptionShown} ref={setModalRef}>
+        {availableOptions.map(option => (
+          <Option onClick={() => onClickSend(option)}>
+            {quickChatOptionDisplay[option]}
+          </Option>
+        ))}
       </OptionModal>
       <QuickChatBalloon shown={playerQuickChat !== QuickChatOption.None}>
-        {playerQuickChat}
+        {quickChatOptionDisplay[playerQuickChat]}
       </QuickChatBalloon>
       <ModalToggle onClick={() => setIsOptionShown(!isOptionShown)}>
         <ChatIcon />
@@ -76,40 +86,3 @@ export default function QuickChatPanel() {
     </Container>
   );
 }
-
-const Container = styled.div`
-  position: relative;
-  height: 120px;
-  display: flex;
-  align-items: flex-end;
-`;
-
-const ModalToggle = styled(IconButton)`
-  left: 0;
-  bottom: 0;
-  overflow: scroll;
-`;
-
-// top: ${props => props.shown ? 0 : '120px'};
-const OptionModal = styled.div<{ shown: boolean }>`
-  position: absolute;
-  left: 40px;
-  height: ${props => props.shown ? '100%' : 0};
-  width: ${props => props.shown ? 'calc(100% - 80px)' : 0};
-  display: flex;
-  background-color: white;
-  overflow-y: scroll;
-  flex-wrap: wrap;
-  transition: width .2s, height .2s, transform .2s;
-`;
-
-const QuickChatBalloon = styled.div<{ shown: boolean }>`
-  position: absolute;
-  left: 40px;
-  bottom: 0;
-  display: ${props => props.shown ? 'block' : 'none'};
-  background-color: white;
-  color: black;
-  padding: 8px;
-  min-width: 100px;
-`;

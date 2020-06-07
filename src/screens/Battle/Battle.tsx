@@ -102,7 +102,7 @@ export default function Battle() {
         </OpponentInfo>
         <Button onClick={openQuitModal}>Quit</Button>
       </TopArea>
-      <main style={{ display: 'flex', flexDirection: 'column' }}>
+      <main style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
         <div style={{ flex: 1 }}>
           {isLoading ? <LoadingIndicator /> : <Step />}
         </div>
