@@ -1,6 +1,7 @@
 import io from 'socket.io-client';
 import Pokemon from '../../types/Pokemon';
 import Player from '../../types/Player';
+import { QuickChatOption } from '../../screens/Battle/QuickChatPanel/enums';
 
 export const socket = io.connect(
   process.env.REACT_APP_SOCKET_ENDPOINT || '',
@@ -26,7 +27,7 @@ export enum OutboundEvent {
 export interface OutboundEventParams {
   Login: string; // Player's name
   SelectParty: Array<Pokemon['ndex']>; // Pokemon's National Dex number
-  Chat: string; // chat message
+  Chat: QuickChatOption; // chat message
 }
 
 export enum InboundEvent {

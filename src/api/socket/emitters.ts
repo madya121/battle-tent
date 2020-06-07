@@ -25,7 +25,7 @@ export function emitSelectParty(
 }
 
 export function emitChat(
-  message: OutboundEventParams['Chat']
+  quickChat: OutboundEventParams['Chat']
 ) {
-  socket.emit(OutboundEvent.Chat, message);
+  socket.emit(OutboundEvent.Chat, quickChat);
 }

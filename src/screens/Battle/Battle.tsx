@@ -13,7 +13,7 @@ import { BattleStep } from './enums';
 import Pokemon from '../../types/Pokemon';
 import Player from '../../types/Player';
 import { NavigationContext, ScreenState } from '../../navigation';
-import ChatPanel from './ChatPanel';
+import QuickChatPanel from './QuickChatPanel';
 import {
   LayoutContainer,
   TopArea,
@@ -105,8 +105,8 @@ export default function Battle() {
       <main style={{ display: 'flex', flexDirection: 'column', width: '100vw' }}>
         <div style={{ flex: 1 }}>
           {isLoading ? <LoadingIndicator /> : <Step />}
-          <ChatPanel />
         </div>
+        <QuickChatPanel />
       </main>
     </LayoutContainer>
   );
