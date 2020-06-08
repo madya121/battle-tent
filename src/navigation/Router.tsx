@@ -5,6 +5,7 @@ import LoginScreen from '../screens/Login';
 import LobbyScreen from '../screens/Lobby';
 import BattleScreen from '../screens/Battle';
 import { NavigationContext, ScreenState } from '.';
+import styled from 'styled-components';
 
 export default function UrlRouter() {
   return (
@@ -34,7 +35,14 @@ function StateRouter() {
 
   return (
     <NavigationContext.Provider value={setScreenState}>
-      <ActiveScreen />
+      <ScreenContainer>
+        <ActiveScreen />
+      </ScreenContainer>
     </NavigationContext.Provider>
   );
 }
+
+const ScreenContainer = styled.div`
+  max-width: 425px;
+  margin: auto;
+`;

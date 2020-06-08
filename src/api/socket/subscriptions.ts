@@ -60,8 +60,5 @@ export function subscribeChat(
   callback: (chat: InboundEventParams['Chat']) => void
 ) {
   socket.on(InboundEvent.Chat, callback);
-  setInterval(() => {
-    callback({ name: 'test-chat', message: 'this is a test chat, goblok' });
-  }, 3500);
   return { off: () => socket.off(InboundEvent.Chat) };
 }
