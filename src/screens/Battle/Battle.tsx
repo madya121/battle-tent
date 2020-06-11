@@ -1,16 +1,13 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Button } from '../../components/basics';
-import LoadingIndicator from '../../components/LoadingIndicator';
 import * as Steps from './steps';
 import QuitModal from './QuitModal';
 import {
-  fetchPokemonList,
   subscribePlayerJoinedTheRoom,
   subscribePlayerLeftTheRoom,
   subscribeLeftTheRoom,
 } from '../../api';
 import { BattleStep } from './enums';
-import Pokemon from '../../types/Pokemon';
 import Player from '../../types/Player';
 import { NavigationContext, ScreenState } from '../../navigation';
 import QuickChatPanel from './QuickChatPanel';
@@ -22,20 +19,16 @@ import {
 } from './Battle.styled';
 import { find } from 'ramda';
 import { PlayerContext } from '../../auth';
+import GameplayContext from './GameplayContext';
+import Pokemon from '../../types/Pokemon';
 
 export default function Battle() {
-  const [isLoading, setIsLoading] = useState(false);
   const [quitModalShown, setQuitModalShown] = useState(false);
   const [activeStep, setActiveStep] = useState(BattleStep.ChooseParty);
-  const [pokemonList, setPokemonList] = useState<Pokemon[]>([]);
+  const [party, setParty] = useState<Pokemon[]>([]);
   const [opponent, setOpponent] = useState<Player | undefined>(undefined);
   const navigate = useContext(NavigationContext);
   const [player] = useContext(PlayerContext);
-
-  useEffect(() => {
-    setIsLoading(true);
-    getPokemonList().finally(() => setIsLoading(false));
-  }, []);
 
   // subscriptions
   useEffect(function subscribe() {
@@ -45,7 +38,6 @@ export default function Battle() {
     }) => {
       const checkMatchingName = ({ name }: Player) => name !== player?.name;
       const opponent = find(checkMatchingName, players);
-      console.log('player, players, opp', player, players, opponent)
       setOpponent(opponent);
     });
 
@@ -64,32 +56,11 @@ export default function Battle() {
     }
   }, [navigate, player]);
 
-  async function getPokemonList() {
-    const response = await fetchPokemonList();
-    setPokemonList(response.data);
-  }
-
   function openQuitModal() {
     setQuitModalShown(true);
   }
   function closeQuitModal() {
     setQuitModalShown(false);
-  }
-
-  function Step() {
-    function ChooseParty() {
-      return (
-        <Steps.ChooseParty
-          pokemonList={pokemonList}
-          setActiveStep={setActiveStep}
-        />
-      );
-    }
-    switch (activeStep) {
-      case BattleStep.ChooseParty: return <ChooseParty />;
-      case BattleStep.ChooseMoves: return <Steps.ChooseMoves />;
-      default: return <ChooseParty />;
-    }
   }
 
   return (
@@ -104,7 +75,13 @@ export default function Battle() {
       </TopArea>
       <main style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
         <div style={{ flex: 1 }}>
-          {isLoading ? <LoadingIndicator /> : <Step />}
+          <GameplayContext.Provider value={{ party, setParty }}>
+            {activeStep === BattleStep.ChooseParty ? (
+              <Steps.ChooseParty setActiveStep={setActiveStep} />
+            ) : activeStep === BattleStep.ChooseMoves ? (
+              <Steps.ChooseMoves />
+            ) : null}
+          </GameplayContext.Provider>
         </div>
         <QuickChatPanel />
       </main>
