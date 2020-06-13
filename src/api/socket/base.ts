@@ -1,6 +1,7 @@
 import io from 'socket.io-client';
 import Pokemon from '../../types/Pokemon';
 import Player from '../../types/Player';
+import BattlingPokemon from '../../types/BattlingPokemon';
 import { QuickChatOption } from '../../screens/Battle/QuickChatPanel/constants';
 
 export const socket = io.connect(
@@ -45,7 +46,7 @@ export enum InboundEvent {
   PlayerLeftTheRoom = 'player_left_the_room',
   Chat = 'chat',
   // game event
-  PartySelected = 'party_selected',
+  TurnStarted = 'turn_started',
 }
 
 export interface InboundEventParams {
@@ -68,20 +69,23 @@ export interface InboundEventParams {
   JoinedTheRoom: {
     state: PlayerState.InRoom;
     roomName: string // Room's ID
-  }
+  };
   LeftTheRoom: {
     state: PlayerState.MainMenu;
-  }
+  };
   PlayerJoinedTheRoom: {
     name: string; // another player's name that joined the room
     players: Player[];
-  }
+  };
   PlayerLeftTheRoom: {
     name: string; // another player's name that left the room
-  }
+  };
   Chat: {
     name: string; // User's name
     message: string; // chat message
-  }
-  PartySelected: string[]; // party pokemon's ndexes
+  };
+  TurnStarted: {
+    playerParty: BattlingPokemon[];
+    opponentParty: BattlingPokemon[];
+  };
 }

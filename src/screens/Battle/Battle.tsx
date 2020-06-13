@@ -20,12 +20,13 @@ import {
 import { find } from 'ramda';
 import { PlayerContext } from '../../auth';
 import GameplayContext from './GameplayContext';
-import Pokemon from '../../types/Pokemon';
+import BattlingPokemon from '../../types/BattlingPokemon';
 
 export default function Battle() {
   const [quitModalShown, setQuitModalShown] = useState(false);
   const [activeStep, setActiveStep] = useState(BattleStep.ChooseParty);
-  const [party, setParty] = useState<Pokemon[]>([]);
+  const [party, setParty] = useState<BattlingPokemon[]>([]);
+  const [opponentParty, setOpponentParty] = useState<BattlingPokemon[]>([]);
   const [opponent, setOpponent] = useState<Player | undefined>(undefined);
   const navigate = useContext(NavigationContext);
   const [player] = useContext(PlayerContext);
@@ -63,6 +64,11 @@ export default function Battle() {
     setQuitModalShown(false);
   }
 
+  const gameplayContextValue = {
+    party, setParty,
+    opponentParty, setOpponentParty,
+  };
+
   return (
     <LayoutContainer>
       <QuitModal shown={quitModalShown} onClose={closeQuitModal} />
@@ -75,7 +81,7 @@ export default function Battle() {
       </TopArea>
       <main style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
         <div style={{ flex: 1 }}>
-          <GameplayContext.Provider value={{ party, setParty }}>
+          <GameplayContext.Provider value={gameplayContextValue}>
             {activeStep === BattleStep.ChooseParty ? (
               <Steps.ChooseParty setActiveStep={setActiveStep} />
             ) : activeStep === BattleStep.ChooseMoves ? (

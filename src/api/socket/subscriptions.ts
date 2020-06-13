@@ -1,4 +1,5 @@
 import { socket, InboundEventParams, InboundEvent } from './base';
+import { battlingPartyMock, opponentPartyMock } from '../responseMocks';
 
 export function subscribePlayers(
   callback: (players: InboundEventParams['ListPlayers']) => void
@@ -63,10 +64,16 @@ export function subscribeChat(
   return { off: () => socket.off(InboundEvent.Chat) };
 }
 
-export function subscribePartySelected(
-  callback: (party: InboundEventParams['PartySelected']) => void
+
+// unimplemented from backend
+
+export function subscribeTurnStarted(
+  callback: (battleState: InboundEventParams['TurnStarted']) => void
 ) {
-  socket.on(InboundEvent.PartySelected, callback);
-  setTimeout(() => callback(['001']), 3000)
-  return { off: () => socket.off(InboundEvent.PartySelected) };
+  socket.on(InboundEvent.TurnStarted, callback);
+  setTimeout(() => callback({
+    playerParty: battlingPartyMock,
+    opponentParty: opponentPartyMock,
+  }), 3000)
+  return { off: () => socket.off(InboundEvent.TurnStarted) };
 }
