@@ -4,28 +4,26 @@ import {
   default as MaterialButton,
   ButtonProps,
 } from '@material-ui/core/Button';
-import { PLINK_SFX_PATH } from '../../../constants/paths/audio';
+import { Touchable } from '..';
+import ButtonBg from '../../../assets/images/button_bg.png'
 
 export default function Button({ ...props }:
   Required<Pick<ButtonProps, 'onClick' | 'children'>>
   & Pick<ButtonProps, 'disabled'>
 ) {
   return (
-    <StyledMaterialButton
-      {...props}
-      onClick={e => {
-        // create an Audio object each time onClick triggered
-        // to allow the SFX to be stacked
-        const plinkSfx = new Audio(PLINK_SFX_PATH);
-        plinkSfx.play();
-        props.onClick(e);
-      }}
-    />
+    <Touchable>
+      <StyledMaterialButton {...props} />
+    </Touchable>
   );
 }
 
 const StyledMaterialButton = styled(MaterialButton)`
+  background-image: url(${ButtonBg});
+  min-height: 56px;
+  background-size: contain;
+  background-repeat: no-repeat;
   && {
-    color: inherit;
+    min-width: 160px;
   }
 `;

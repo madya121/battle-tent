@@ -62,3 +62,11 @@ export function subscribeChat(
   socket.on(InboundEvent.Chat, callback);
   return { off: () => socket.off(InboundEvent.Chat) };
 }
+
+export function subscribePartySelected(
+  callback: (party: InboundEventParams['PartySelected']) => void
+) {
+  socket.on(InboundEvent.PartySelected, callback);
+  setTimeout(() => callback(['001']), 3000)
+  return { off: () => socket.off(InboundEvent.PartySelected) };
+}

@@ -1,9 +1,9 @@
 import React from 'react';
-import { PLINK_SFX_PATH } from '../../../constants/paths/audio';
+
+const PlinkSfx = require('../../../assets/audio/sfx/plink.mp3');
 
 export default function Touchable(
   props: React.HTMLAttributes<HTMLDivElement> &
-    Required<Pick<React.HTMLAttributes<HTMLDivElement>, 'onClick'>> &
   { audioPath?: string }
 ) {
   return (
@@ -12,9 +12,9 @@ export default function Touchable(
       onClick={e => {
         // create an Audio object each time onClick triggered
         // to allow the SFX to be stacked
-        const touchSfx = new Audio(props.audioPath || PLINK_SFX_PATH);
+        const touchSfx = new Audio(props.audioPath || PlinkSfx);
         touchSfx.play();
-        props.onClick(e);
+        props.onClick && props.onClick(e);
       }}
     />
   );

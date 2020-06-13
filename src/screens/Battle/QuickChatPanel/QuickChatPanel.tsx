@@ -72,7 +72,7 @@ export default function QuickChatPanel() {
     <Container>
       <OptionModal shown={isOptionShown} ref={setModalRef}>
         {availableOptions.map(option => (
-          <Option onClick={() => onClickSend(option)}>
+          <Option key={option} onClick={() => onClickSend(option)}>
             {quickChatOptionDisplay[option]}
           </Option>
         ))}

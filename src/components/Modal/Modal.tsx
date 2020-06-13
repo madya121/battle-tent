@@ -1,11 +1,18 @@
 import React from 'react';
 import styled from 'styled-components';
-import MaterialModal from '@material-ui/core/Modal';
+import {
+  default as MaterialModal,
+  ModalProps as MaterialModalProps,
+} from '@material-ui/core/Modal';
 import Fade from '@material-ui/core/Fade';
 import Backdrop from '@material-ui/core/Backdrop';
-import { PLINK_SFX_PATH } from '../../constants/paths/audio';
+import { Centered } from '../basics';
+import ModalBg from '../../assets/images/modal_bg.png';
+import CloseIcon from '../../assets/images/close_button.png';
 
-export interface ModalProps {
+const PlinkSfx = require('../../assets/audio/sfx/plink.mp3');
+
+export interface ModalProps extends Omit<MaterialModalProps, 'children' | 'open'> {
   shown?: boolean;
   onClose: () => void;
   children: React.ReactChild | React.ReactChild[];
@@ -15,14 +22,14 @@ export default function Modal({
   shown = true,
   onClose,
   children,
+  BackdropProps,
+  ...props
 }: ModalProps) {
   return (
     <StyledMaterialModal
       open={shown}
       onClose={() => {
-        // create an Audio object each time onClick triggered
-        // to allow the SFX to be stacked
-        const plinkSfx = new Audio(PLINK_SFX_PATH);
+        const plinkSfx = new Audio(PlinkSfx);
         plinkSfx.play();
         onClose();
       }}
@@ -30,10 +37,13 @@ export default function Modal({
       BackdropComponent={Backdrop}
       BackdropProps={{
         timeout: 500,
+        ...BackdropProps,
       }}
+      {...props}
     >
       <Fade in={shown}>
         <ContentContainer>
+          <CloseButton onClick={onClose} />
           {children}
         </ContentContainer>
       </Fade>
@@ -47,7 +57,24 @@ const StyledMaterialModal = styled(MaterialModal)`
   align-items: center;
 `;
 
-const ContentContainer = styled.div`
-  background: white;
+const ContentContainer = styled(Centered)`
+  position: relative;
+  width: 100%;
+  background-image: url(${ModalBg});
+  background-repeat: no-repeat;
+  background-size: contain;
+  padding: 24px;
+  :focus {
+    outline: none;
+  }
+`;
+
+const CloseButton = styled.div`
+  position: absolute;
+  top: 24px;
+  right: 8px;
+  background-image: url(${CloseIcon});
+  background-repeat: no-repeat;
+  background-size: 28px;
   padding: 24px;
 `;

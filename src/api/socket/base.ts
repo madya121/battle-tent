@@ -44,6 +44,8 @@ export enum InboundEvent {
   PlayerJoinedTheRoom = 'player_joined_the_room',
   PlayerLeftTheRoom = 'player_left_the_room',
   Chat = 'chat',
+  // game event
+  PartySelected = 'party_selected',
 }
 
 export interface InboundEventParams {
@@ -81,4 +83,5 @@ export interface InboundEventParams {
     name: string; // User's name
     message: string; // chat message
   }
+  PartySelected: string[]; // party pokemon's ndexes
 }
