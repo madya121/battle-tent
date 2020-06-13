@@ -4,7 +4,6 @@ import Modal, { ModalProps } from '../../components/Modal';
 import LoadingIndicator from '../../components/LoadingIndicator';
 import { NavigationContext, ScreenState } from '../../navigation';
 import { LayoutContainer } from './Lobby.styled';
-import { LOBBY_BGM_PATH } from '../../constants/paths/audio';
 import Music from '../../Music';
 import {
   subscribeFindingMatch,
@@ -15,7 +14,9 @@ import {
 } from '../../api';
 import Navbar from '../../components/Navbar';
 
-const LobbyScreenBgm = new Audio(LOBBY_BGM_PATH);
+const LobbyScreenBgm = new Audio(
+  require('../../assets/audio/bgm/2-41_Battle_Tower.mp3')
+);
 
 export default function Lobby() {
   const [inviteModalShown, setInviteModalShown] = useState(false);

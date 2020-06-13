@@ -1,7 +1,16 @@
 import styled from 'styled-components';
 import { Centered } from '../../components/basics';
+import BackgroundImage from '../../assets/images/title-background.jpg';
 
 export const LayoutContainer = styled(Centered)`
-  background-image: linear-gradient(141deg, #9fb8ad 0%, #1fc8db 51%, #2cb5e8 75%);
+  background-image: url(${BackgroundImage});
   height: 100vh;
+  display: flex;
+  flex-direction: column;
+`;
+
+export const LogoHeader = styled.header`
+  flex: 1;
+  display: flex;
+  align-items: flex-end;
 `;

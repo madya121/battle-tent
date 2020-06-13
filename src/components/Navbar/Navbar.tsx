@@ -4,7 +4,8 @@ import { NavigationContext, ScreenState } from '../../navigation';
 import Music from '../../Music';
 import styled from 'styled-components';
 import { IconButton } from '@material-ui/core';
-import { VolumeUp, VolumeOff } from '@material-ui/icons';
+import VolumeOn from '../../assets/images/sound.png';
+import VolumeOff from '../../assets/images/sound_off.png';
 
 export default function Navbar() {
   const [user, setUser] = useContext(PlayerContext);
@@ -17,15 +18,15 @@ export default function Navbar() {
 
   return (
     <NavbarContainer>
-      {user ? (
+      <VolumeButton />
+      {/* {user ? (
         <>
           Welcome {user.name}!
           <button onClick={signout}>
             Change name
           </button>
         </>
-      ) : (<p>Guest</p>)}
-      <VolumeButton />
+      ) : (<p>Guest</p>)} */}
     </NavbarContainer>
   );
 }
@@ -47,7 +48,11 @@ function VolumeButton() {
 
   return (
     <IconButton aria-label="volume" onClick={onChangeVolume}>
-      {isMuted ? <VolumeOff /> : <VolumeUp />}
+      <img
+        alt="music-volume"
+        src={isMuted ? VolumeOff : VolumeOn}
+        width="28px"
+      />
     </IconButton>
   );
 }

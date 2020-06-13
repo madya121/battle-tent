@@ -1,6 +1,16 @@
+@font-face {
+  font-family: NormalTextFont;
+  src: url(assets/fonts/New-Comic-BD.otf);
+}
+
+@font-face {
+  font-family: HeadTextFont;
+  src: url(assets/fonts/Pat-PaCool.otf);
+}
+
 body {
   margin: 0;
-  font-family: Roboto Mono, DejaVu Sans Mono, monospace,
+  font-family: NormalTextFont, Roboto Mono, DejaVu Sans Mono, monospace,
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
