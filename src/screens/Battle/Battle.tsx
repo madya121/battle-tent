@@ -7,7 +7,6 @@ import {
   subscribePlayerLeftTheRoom,
   subscribeLeftTheRoom,
 } from '../../api';
-import { BattleStep } from './enums';
 import Player from '../../types/Player';
 import { NavigationContext, ScreenState } from '../../navigation';
 import QuickChatPanel from './QuickChatPanel';
@@ -69,6 +68,8 @@ export default function Battle() {
     opponentParty, setOpponentParty,
   };
 
+  const goToChooseMovesStep = () => setActiveStep(BattleStep.ChooseMoves);
+
   return (
     <LayoutContainer>
       <QuitModal shown={quitModalShown} onClose={closeQuitModal} />
@@ -83,7 +84,7 @@ export default function Battle() {
         <div style={{ flex: 1 }}>
           <GameplayContext.Provider value={gameplayContextValue}>
             {activeStep === BattleStep.ChooseParty ? (
-              <Steps.ChooseParty setActiveStep={setActiveStep} />
+              <Steps.ChooseParty onFinish={goToChooseMovesStep} />
             ) : activeStep === BattleStep.ChooseMoves ? (
               <Steps.ChooseMoves />
             ) : null}
@@ -93,4 +94,9 @@ export default function Battle() {
       </main>
     </LayoutContainer>
   );
+}
+
+enum BattleStep {
+  ChooseParty,
+  ChooseMoves,
 }

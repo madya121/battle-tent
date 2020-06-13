@@ -2,28 +2,30 @@ import React, { useState, useEffect, useContext } from 'react';
 import Pokemon from '../../../../types/Pokemon';
 import { Button } from '../../../../components/basics';
 import LoadingIndicator from '../../../../components/LoadingIndicator';
-import { BattleStep } from '../../enums';
 import {
   fetchPokemonList,
   emitSelectParty,
-  subscribeTurnStarted,
+  subscribeRoundStarted,
 } from '../../../../api';
+import * as helper from '../../../../api/socket/helper';
 import { TileContainer, Tile, TileDetail } from './ChooseParty.styled';
 import { find, equals, append, without } from 'ramda';
 import GamplayContext from '../../GameplayContext';
+import { PlayerContext } from '../../../../auth';
 
 export interface ChoosePartyProps {
-  setActiveStep: React.Dispatch<React.SetStateAction<BattleStep>>;
+  onFinish: () => void;
 }
 
 export default function ChooseParty({
-  setActiveStep,
+  onFinish,
 }: ChoosePartyProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [isWaitingOpponent, setIsWaitingOpponent] = useState(false);
   const [pokemonList, setPokemonList] = useState<Pokemon[]>([]);
   const [choosen, setChoosen] = useState<Array<Pokemon['ndex']>>([]);
   const { setParty, setOpponentParty } = useContext(GamplayContext);
+  const [player] = useContext(PlayerContext);
 
   useEffect(() => {
     setIsLoading(true);
@@ -42,13 +44,15 @@ export default function ChooseParty({
   }
 
   function ready() {
+    if (!player) return;
     emitSelectParty(choosen);
-    const sTurnStart = subscribeTurnStarted(battleState => {
+    const sRoundStarted = subscribeRoundStarted(battleState => {
       setIsWaitingOpponent(false);
-      sTurnStart.off();
-      setParty(battleState.playerParty);
-      setOpponentParty(battleState.opponentParty);
-      setActiveStep(BattleStep.ChooseMoves);
+      sRoundStarted.off();
+      const { playerData, opponentData } = helper.splitPlayer(player, battleState);
+      setParty(playerData.party);
+      setOpponentParty(opponentData.party);
+      onFinish();
     });
   }
 

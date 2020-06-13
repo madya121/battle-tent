@@ -2,6 +2,7 @@ import Pokemon from '../types/Pokemon';
 import BattlingPokemon from '../types/BattlingPokemon';
 
 export const moveMock = {
+  id: '0',
   name: 'Vine Whip',
   description: 'long string',
   type: 'Grass',
@@ -11,6 +12,7 @@ export const moveMock = {
 };
 
 export const move2Mock = {
+  id: '1',
   name: 'Poison Sting',
   description: 'long string for poison string description',
   type: 'Bug',
@@ -68,7 +70,7 @@ const pokemonMock4: Pokemon = {
   stats: statsMock,
 };
 
-const pokemonMock5: Pokemon = {
+export const pokemonMock5: Pokemon = {
   ndex: '024',
   name: 'Arbok',
   types: ['Poison'],

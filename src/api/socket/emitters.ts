@@ -29,3 +29,7 @@ export function emitChat(
 ) {
   socket.emit(OutboundEvent.Chat, quickChat);
 }
+
+export function emitEndTurn() {
+  socket.emit(OutboundEvent.EndTurn);
+}

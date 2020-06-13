@@ -1,8 +1,9 @@
 import io from 'socket.io-client';
-import Pokemon from '../../types/Pokemon';
+import Pokemon, { Move } from '../../types/Pokemon';
 import Player from '../../types/Player';
 import BattlingPokemon from '../../types/BattlingPokemon';
 import { QuickChatOption } from '../../screens/Battle/QuickChatPanel/constants';
+import { ChosenItem } from '../../screens/Battle/steps/ChooseMoves/ChooseMoves';
 
 export const socket = io.connect(
   process.env.REACT_APP_SOCKET_ENDPOINT || '',
@@ -23,12 +24,21 @@ export enum OutboundEvent {
   LeaveRoom = 'leave_room',
   SelectParty = 'select_party',
   Chat = 'chat',
+  EndTurn = 'end_turn',
 }
 
 export interface OutboundEventParams {
   Login: string; // Player's name
   SelectParty: Array<Pokemon['ndex']>; // Pokemon's National Dex number
   Chat: QuickChatOption; // chat message
+
+  // battle mechanics
+
+  // scrapped
+  EndTurn: {
+    moves: string[]; // array of moves, follows party array index
+    item?: ChosenItem;
+  };
 }
 
 export enum InboundEvent {
@@ -47,6 +57,10 @@ export enum InboundEvent {
   Chat = 'chat',
   // game event
   TurnStarted = 'turn_started',
+  RoundStarted = 'round_started',
+  MoveUsed = 'moved_used',
+  TurnEnded = 'turn_ended',
+  PlayerUsedItem = 'player_used_item',
 }
 
 export interface InboundEventParams {
@@ -85,7 +99,31 @@ export interface InboundEventParams {
     message: string; // chat message
   };
   TurnStarted: {
-    playerParty: BattlingPokemon[];
-    opponentParty: BattlingPokemon[];
+    energy: number;
+  };
+  RoundStarted: Array<
+    {
+      playerId: string;
+      party: BattlingPokemon[];
+    }
+  >;
+  MoveUsed: {
+    move: Move;
+    user: number; // party index of the user
+    targets?: number[]; // party indexes of the target
+    result: Array<
+      {
+        playerId: string;
+        party: BattlingPokemon[];
+      }
+    >;
+  };
+  TurnEnded: {
+    moves: Move[]; // array of moves
+  };
+  PlayerUsedItem: {
+    playerId: string;
+    itemId: string;
+    partyIndex: number;
   };
 }

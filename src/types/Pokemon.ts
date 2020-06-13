@@ -9,6 +9,7 @@ export default interface Pokemon {
 }
 
 export interface Move {
+  id: string;
   name: string;
   description: string;
   type: Type;

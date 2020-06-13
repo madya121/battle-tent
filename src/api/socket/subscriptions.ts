@@ -1,5 +1,11 @@
 import { socket, InboundEventParams, InboundEvent } from './base';
-import { battlingPartyMock, opponentPartyMock } from '../responseMocks';
+import {
+  battlingPartyMock,
+  opponentPartyMock,
+  moveMock,
+  move2Mock,
+  pokemonMock5,
+} from '../responseMocks';
 
 export function subscribePlayers(
   callback: (players: InboundEventParams['ListPlayers']) => void
@@ -67,13 +73,51 @@ export function subscribeChat(
 
 // unimplemented from backend
 
+export function subscribeRoundStarted(
+  callback: (battleState: InboundEventParams['RoundStarted']) => void
+) {
+  socket.on(InboundEvent.RoundStarted, callback);
+  setTimeout(() => callback([
+    { playerId: '0', party: battlingPartyMock },
+    { playerId: '1', party: opponentPartyMock },
+  ]), 3000)
+  return { off: () => socket.off(InboundEvent.RoundStarted) };
+}
+
 export function subscribeTurnStarted(
   callback: (battleState: InboundEventParams['TurnStarted']) => void
 ) {
   socket.on(InboundEvent.TurnStarted, callback);
-  setTimeout(() => callback({
-    playerParty: battlingPartyMock,
-    opponentParty: opponentPartyMock,
-  }), 3000)
+  setTimeout(() => callback({ energy: 10 }), 300)
   return { off: () => socket.off(InboundEvent.TurnStarted) };
+}
+
+export function subscribeMoveUsed(
+  callback: (params: InboundEventParams['MoveUsed']) => void
+) {
+  socket.on(InboundEvent.MoveUsed, callback);
+  setTimeout(() => callback({
+    move: move2Mock,
+    user: 0,
+    targets: [1],
+    result: [
+      {
+        playerId: '0',
+        party: battlingPartyMock,
+      },
+      {
+        playerId: '1',
+        party: opponentPartyMock,
+      }
+    ],
+  }), 300);
+  return { off: () => socket.off(InboundEvent.MoveUsed) };
+}
+
+export function subscribeTurnEnded(
+  callback: (params: InboundEventParams['TurnEnded']) => void
+) {
+  socket.on(InboundEvent.TurnEnded, callback);
+  setTimeout(() => callback({ moves: [moveMock, move2Mock] }), 2000)
+  return { off: () => socket.off(InboundEvent.TurnEnded) };
 }
