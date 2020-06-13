@@ -29,22 +29,6 @@ export default function ChooseParty({
     getPokemonList().finally(() => setIsLoading(false));
   }, []);
 
-  // subscriptions
-  useEffect(function subscribe() {
-    const sPartySelected = subscribePartySelected(party => {
-      const choosenPokemon = filter(
-        ({ ndex }) => party.includes(ndex),
-        pokemonList
-      );
-      setParty(choosenPokemon);
-      setActiveStep(BattleStep.ChooseMoves);
-    });
-
-    return function unsubscribe() {
-      sPartySelected.off();
-    }
-  }, [pokemonList, setActiveStep, setParty]);
-
   async function getPokemonList() {
     const response = await fetchPokemonList();
     setPokemonList(response.data);
@@ -56,7 +40,22 @@ export default function ChooseParty({
     setChoosen(updatedChoosen);
   }
 
-  async function onConfirmParty() {
+  function ready() {
+    emitSelectParty(choosen);
+    setIsLoading(true);
+    const sPartySelected = subscribePartySelected(party => {
+      setIsLoading(false);
+      sPartySelected.off();
+      const choosenPokemon = filter(
+        ({ ndex }) => party.includes(ndex),
+        pokemonList
+      );
+      setParty(choosenPokemon);
+      setActiveStep(BattleStep.ChooseMoves);
+    });
+  }
+
+  function onConfirmParty() {
     const { length } = choosen;
     if (length === 0) {
       alert('Please select pokemon for your party!');
@@ -64,9 +63,7 @@ export default function ChooseParty({
       const confirm = window.confirm(
         `You only selected ${length} pokemon for your party. Are you sure?`
       );
-      if (confirm) {
-        emitSelectParty(choosen);
-      }
+      if (confirm) ready();
     }
   }
 
