@@ -18,6 +18,8 @@ import {
   HealthBar,
   MoveOptionBox,
   MoveTile,
+  EnergyBarContainer,
+  EnergyBar,
 } from './ChooseMoves.styled';
 
 type NullableIdx = number | null;
@@ -79,7 +81,7 @@ export default function ChooseMoves() {
     setChoosenOpponentIdx(null);
     setChoosenMoveIdx(null);
   }
-
+  console.log('new Array(energy)', new Array(energy))
   return (
     <>
       <BattleArea>
@@ -129,6 +131,11 @@ export default function ChooseMoves() {
           ))
         }
       </MoveOptionBox>
+      <EnergyBarContainer>
+        {[0, 1, 2, 2, 2, 2, 2, 2].map(() => (
+          <EnergyBar used={false} />
+        ))}
+      </EnergyBarContainer>
       <Button onClick={emitEndTurn}>End Turn</Button>
     </>
   );
