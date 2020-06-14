@@ -24,6 +24,7 @@ export enum OutboundEvent {
   LeaveRoom = 'leave_room',
   SelectParty = 'select_party',
   Chat = 'chat',
+  UseMove = 'use_move',
   EndTurn = 'end_turn',
 }
 
@@ -33,6 +34,10 @@ export interface OutboundEventParams {
   Chat: QuickChatOption; // chat message
 
   // battle mechanics
+  UseMove: {
+    userMoveIndex: [number, number]; // [user index, move index]
+    targetIndexes?: number[];
+  };
 
   // scrapped
   EndTurn: {
@@ -109,8 +114,8 @@ export interface InboundEventParams {
   >;
   MoveUsed: {
     move: Move;
-    user: number; // party index of the user
-    targets?: number[]; // party indexes of the target
+    userMoveIndex: [number, number]; // party index of the user
+    targetIndexes?: number[]; // party indexes of the target
     result: Array<
       {
         playerId: string;
@@ -119,7 +124,7 @@ export interface InboundEventParams {
     >;
   };
   TurnEnded: {
-    moves: Move[]; // array of moves
+    moves: Move[][]; // array of moves, inside array of pokemon
   };
   PlayerUsedItem: {
     playerId: string;

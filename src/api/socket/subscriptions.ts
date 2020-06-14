@@ -96,8 +96,8 @@ export function subscribeMoveUsed(
   socket.on(InboundEvent.MoveUsed, callback);
   setTimeout(() => callback({
     move: move2Mock,
-    user: 0,
-    targets: [1],
+    userMoveIndex: [0, 0],
+    targetIndexes: [1],
     result: [
       {
         playerId: '0',
@@ -116,6 +116,12 @@ export function subscribeTurnEnded(
   callback: (params: InboundEventParams['TurnEnded']) => void
 ) {
   socket.on(InboundEvent.TurnEnded, callback);
-  setTimeout(() => callback({ moves: [moveMock, move2Mock] }), 2000)
+  setTimeout(() => callback({
+    moves: [
+      [moveMock, move2Mock],
+      [moveMock, move2Mock],
+      [moveMock, move2Mock],
+    ]
+  }), 2000)
   return { off: () => socket.off(InboundEvent.TurnEnded) };
 }

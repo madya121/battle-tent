@@ -4,24 +4,30 @@ import {
   emitEndTurn,
   subscribeMoveUsed,
   subscribeTurnEnded,
+  emitUseMove,
 } from '../../../../api';
 import * as helper from '../../../../api/socket/helper';
 import { Button } from '../../../../components/basics';
 import { Move } from '../../../../types/Pokemon';
 import { PlayerContext } from '../../../../auth';
 import {
+  BattleArea,
   PartyArea,
   PartyTile,
   TileDetail,
   HealthBar,
+  MoveOptionBox,
+  MoveTile,
 } from './ChooseMoves.styled';
+
+type NullableIdx = number | null;
 
 export default function ChooseMoves() {
   const [energy, setEnergy] = useState(0);
-  const [availableMoves, setAvailableMoves] = useState<Move[]>([]);
-  const [choosenMoves, setChoosenMoves] = useState(0); // index of moves
-  const [choosenPokemon, setChoosenPokemon] = useState(0); // index of pokemon
-  const [choosenOpponentPokemon, setChoosenOpponentPokemon] = useState(0);
+  const [availableMoves, setAvailableMoves] = useState<Move[][]>([]);
+  const [choosenMoveIdx, setChoosenMoveIdx] = useState<NullableIdx>(null);
+  const [choosenPokemonIdx, setChoosenPokemonIdx] = useState<NullableIdx>(null);
+  const [choosenOpponentIdx, setChoosenOpponentIdx] = useState<NullableIdx>(null);
   const {
     party, setParty,
     opponentParty, setOpponentParty,
@@ -31,10 +37,12 @@ export default function ChooseMoves() {
 
   useEffect(function subscription() {
     if (!player) return;
-    const sMoveUsed = subscribeMoveUsed(({ move, user, targets, result }) => {
+    const sMoveUsed = subscribeMoveUsed((
+      { move, userMoveIndex, targetIndexes, result }
+    ) => {
       // animate user and targets
-      console.log(`${user} used ${move.name}!`);
-      console.log(`${targets} affected`);
+      console.log(`${userMoveIndex[0]} used ${move.name}!`);
+      console.log(`${targetIndexes} affected`);
       const { playerData, opponentData } = helper.splitPlayer(player, result);
       setParty(playerData.party);
       setOpponentParty(opponentData.party);
@@ -50,38 +58,77 @@ export default function ChooseMoves() {
     }
   }, [player, setParty, setOpponentParty]);
 
+  function onClickOpponentPokemon(index: number) {
+    if (choosenPokemonIdx === null || choosenMoveIdx === null) {
+      return;
+    }
+    const moveTargetMultipleOpponent = false;
+    let targetIndexes = [index];
+    if (moveTargetMultipleOpponent) {
+      if (choosenOpponentIdx === null) {
+        setChoosenOpponentIdx(index);
+        return;
+      }
+      targetIndexes = [choosenOpponentIdx, index];
+    }
+    emitUseMove({
+      userMoveIndex: [choosenPokemonIdx, choosenMoveIdx],
+      targetIndexes: targetIndexes,
+    });
+    // TODO: make move unusable
+    setChoosenOpponentIdx(null);
+    setChoosenMoveIdx(null);
+  }
+
   return (
     <>
-      <PartyArea style={{ alignSelf: 'flex-end' }}>
-        {opponentParty.map(({ health, pokemon: { image, name } }, index) => (
-          <PartyTile
-            chosen={choosenOpponentPokemon === index}
-            onClick={() => setChoosenOpponentPokemon(index)}
-            key={index}
-          >
-            <img src={image} alt={name} />
-            <TileDetail>
-              <div>{name}</div>
-              <HealthBar percentage={health} />
-            </TileDetail>
-          </PartyTile>
-        ))}
-      </PartyArea>
-      <PartyArea>
-        {party.map(({ health, pokemon: { imageBack, name } }, index) => (
-          <PartyTile
-            chosen={choosenPokemon === index}
-            onClick={() => setChoosenPokemon(index)}
-            key={index}
-          >
-            <img src={imageBack} alt={name} />
-            <TileDetail>
-              <div>{name}</div>
-              <HealthBar percentage={health} />
-            </TileDetail>
-          </PartyTile>
-        ))}
-      </PartyArea>
+      <BattleArea>
+        <PartyArea style={{ alignSelf: 'flex-end' }}>
+          {opponentParty.map(({ health, pokemon: { image, name } }, index) => (
+            <PartyTile
+              chosen={choosenOpponentIdx === index}
+              onClick={() => onClickOpponentPokemon(index)}
+              key={index}
+            >
+              <img src={image} alt={name} />
+              <TileDetail>
+                <div>{name}</div>
+                <HealthBar percentage={health} />
+              </TileDetail>
+            </PartyTile>
+          ))}
+        </PartyArea>
+        <PartyArea>
+          {party.map(({ health, pokemon: { imageBack, name } }, index) => (
+            <PartyTile
+              chosen={choosenPokemonIdx === index}
+              onClick={() => setChoosenPokemonIdx(index)}
+              key={index}
+            >
+              <img src={imageBack} alt={name} />
+              <TileDetail>
+                <div>{name}</div>
+                <HealthBar percentage={health} />
+              </TileDetail>
+            </PartyTile>
+          ))}
+        </PartyArea>
+      </BattleArea>
+      <MoveOptionBox>
+        {choosenPokemonIdx === null || availableMoves[choosenPokemonIdx] === undefined
+          ? null
+          : availableMoves[choosenPokemonIdx].map((move, index) => (
+            <MoveTile
+              chosen={choosenMoveIdx === index}
+              onClick={() => setChoosenMoveIdx(index)}
+              key={index}
+            >
+              <div>{move.name}</div>
+              <div>Power {move.power} - PP {move.pp}</div>
+            </MoveTile>
+          ))
+        }
+      </MoveOptionBox>
       <Button onClick={emitEndTurn}>End Turn</Button>
     </>
   );
