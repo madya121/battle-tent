@@ -43,14 +43,14 @@ export default function ChooseMoves() {
       sMoveUsed.off();
       sTurnEnded.off();
     }
-  }, [player]);
+  }, [player, setParty, setOpponentParty]);
 
   return (
     <div>
       <div>
         {opponentParty.map(({ health, pokemon: { image, name } }, index) => (
           <PartyTile
-            choosen={choosenOpponentPokemon === index}
+            chosen={choosenOpponentPokemon === index}
             onClick={() => setChoosenOpponentPokemon(index)}
             key={index}
           >
@@ -65,7 +65,7 @@ export default function ChooseMoves() {
       <div>
         {party.map(({ health, pokemon: { imageBack, name } }, index) => (
           <PartyTile
-            choosen={choosenPokemon === index}
+            chosen={choosenPokemon === index}
             onClick={() => setChoosenPokemon(index)}
             key={index}
           >

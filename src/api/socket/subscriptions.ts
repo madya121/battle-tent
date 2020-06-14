@@ -4,7 +4,6 @@ import {
   opponentPartyMock,
   moveMock,
   move2Mock,
-  pokemonMock5,
 } from '../responseMocks';
 
 export function subscribePlayers(

@@ -80,7 +80,7 @@ export default function ChooseParty({
           <TileContainer>
             {pokemonList.map(({ ndex, image, name, types }) => (
               <Tile
-                choosen={choosen.includes(ndex)}
+                chosen={choosen.includes(ndex)}
                 onClick={() => choosePokemon(ndex)}
                 key={ndex}
               >

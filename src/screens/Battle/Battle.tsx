@@ -21,6 +21,11 @@ import { PlayerContext } from '../../auth';
 import GameplayContext from './GameplayContext';
 import BattlingPokemon from '../../types/BattlingPokemon';
 
+enum BattleStep {
+  ChooseParty,
+  ChooseMoves,
+}
+
 export default function Battle() {
   const [quitModalShown, setQuitModalShown] = useState(false);
   const [activeStep, setActiveStep] = useState(BattleStep.ChooseParty);
@@ -94,9 +99,4 @@ export default function Battle() {
       </main>
     </LayoutContainer>
   );
-}
-
-enum BattleStep {
-  ChooseParty,
-  ChooseMoves,
 }
