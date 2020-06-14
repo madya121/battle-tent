@@ -3,7 +3,7 @@ import { Centered } from '../../components/basics';
 import BackgroundImage from '../../assets/images/title-background.jpg';
 
 export const LayoutContainer = styled(Centered)`
-  background-image: url(${BackgroundImage});
+  background: url(${BackgroundImage}) no-repeat fixed center;
   height: 100vh;
   display: flex;
   flex-direction: column;

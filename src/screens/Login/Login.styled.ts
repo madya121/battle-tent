@@ -3,7 +3,7 @@ import { Centered } from '../../components/basics';
 import BackgroundBlur from '../../assets/images/title-background-blur.jpg';
 
 export const LayoutContainer = styled(Centered)`
-  background-image: url(${BackgroundBlur});
+  background: url(${BackgroundBlur}) no-repeat fixed center;
   height: 100vh;
 `;
 

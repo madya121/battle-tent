@@ -2,8 +2,10 @@ import { socket, InboundEventParams, InboundEvent } from './base';
 import {
   battlingPartyMock,
   opponentPartyMock,
-  moveMock,
-  move2Mock,
+  move1Mock,
+  move3Mock,
+  move4Mock,
+  move5Mock,
 } from '../responseMocks';
 
 export function subscribePlayers(
@@ -78,7 +80,7 @@ export function subscribeRoundStarted(
   setTimeout(() => callback([
     { playerId: '0', party: battlingPartyMock },
     { playerId: '1', party: opponentPartyMock },
-  ]), 3000)
+  ]), 1000)
   return { off: () => socket.off(InboundEvent.RoundStarted) };
 }
 
@@ -95,7 +97,7 @@ export function subscribeMoveUsed(
 ) {
   socket.on(InboundEvent.MoveUsed, callback);
   setTimeout(() => callback({
-    move: move2Mock,
+    move: move1Mock,
     userMoveIndex: [0, 0],
     targetIndexes: [1],
     result: [
@@ -118,9 +120,9 @@ export function subscribeTurnEnded(
   socket.on(InboundEvent.TurnEnded, callback);
   setTimeout(() => callback({
     moves: [
-      [moveMock, move2Mock],
-      [moveMock, move2Mock],
-      [moveMock, move2Mock],
+      [move1Mock, move3Mock],
+      [move1Mock, move4Mock],
+      [move1Mock, move5Mock],
     ]
   }), 2000)
   return { off: () => socket.off(InboundEvent.TurnEnded) };

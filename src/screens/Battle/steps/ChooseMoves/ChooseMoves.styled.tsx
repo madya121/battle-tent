@@ -1,4 +1,7 @@
+import React from 'react';
 import styled from 'styled-components';
+import { Touchable } from '../../../../components/basics';
+import { TouchableProps } from '../../../../components/basics/Touchable/Touchable';
 
 export const BattleArea = styled.div`
   flex: 1;
@@ -9,10 +12,19 @@ export const BattleArea = styled.div`
 
 export const PartyArea = styled.div`
   display: flex;
+  align-items: flex-end;
 `;
 
-export const PartyTile = styled.div<{ chosen: boolean }>`
+export const PartyTile = styled(
+  ({ chosen, blurred, ...props }: { chosen?: boolean, blurred?: boolean } & TouchableProps) =>
+    <Touchable {...props} />
+)`
+  margin: 8px;
+  filter: ${({ chosen, blurred }) =>
+    chosen ? 'drop-shadow(0 0 0.25rem lightyellow)' : 'none'
+  };
 `;
+
 export const TileDetail = styled.div`
 `;
 
@@ -26,7 +38,10 @@ export const MoveOptionBox = styled.div`
   border-radius: 16px;
 `;
 
-export const MoveTile = styled.div<{ chosen: boolean }>`
+export const MoveTile = styled(
+  ({ chosen, ...props }: { chosen?: boolean } & TouchableProps) =>
+    <Touchable {...props} />
+)`
   height: 36px;
   margin: 4px;
   padding: 8px;
@@ -61,9 +76,11 @@ export const EnergyBar = styled.div<{ used?: boolean }>`
 `;
 
 export const HealthBar = styled.div<{ percentage: number }>`
-  width: ${props => props.percentage}%;
+  width: 80px;
   height: 8px;
-  background-color: green;
+  background: ${({ percentage }) => `
+    linear-gradient(to right, #9efb1b ${percentage}%, gray ${percentage}%)
+  `};
   border: 1px solid white;
   border-radius: 8px;
   box-sizing: border-box;
