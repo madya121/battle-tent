@@ -29,3 +29,13 @@ export function emitChat(
 ) {
   socket.emit(OutboundEvent.Chat, quickChat);
 }
+
+export function emitUseMove(
+  actionDetail: OutboundEventParams['UseMove']
+) {
+  socket.emit(OutboundEvent.UseMove, actionDetail);
+}
+
+export function emitEndTurn() {
+  socket.emit(OutboundEvent.EndTurn);
+}

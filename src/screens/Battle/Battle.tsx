@@ -7,7 +7,6 @@ import {
   subscribePlayerLeftTheRoom,
   subscribeLeftTheRoom,
 } from '../../api';
-import { BattleStep } from './enums';
 import Player from '../../types/Player';
 import { NavigationContext, ScreenState } from '../../navigation';
 import QuickChatPanel from './QuickChatPanel';
@@ -20,12 +19,18 @@ import {
 import { find } from 'ramda';
 import { PlayerContext } from '../../auth';
 import GameplayContext from './GameplayContext';
-import Pokemon from '../../types/Pokemon';
+import BattlingPokemon from '../../types/BattlingPokemon';
+
+enum BattleStep {
+  ChooseParty,
+  ChooseMoves,
+}
 
 export default function Battle() {
   const [quitModalShown, setQuitModalShown] = useState(false);
   const [activeStep, setActiveStep] = useState(BattleStep.ChooseParty);
-  const [party, setParty] = useState<Pokemon[]>([]);
+  const [party, setParty] = useState<BattlingPokemon[]>([]);
+  const [opponentParty, setOpponentParty] = useState<BattlingPokemon[]>([]);
   const [opponent, setOpponent] = useState<Player | undefined>(undefined);
   const navigate = useContext(NavigationContext);
   const [player] = useContext(PlayerContext);
@@ -63,6 +68,13 @@ export default function Battle() {
     setQuitModalShown(false);
   }
 
+  const gameplayContextValue = {
+    party, setParty,
+    opponentParty, setOpponentParty,
+  };
+
+  const goToChooseMovesStep = () => setActiveStep(BattleStep.ChooseMoves);
+
   return (
     <LayoutContainer>
       <QuitModal shown={quitModalShown} onClose={closeQuitModal} />
@@ -73,11 +85,11 @@ export default function Battle() {
         </OpponentInfo>
         <Button onClick={openQuitModal}>Quit</Button>
       </TopArea>
-      <main style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
-        <div style={{ flex: 1 }}>
-          <GameplayContext.Provider value={{ party, setParty }}>
+      <main style={{ display: 'flex', flexDirection: 'column', flex: 1, width: '100%' }}>
+        <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+          <GameplayContext.Provider value={gameplayContextValue}>
             {activeStep === BattleStep.ChooseParty ? (
-              <Steps.ChooseParty setActiveStep={setActiveStep} />
+              <Steps.ChooseParty onFinish={goToChooseMovesStep} />
             ) : activeStep === BattleStep.ChooseMoves ? (
               <Steps.ChooseMoves />
             ) : null}

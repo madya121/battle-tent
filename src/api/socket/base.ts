@@ -1,7 +1,9 @@
 import io from 'socket.io-client';
-import Pokemon from '../../types/Pokemon';
+import Pokemon, { Move } from '../../types/Pokemon';
 import Player from '../../types/Player';
+import BattlingPokemon from '../../types/BattlingPokemon';
 import { QuickChatOption } from '../../screens/Battle/QuickChatPanel/constants';
+import { ChosenItem } from '../../screens/Battle/steps/ChooseMoves/ChooseMoves';
 
 export const socket = io.connect(
   process.env.REACT_APP_SOCKET_ENDPOINT || '',
@@ -22,12 +24,26 @@ export enum OutboundEvent {
   LeaveRoom = 'leave_room',
   SelectParty = 'select_party',
   Chat = 'chat',
+  UseMove = 'use_move',
+  EndTurn = 'end_turn',
 }
 
 export interface OutboundEventParams {
   Login: string; // Player's name
   SelectParty: Array<Pokemon['ndex']>; // Pokemon's National Dex number
   Chat: QuickChatOption; // chat message
+
+  // battle mechanics
+  UseMove: {
+    userMoveIndex: [number, number]; // [user index, move index]
+    targetIndexes?: number[];
+  };
+
+  // scrapped
+  EndTurn: {
+    moves: string[]; // array of moves, follows party array index
+    item?: ChosenItem;
+  };
 }
 
 export enum InboundEvent {
@@ -45,7 +61,11 @@ export enum InboundEvent {
   PlayerLeftTheRoom = 'player_left_the_room',
   Chat = 'chat',
   // game event
-  PartySelected = 'party_selected',
+  TurnStarted = 'turn_started',
+  RoundStarted = 'round_started',
+  MoveUsed = 'moved_used',
+  TurnEnded = 'turn_ended',
+  PlayerUsedItem = 'player_used_item',
 }
 
 export interface InboundEventParams {
@@ -68,20 +88,47 @@ export interface InboundEventParams {
   JoinedTheRoom: {
     state: PlayerState.InRoom;
     roomName: string // Room's ID
-  }
+  };
   LeftTheRoom: {
     state: PlayerState.MainMenu;
-  }
+  };
   PlayerJoinedTheRoom: {
     name: string; // another player's name that joined the room
     players: Player[];
-  }
+  };
   PlayerLeftTheRoom: {
     name: string; // another player's name that left the room
-  }
+  };
   Chat: {
     name: string; // User's name
     message: string; // chat message
-  }
-  PartySelected: string[]; // party pokemon's ndexes
+  };
+  TurnStarted: {
+    energy: number;
+  };
+  RoundStarted: Array<
+    {
+      playerId: string;
+      party: BattlingPokemon[];
+    }
+  >;
+  MoveUsed: {
+    move: Move;
+    userMoveIndex: [number, number]; // party index of the user
+    targetIndexes?: number[]; // party indexes of the target
+    result: Array<
+      {
+        playerId: string;
+        party: BattlingPokemon[];
+      }
+    >;
+  };
+  TurnEnded: {
+    moves: Move[][]; // array of moves, inside array of pokemon
+  };
+  PlayerUsedItem: {
+    playerId: string;
+    itemId: string;
+    partyIndex: number;
+  };
 }

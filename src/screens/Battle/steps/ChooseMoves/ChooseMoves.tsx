@@ -1,7 +1,147 @@
-import React from 'react';
+import React, { useState, useContext, useEffect } from 'react';
+import GamplayContext from '../../GameplayContext';
+import {
+  emitEndTurn,
+  subscribeMoveUsed,
+  subscribeTurnEnded,
+  emitUseMove,
+} from '../../../../api';
+import * as helper from '../../../../api/socket/helper';
+import { Button } from '../../../../components/basics';
+import { Move } from '../../../../types/Pokemon';
+import { PlayerContext } from '../../../../auth';
+import {
+  BattleArea,
+  PartyArea,
+  PartyTile,
+  TileDetail,
+  HealthBar,
+  MoveOptionBox,
+  MoveTile,
+  EnergyBarContainer,
+  EnergyBar,
+} from './ChooseMoves.styled';
+
+type NullableIdx = number | null;
 
 export default function ChooseMoves() {
+  const [energy, setEnergy] = useState(0);
+  const [availableMoves, setAvailableMoves] = useState<Move[][]>([]);
+  const [choosenMoveIdx, setChoosenMoveIdx] = useState<NullableIdx>(null);
+  const [choosenPokemonIdx, setChoosenPokemonIdx] = useState<NullableIdx>(null);
+  const [choosenOpponentIdx, setChoosenOpponentIdx] = useState<NullableIdx>(null);
+  const {
+    party, setParty,
+    opponentParty, setOpponentParty,
+  } = useContext(GamplayContext);
+  const [player] = useContext(PlayerContext);
+
+
+  useEffect(function subscription() {
+    if (!player) return;
+    const sMoveUsed = subscribeMoveUsed((
+      { move, userMoveIndex, targetIndexes, result }
+    ) => {
+      // animate user and targets
+      console.log(`${userMoveIndex[0]} used ${move.name}!`);
+      console.log(`${targetIndexes} affected`);
+      const { playerData, opponentData } = helper.splitPlayer(player, result);
+      setParty(playerData.party);
+      setOpponentParty(opponentData.party);
+    });
+
+    const sTurnEnded = subscribeTurnEnded(({ moves }) => {
+      setAvailableMoves(moves);
+    });
+
+    return function unsubscribe() {
+      sMoveUsed.off();
+      sTurnEnded.off();
+    }
+  }, [player, setParty, setOpponentParty]);
+
+  function onClickOpponentPokemon(index: number) {
+    if (choosenPokemonIdx === null || choosenMoveIdx === null) {
+      return;
+    }
+    const moveTargetMultipleOpponent = false;
+    let targetIndexes = [index];
+    if (moveTargetMultipleOpponent) {
+      if (choosenOpponentIdx === null) {
+        setChoosenOpponentIdx(index);
+        return;
+      }
+      targetIndexes = [choosenOpponentIdx, index];
+    }
+    emitUseMove({
+      userMoveIndex: [choosenPokemonIdx, choosenMoveIdx],
+      targetIndexes: targetIndexes,
+    });
+    // TODO: make move unusable
+    setChoosenOpponentIdx(null);
+    setChoosenMoveIdx(null);
+  }
+  console.log('new Array(energy)', new Array(energy))
   return (
-    <div>ChooseMoves</div>
+    <>
+      <BattleArea>
+        <PartyArea style={{ alignSelf: 'flex-end' }}>
+          {opponentParty.map(({ health, pokemon: { image, name } }, index) => (
+            <PartyTile
+              chosen={choosenOpponentIdx === index}
+              onClick={() => onClickOpponentPokemon(index)}
+              key={index}
+            >
+              <img src={image} alt={name} />
+              <TileDetail>
+                <div>{name}</div>
+                <HealthBar percentage={health} />
+              </TileDetail>
+            </PartyTile>
+          ))}
+        </PartyArea>
+        <PartyArea>
+          {party.map(({ health, pokemon: { imageBack, name } }, index) => (
+            <PartyTile
+              chosen={choosenPokemonIdx === index}
+              onClick={() => setChoosenPokemonIdx(index)}
+              key={index}
+            >
+              <img src={imageBack} alt={name} />
+              <TileDetail>
+                <div>{name}</div>
+                <HealthBar percentage={health} />
+              </TileDetail>
+            </PartyTile>
+          ))}
+        </PartyArea>
+      </BattleArea>
+      <MoveOptionBox>
+        {choosenPokemonIdx === null || availableMoves[choosenPokemonIdx] === undefined
+          ? null
+          : availableMoves[choosenPokemonIdx].map((move, index) => (
+            <MoveTile
+              chosen={choosenMoveIdx === index}
+              onClick={() => setChoosenMoveIdx(index)}
+              key={index}
+            >
+              <div>{move.name}</div>
+              <div>Power {move.power} - PP {move.pp}</div>
+            </MoveTile>
+          ))
+        }
+      </MoveOptionBox>
+      <EnergyBarContainer>
+        {[0, 1, 2, 2, 2, 2, 2, 2].map(() => (
+          <EnergyBar used={false} />
+        ))}
+      </EnergyBarContainer>
+      <Button onClick={emitEndTurn}>End Turn</Button>
+    </>
   );
 }
+
+export type ChosenItem = null | {
+  itemId: string;
+  partyIndex?: number;
+};

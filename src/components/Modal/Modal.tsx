@@ -55,6 +55,8 @@ const StyledMaterialModal = styled(MaterialModal)`
   display: flex;
   justify-content: center;
   align-items: center;
+  max-width: 425px;
+  margin: 0 auto;
 `;
 
 const ContentContainer = styled(Centered)`

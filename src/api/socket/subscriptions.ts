@@ -1,4 +1,10 @@
 import { socket, InboundEventParams, InboundEvent } from './base';
+import {
+  battlingPartyMock,
+  opponentPartyMock,
+  moveMock,
+  move2Mock,
+} from '../responseMocks';
 
 export function subscribePlayers(
   callback: (players: InboundEventParams['ListPlayers']) => void
@@ -56,6 +62,8 @@ export function subscribePlayerLeftTheRoom(
   return { off: () => socket.off(InboundEvent.PlayerLeftTheRoom) };
 }
 
+// unimplemented from backend
+
 export function subscribeChat(
   callback: (chat: InboundEventParams['Chat']) => void
 ) {
@@ -63,10 +71,57 @@ export function subscribeChat(
   return { off: () => socket.off(InboundEvent.Chat) };
 }
 
-export function subscribePartySelected(
-  callback: (party: InboundEventParams['PartySelected']) => void
+export function subscribeRoundStarted(
+  callback: (battleState: InboundEventParams['RoundStarted']) => void
 ) {
-  socket.on(InboundEvent.PartySelected, callback);
-  setTimeout(() => callback(['001']), 3000)
-  return { off: () => socket.off(InboundEvent.PartySelected) };
+  socket.on(InboundEvent.RoundStarted, callback);
+  setTimeout(() => callback([
+    { playerId: '0', party: battlingPartyMock },
+    { playerId: '1', party: opponentPartyMock },
+  ]), 3000)
+  return { off: () => socket.off(InboundEvent.RoundStarted) };
+}
+
+export function subscribeTurnStarted(
+  callback: (battleState: InboundEventParams['TurnStarted']) => void
+) {
+  socket.on(InboundEvent.TurnStarted, callback);
+  setTimeout(() => callback({ energy: 10 }), 300)
+  return { off: () => socket.off(InboundEvent.TurnStarted) };
+}
+
+export function subscribeMoveUsed(
+  callback: (params: InboundEventParams['MoveUsed']) => void
+) {
+  socket.on(InboundEvent.MoveUsed, callback);
+  setTimeout(() => callback({
+    move: move2Mock,
+    userMoveIndex: [0, 0],
+    targetIndexes: [1],
+    result: [
+      {
+        playerId: '0',
+        party: battlingPartyMock,
+      },
+      {
+        playerId: '1',
+        party: opponentPartyMock,
+      }
+    ],
+  }), 300);
+  return { off: () => socket.off(InboundEvent.MoveUsed) };
+}
+
+export function subscribeTurnEnded(
+  callback: (params: InboundEventParams['TurnEnded']) => void
+) {
+  socket.on(InboundEvent.TurnEnded, callback);
+  setTimeout(() => callback({
+    moves: [
+      [moveMock, move2Mock],
+      [moveMock, move2Mock],
+      [moveMock, move2Mock],
+    ]
+  }), 2000)
+  return { off: () => socket.off(InboundEvent.TurnEnded) };
 }
