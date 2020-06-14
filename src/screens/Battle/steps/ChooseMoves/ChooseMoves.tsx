@@ -132,8 +132,8 @@ export default function ChooseMoves() {
         }
       </MoveOptionBox>
       <EnergyBarContainer>
-        {[0, 1, 2, 2, 2, 2, 2, 2].map(() => (
-          <EnergyBar used={false} />
+        {[0, 1, 2, 2, 2, 2, 2, 2].map((_, index) => (
+          <EnergyBar used={false} key={index} />
         ))}
       </EnergyBarContainer>
       <Button onClick={emitEndTurn}>End Turn</Button>
