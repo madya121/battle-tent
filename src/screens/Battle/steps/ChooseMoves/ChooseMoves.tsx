@@ -9,7 +9,12 @@ import * as helper from '../../../../api/socket/helper';
 import { Button } from '../../../../components/basics';
 import { Move } from '../../../../types/Pokemon';
 import { PlayerContext } from '../../../../auth';
-import { PartyTile, TileDetail } from './ChooseMoves.styled';
+import {
+  PartyArea,
+  PartyTile,
+  TileDetail,
+  HealthBar,
+} from './ChooseMoves.styled';
 
 export default function ChooseMoves() {
   const [energy, setEnergy] = useState(0);
@@ -46,8 +51,8 @@ export default function ChooseMoves() {
   }, [player, setParty, setOpponentParty]);
 
   return (
-    <div>
-      <div>
+    <>
+      <PartyArea style={{ alignSelf: 'flex-end' }}>
         {opponentParty.map(({ health, pokemon: { image, name } }, index) => (
           <PartyTile
             chosen={choosenOpponentPokemon === index}
@@ -56,13 +61,13 @@ export default function ChooseMoves() {
           >
             <img src={image} alt={name} />
             <TileDetail>
-              <div>{health}</div>
               <div>{name}</div>
+              <HealthBar percentage={health} />
             </TileDetail>
           </PartyTile>
         ))}
-      </div>
-      <div>
+      </PartyArea>
+      <PartyArea>
         {party.map(({ health, pokemon: { imageBack, name } }, index) => (
           <PartyTile
             chosen={choosenPokemon === index}
@@ -71,14 +76,14 @@ export default function ChooseMoves() {
           >
             <img src={imageBack} alt={name} />
             <TileDetail>
-              <div>{health}</div>
               <div>{name}</div>
+              <HealthBar percentage={health} />
             </TileDetail>
           </PartyTile>
         ))}
-      </div>
+      </PartyArea>
       <Button onClick={emitEndTurn}>End Turn</Button>
-    </div>
+    </>
   );
 }
 

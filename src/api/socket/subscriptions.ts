@@ -62,15 +62,14 @@ export function subscribePlayerLeftTheRoom(
   return { off: () => socket.off(InboundEvent.PlayerLeftTheRoom) };
 }
 
+// unimplemented from backend
+
 export function subscribeChat(
   callback: (chat: InboundEventParams['Chat']) => void
 ) {
   socket.on(InboundEvent.Chat, callback);
   return { off: () => socket.off(InboundEvent.Chat) };
 }
-
-
-// unimplemented from backend
 
 export function subscribeRoundStarted(
   callback: (battleState: InboundEventParams['RoundStarted']) => void

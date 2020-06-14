@@ -85,8 +85,8 @@ export default function Battle() {
         </OpponentInfo>
         <Button onClick={openQuitModal}>Quit</Button>
       </TopArea>
-      <main style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
-        <div style={{ flex: 1 }}>
+      <main style={{ display: 'flex', flexDirection: 'column', flex: 1, width: '100%' }}>
+        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
           <GameplayContext.Provider value={gameplayContextValue}>
             {activeStep === BattleStep.ChooseParty ? (
               <Steps.ChooseParty onFinish={goToChooseMovesStep} />
