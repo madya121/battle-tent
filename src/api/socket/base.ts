@@ -2,8 +2,8 @@ import io from 'socket.io-client';
 import Pokemon, { Move } from '../../types/Pokemon';
 import Player from '../../types/Player';
 import BattlingPokemon from '../../types/BattlingPokemon';
-import { QuickChatOption } from '../../screens/Battle/QuickChatPanel/constants';
-import { ChosenItem } from '../../screens/Battle/steps/ChooseMoves/ChooseMoves';
+import { QuickChatOption } from '../../screens/Room/QuickChatPanel/constants';
+import { ChosenItem } from '../../screens/Room/steps/ChooseMoves/ChooseMoves';
 
 export const socket = io.connect(
   process.env.REACT_APP_SOCKET_ENDPOINT || '',

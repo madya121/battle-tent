@@ -35,7 +35,7 @@ export default function Lobby() {
     });
     const sJoinedTheRoom = subscribeJoinedTheRoom(() => {
       setIsFindingMatch(false);
-      navigate(ScreenState.Battle);
+      navigate(ScreenState.Room);
     });
     return function unsubscribe() {
       sFindingMatch.off();
