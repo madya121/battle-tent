@@ -20,11 +20,11 @@ import {
   MoveTile,
   EnergyBarContainer,
   EnergyBar,
-} from './ChooseMoves.styled';
+} from './Battle.styled';
 
 type NullableIdx = number | null;
 
-export default function ChooseMoves() {
+export default function Battle() {
   const [energy, setEnergy] = useState(0);
   const [availableMoves, setAvailableMoves] = useState<Move[][]>([]);
   const [choosenMoveIdx, setChoosenMoveIdx] = useState<NullableIdx>(null);

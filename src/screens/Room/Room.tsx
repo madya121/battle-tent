@@ -23,7 +23,7 @@ import BattlingPokemon from '../../types/BattlingPokemon';
 
 enum RoomStep {
   ChooseParty,
-  ChooseMoves,
+  Battle,
 }
 
 export default function Room() {
@@ -73,7 +73,7 @@ export default function Room() {
     opponentParty, setOpponentParty,
   };
 
-  const goToChooseMovesStep = () => setActiveStep(RoomStep.ChooseMoves);
+  const goToBattleStep = () => setActiveStep(RoomStep.Battle);
 
   return (
     <LayoutContainer>
@@ -89,9 +89,9 @@ export default function Room() {
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
           <GameplayContext.Provider value={gameplayContextValue}>
             {activeStep === RoomStep.ChooseParty ? (
-              <Steps.ChooseParty onFinish={goToChooseMovesStep} />
-            ) : activeStep === RoomStep.ChooseMoves ? (
-              <Steps.ChooseMoves />
+              <Steps.ChooseParty onFinish={goToBattleStep} />
+            ) : activeStep === RoomStep.Battle ? (
+              <Steps.Battle />
             ) : null}
           </GameplayContext.Provider>
         </div>

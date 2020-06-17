@@ -3,7 +3,7 @@ import Pokemon, { Move } from '../../types/Pokemon';
 import Player from '../../types/Player';
 import BattlingPokemon from '../../types/BattlingPokemon';
 import { QuickChatOption } from '../../screens/Room/QuickChatPanel/constants';
-import { ChosenItem } from '../../screens/Room/steps/ChooseMoves/ChooseMoves';
+import { ChosenItem } from '../../screens/Room/steps/Battle/Battle';
 
 export const socket = io.connect(
   process.env.REACT_APP_SOCKET_ENDPOINT || '',
