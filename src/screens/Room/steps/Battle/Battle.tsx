@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext, useEffect, useRef } from 'react';
 import GamplayContext from '../../GameplayContext';
 import {
   emitEndTurn,
@@ -21,6 +21,7 @@ import {
   EnergyBarContainer,
   EnergyBar,
 } from './Battle.styled';
+import { animateTakingDamage } from './animate';
 
 type NullableIdx = number | null;
 
@@ -30,6 +31,15 @@ export default function Battle() {
   const [choosenMoveIdx, setChoosenMoveIdx] = useState<NullableIdx>(null);
   const [choosenPokemonIdx, setChoosenPokemonIdx] = useState<NullableIdx>(null);
   const [choosenOpponentIdx, setChoosenOpponentIdx] = useState<NullableIdx>(null);
+  // const [animation, setAnimation] = useState<[Animation, Animation, Animation]>(
+  //   [Animation.Idle, Animation.Idle, Animation.Idle]
+  // );
+  const opponentTileRef = [
+    useRef<HTMLImageElement>(null),
+    useRef<HTMLImageElement>(null),
+    useRef<HTMLImageElement>(null),
+  ];
+
   const {
     party, setParty,
     opponentParty, setOpponentParty,
@@ -61,6 +71,8 @@ export default function Battle() {
   }, [player, setParty, setOpponentParty]);
 
   function onClickOpponentPokemon(index: number) {
+    const element = opponentTileRef[index].current;
+    animateTakingDamage(element);
     if (choosenPokemonIdx === null || choosenMoveIdx === null) {
       return;
     }
@@ -92,7 +104,11 @@ export default function Battle() {
               onClick={() => onClickOpponentPokemon(index)}
               key={index}
             >
-              <img src={image} alt={name} />
+              <img
+                src={image}
+                alt={name}
+                ref={opponentTileRef[index]}
+              />
               <TileDetail>
                 <div>{name}</div>
                 <HealthBar percentage={health} />

@@ -6,7 +6,7 @@ export type TouchableProps =
   React.HTMLAttributes<HTMLDivElement> &
   { audioPath?: string };
 
-export default function Touchable(props: TouchableProps) {
+export default function Touchable({ onClick, ...props }: TouchableProps) {
   return (
     <div
       {...props}
@@ -15,7 +15,7 @@ export default function Touchable(props: TouchableProps) {
         // to allow the SFX to be stacked
         const touchSfx = new Audio(props.audioPath || PlinkSfx);
         touchSfx.play();
-        props.onClick && props.onClick(e);
+        onClick && onClick(e);
       }}
     />
   );

@@ -15,9 +15,10 @@ export const PartyArea = styled.div`
   align-items: flex-end;
 `;
 
+type PartyTileProps = { chosen?: boolean, blurred?: boolean } & TouchableProps;
+
 export const PartyTile = styled(
-  ({ chosen, blurred, ...props }: { chosen?: boolean, blurred?: boolean } & TouchableProps) =>
-    <Touchable {...props} />
+  ({ chosen, blurred, ...props }: PartyTileProps) => <Touchable {...props} />
 )`
   margin: 8px;
   filter: ${({ chosen, blurred }) =>
