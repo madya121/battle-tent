@@ -21,7 +21,10 @@ import {
   EnergyBarContainer,
   EnergyBar,
 } from './Battle.styled';
-import { animateTakingDamage } from './animate';
+import {
+  animateAttacking,
+  animateTakingDamage,
+} from './animate';
 
 type NullableIdx = number | null;
 
@@ -34,6 +37,11 @@ export default function Battle() {
   // const [animation, setAnimation] = useState<[Animation, Animation, Animation]>(
   //   [Animation.Idle, Animation.Idle, Animation.Idle]
   // );
+  const partyTileRef = [
+    useRef<HTMLImageElement>(null),
+    useRef<HTMLImageElement>(null),
+    useRef<HTMLImageElement>(null),
+  ];
   const opponentTileRef = [
     useRef<HTMLImageElement>(null),
     useRef<HTMLImageElement>(null),
@@ -70,12 +78,26 @@ export default function Battle() {
     }
   }, [player, setParty, setOpponentParty]);
 
+  function animateMove(move: Move, userIndex: number, targetIndexes?: number[]) {
+    const partyTileElement = partyTileRef[userIndex].current;
+    animateAttacking(partyTileElement);
+    targetIndexes?.forEach(index => {
+      const opponentTileElement = opponentTileRef[index].current;
+      animateTakingDamage(opponentTileElement);
+    });
+  }
+
   function onClickOpponentPokemon(index: number) {
-    const element = opponentTileRef[index].current;
-    animateTakingDamage(element);
+    console.log(choosenPokemonIdx)
+    console.log(choosenMoveIdx)
     if (choosenPokemonIdx === null || choosenMoveIdx === null) {
       return;
     }
+    animateMove(
+      availableMoves[choosenMoveIdx][choosenMoveIdx],
+      choosenPokemonIdx,
+      [index]
+    );
     const moveTargetMultipleOpponent = false;
     let targetIndexes = [index];
     if (moveTargetMultipleOpponent) {
@@ -93,7 +115,6 @@ export default function Battle() {
     setChoosenOpponentIdx(null);
     setChoosenMoveIdx(null);
   }
-  console.log('new Array(energy)', new Array(energy))
   return (
     <>
       <BattleArea>
@@ -123,7 +144,11 @@ export default function Battle() {
               onClick={() => setChoosenPokemonIdx(index)}
               key={index}
             >
-              <img src={imageBack} alt={name} />
+              <img
+                src={imageBack}
+                alt={name}
+                ref={partyTileRef[index]}
+              />
               <TileDetail>
                 <div>{name}</div>
                 <HealthBar percentage={health} />

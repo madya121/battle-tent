@@ -15,3 +15,12 @@
 .taking-damage {
   animation: taking-damage .1s infinite alternate;
 }
+
+@keyframes attacking {
+  0% { transform: none }
+  100% { transform: translate(10px, -10px) rotate(8deg); }
+}
+
+.attacking {
+  animation: attacking .1s infinite alternate;
+}

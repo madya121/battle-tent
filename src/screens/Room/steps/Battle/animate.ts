@@ -19,3 +19,8 @@ export function animateTakingDamage(element: HTMLDivElement | null) {
   if (element === null) return;
   animateOnce('taking-damage', element);
 }
+
+export function animateAttacking(element: HTMLDivElement | null) {
+  if (element === null) return;
+  animateOnce('attacking', element);
+}
