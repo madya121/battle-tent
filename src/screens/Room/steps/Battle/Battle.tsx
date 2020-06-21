@@ -29,7 +29,7 @@ import {
 type NullableIdx = number | null;
 
 export default function Battle() {
-  const [energy, setEnergy] = useState(0);
+  const [energy, setEnergy] = useState(10);
   const [availableMoves, setAvailableMoves] = useState<Move[][]>([]);
   const [choosenMoveIdx, setChoosenMoveIdx] = useState<NullableIdx>(null);
   const [choosenPokemonIdx, setChoosenPokemonIdx] = useState<NullableIdx>(null);
@@ -58,11 +58,13 @@ export default function Battle() {
   useEffect(function subscription() {
     if (!player) return;
     const sMoveUsed = subscribeMoveUsed((
-      { move, userMoveIndex, targetIndexes, result }
+      { move, userMoveIndex, targetIndexes, remainingEnergy, result }
     ) => {
       // animate user and targets
       console.log(`${userMoveIndex[0]} used ${move.name}!`);
       console.log(`${targetIndexes} affected`);
+      console.log(`remainingEnergy: ${remainingEnergy}`);
+      // setEnergy(remainingEnergy);
       const { playerData, opponentData } = helper.splitPlayer(player, result);
       setParty(playerData.party);
       setOpponentParty(opponentData.party);
@@ -96,6 +98,7 @@ export default function Battle() {
       choosenPokemonIdx,
       [index]
     );
+    setEnergy(energy => energy - 1);
     const moveTargetMultipleOpponent = false;
     let targetIndexes = [index];
     if (moveTargetMultipleOpponent) {
@@ -113,6 +116,7 @@ export default function Battle() {
     setChoosenOpponentIdx(null);
     setChoosenMoveIdx(null);
   }
+  const energyBar = new Array(energy).fill({ empty: false });
   return (
     <>
       <BattleArea>
@@ -158,21 +162,25 @@ export default function Battle() {
       <MoveOptionBox>
         {choosenPokemonIdx === null || availableMoves[choosenPokemonIdx] === undefined
           ? null
-          : availableMoves[choosenPokemonIdx].map((move, index) => (
-            <MoveTile
-              chosen={choosenMoveIdx === index}
-              onClick={() => setChoosenMoveIdx(index)}
-              key={index}
-            >
-              <div>{move.name}</div>
-              <div>Power {move.power} - PP {move.pp}</div>
-            </MoveTile>
-          ))
+          : availableMoves[choosenPokemonIdx].map((move, index) => {
+            const isDisabled = move.energy > energy;
+            return (
+              <MoveTile
+                chosen={choosenMoveIdx === index}
+                onClick={() => isDisabled || setChoosenMoveIdx(index)}
+                key={index}
+                disabled={isDisabled}
+              >
+                <div>{move.name}</div>
+                <div>Power {move.power} - PP {move.pp}</div>
+              </MoveTile>
+            );
+          })
         }
       </MoveOptionBox>
       <EnergyBarContainer>
-        {[0, 1, 2, 2, 2, 2, 2, 2].map((_, index) => (
-          <EnergyBar used={false} key={index} />
+        {energyBar.map(({ empty }, index) => (
+          <EnergyBar empty={empty} key={index} />
         ))}
       </EnergyBarContainer>
       <Button onClick={emitEndTurn}>End Turn</Button>
