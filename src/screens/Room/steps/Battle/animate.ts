@@ -1,5 +1,7 @@
 import './animation.css';
 
+const ScratchSfx = require('../../../../assets/audio/sfx/moves/scratch.mp3');
+
 // enum Animation { Idle, TakingDamage, Attacking }
 
 function refreshElementAnimation(
@@ -22,5 +24,6 @@ export function animateTakingDamage(element: HTMLDivElement | null) {
 
 export function animateAttacking(element: HTMLDivElement | null) {
   if (element === null) return;
+  new Audio(ScratchSfx).play();
   animateOnce('attacking', element);
 }
