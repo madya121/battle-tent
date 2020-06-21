@@ -88,8 +88,6 @@ export default function Battle() {
   }
 
   function onClickOpponentPokemon(index: number) {
-    console.log(choosenPokemonIdx)
-    console.log(choosenMoveIdx)
     if (choosenPokemonIdx === null || choosenMoveIdx === null) {
       return;
     }

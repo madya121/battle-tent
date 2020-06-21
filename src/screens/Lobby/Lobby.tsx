@@ -84,7 +84,7 @@ export default function Lobby() {
         {isFindingMatch ? (
           <>
             <LoadingIndicator />
-            <Button onClick={onClickCancelFindMatch}>Cancel Find Match</Button>
+            <Button onClick={onClickCancelFindMatch}>Cancel</Button>
           </>
         ) :
           <div>
