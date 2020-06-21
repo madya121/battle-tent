@@ -1,10 +1,10 @@
 import React from 'react';
 import { render } from '@testing-library/react';
-import Battle from './Battle';
+import Room from './Room';
 
-describe('Battle screen', () => {
+describe('Room screen', () => {
   it('should render', () => {
-    const { asFragment } = render(<Battle />);
+    const { asFragment } = render(<Room />);
     expect(asFragment()).toMatchSnapshot();
   });
 });

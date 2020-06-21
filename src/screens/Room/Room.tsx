@@ -15,20 +15,20 @@ import {
   TopArea,
   OpponentInfo,
   OpponentAvatar,
-} from './Battle.styled';
+} from './Room.styled';
 import { find } from 'ramda';
 import { PlayerContext } from '../../auth';
 import GameplayContext from './GameplayContext';
 import BattlingPokemon from '../../types/BattlingPokemon';
 
-enum BattleStep {
+enum RoomStep {
   ChooseParty,
-  ChooseMoves,
+  Battle,
 }
 
-export default function Battle() {
+export default function Room() {
   const [quitModalShown, setQuitModalShown] = useState(false);
-  const [activeStep, setActiveStep] = useState(BattleStep.ChooseParty);
+  const [activeStep, setActiveStep] = useState(RoomStep.ChooseParty);
   const [party, setParty] = useState<BattlingPokemon[]>([]);
   const [opponentParty, setOpponentParty] = useState<BattlingPokemon[]>([]);
   const [opponent, setOpponent] = useState<Player | undefined>(undefined);
@@ -73,7 +73,7 @@ export default function Battle() {
     opponentParty, setOpponentParty,
   };
 
-  const goToChooseMovesStep = () => setActiveStep(BattleStep.ChooseMoves);
+  const goToBattleStep = () => setActiveStep(RoomStep.Battle);
 
   return (
     <LayoutContainer>
@@ -88,10 +88,10 @@ export default function Battle() {
       <main style={{ display: 'flex', flexDirection: 'column', flex: 1, width: '100%' }}>
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
           <GameplayContext.Provider value={gameplayContextValue}>
-            {activeStep === BattleStep.ChooseParty ? (
-              <Steps.ChooseParty onFinish={goToChooseMovesStep} />
-            ) : activeStep === BattleStep.ChooseMoves ? (
-              <Steps.ChooseMoves />
+            {activeStep === RoomStep.ChooseParty ? (
+              <Steps.ChooseParty onFinish={goToBattleStep} />
+            ) : activeStep === RoomStep.Battle ? (
+              <Steps.Battle />
             ) : null}
           </GameplayContext.Provider>
         </div>

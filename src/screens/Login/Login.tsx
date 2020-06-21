@@ -53,7 +53,7 @@ export default function Login() {
             placeholder="...Trainer123"
             onChange={e => setUsername(e.target.value)}
           />
-          <Button onClick={onClickLogin}>{' '}</Button>
+          <Button onClick={onClickLogin}>Enter</Button>
         </Modal>
       </main>
     </LayoutContainer>

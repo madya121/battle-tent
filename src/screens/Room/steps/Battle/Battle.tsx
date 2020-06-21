@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext, useEffect, useRef } from 'react';
 import GamplayContext from '../../GameplayContext';
 import {
   emitEndTurn,
@@ -20,16 +20,34 @@ import {
   MoveTile,
   EnergyBarContainer,
   EnergyBar,
-} from './ChooseMoves.styled';
+} from './Battle.styled';
+import {
+  animateAttacking,
+  animateTakingDamage,
+} from './animate';
 
 type NullableIdx = number | null;
 
-export default function ChooseMoves() {
+export default function Battle() {
   const [energy, setEnergy] = useState(0);
   const [availableMoves, setAvailableMoves] = useState<Move[][]>([]);
   const [choosenMoveIdx, setChoosenMoveIdx] = useState<NullableIdx>(null);
   const [choosenPokemonIdx, setChoosenPokemonIdx] = useState<NullableIdx>(null);
   const [choosenOpponentIdx, setChoosenOpponentIdx] = useState<NullableIdx>(null);
+  // const [animation, setAnimation] = useState<[Animation, Animation, Animation]>(
+  //   [Animation.Idle, Animation.Idle, Animation.Idle]
+  // );
+  const partyTileRef = [
+    useRef<HTMLImageElement>(null),
+    useRef<HTMLImageElement>(null),
+    useRef<HTMLImageElement>(null),
+  ];
+  const opponentTileRef = [
+    useRef<HTMLImageElement>(null),
+    useRef<HTMLImageElement>(null),
+    useRef<HTMLImageElement>(null),
+  ];
+
   const {
     party, setParty,
     opponentParty, setOpponentParty,
@@ -60,10 +78,24 @@ export default function ChooseMoves() {
     }
   }, [player, setParty, setOpponentParty]);
 
+  function animateMove(move: Move, userIndex: number, targetIndexes?: number[]) {
+    const partyTileElement = partyTileRef[userIndex].current;
+    animateAttacking(partyTileElement);
+    targetIndexes?.forEach(index => {
+      const opponentTileElement = opponentTileRef[index].current;
+      animateTakingDamage(opponentTileElement);
+    });
+  }
+
   function onClickOpponentPokemon(index: number) {
     if (choosenPokemonIdx === null || choosenMoveIdx === null) {
       return;
     }
+    animateMove(
+      availableMoves[choosenMoveIdx][choosenMoveIdx],
+      choosenPokemonIdx,
+      [index]
+    );
     const moveTargetMultipleOpponent = false;
     let targetIndexes = [index];
     if (moveTargetMultipleOpponent) {
@@ -81,7 +113,6 @@ export default function ChooseMoves() {
     setChoosenOpponentIdx(null);
     setChoosenMoveIdx(null);
   }
-  console.log('new Array(energy)', new Array(energy))
   return (
     <>
       <BattleArea>
@@ -92,7 +123,11 @@ export default function ChooseMoves() {
               onClick={() => onClickOpponentPokemon(index)}
               key={index}
             >
-              <img src={image} alt={name} />
+              <img
+                src={image}
+                alt={name}
+                ref={opponentTileRef[index]}
+              />
               <TileDetail>
                 <div>{name}</div>
                 <HealthBar percentage={health} />
@@ -107,7 +142,11 @@ export default function ChooseMoves() {
               onClick={() => setChoosenPokemonIdx(index)}
               key={index}
             >
-              <img src={imageBack} alt={name} />
+              <img
+                src={imageBack}
+                alt={name}
+                ref={partyTileRef[index]}
+              />
               <TileDetail>
                 <div>{name}</div>
                 <HealthBar percentage={health} />
