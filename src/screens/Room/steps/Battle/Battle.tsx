@@ -116,6 +116,12 @@ export default function Battle() {
     setChoosenOpponentIdx(null);
     setChoosenMoveIdx(null);
   }
+
+  function endTurn() {
+    emitEndTurn();
+    setEnergy(10);
+  }
+
   const energyBar = new Array(energy).fill({ empty: false });
   return (
     <>
@@ -183,7 +189,7 @@ export default function Battle() {
           <EnergyBar empty={empty} key={index} />
         ))}
       </EnergyBarContainer>
-      <Button onClick={emitEndTurn}>End Turn</Button>
+      <Button onClick={endTurn}>End Turn</Button>
     </>
   );
 }
