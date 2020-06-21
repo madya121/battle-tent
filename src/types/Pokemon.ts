@@ -16,6 +16,7 @@ export interface Move {
   power: number;
   accuracy: number;
   pp: number;
+  energy: number;
 }
 
 export type Type = string;

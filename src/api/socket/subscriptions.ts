@@ -100,6 +100,7 @@ export function subscribeMoveUsed(
     move: move1Mock,
     userMoveIndex: [0, 0],
     targetIndexes: [1],
+    remainingEnergy: 2,
     result: [
       {
         playerId: '0',

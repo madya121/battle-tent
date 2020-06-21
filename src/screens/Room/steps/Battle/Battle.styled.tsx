@@ -40,8 +40,8 @@ export const MoveOptionBox = styled.div`
 `;
 
 export const MoveTile = styled(
-  ({ chosen, ...props }: { chosen?: boolean } & TouchableProps) =>
-    <Touchable {...props} />
+  ({ chosen, disabled, ...props }: { chosen: boolean; disabled: boolean } & TouchableProps) =>
+    disabled ? <div {...props} /> : <Touchable {...props} />
 )`
   height: 36px;
   margin: 4px;
@@ -49,6 +49,7 @@ export const MoveTile = styled(
   background-color: teal;
   border-radius: 12px;
   ${props => props.chosen ? 'border: 1px solid white;' : ''}
+  ${props => props.disabled ? 'color: gray;' : ''}
 `;
 
 export const EnergyBarContainer = styled.div`
@@ -62,12 +63,12 @@ export const EnergyBarContainer = styled.div`
   overflow: hidden;
 `;
 
-export const EnergyBar = styled.div<{ used?: boolean }>`
+export const EnergyBar = styled.div<{ empty?: boolean }>`
   flex: 1;
   min-width: 20px;
   height: 16px;
   background-color: #9efb1b;
-  background: ${props => props.used
+  background: ${props => props.empty
     ? 'linear-gradient(to bottom, gray 40%, lightgray 40%)'
     : 'linear-gradient(to bottom, #96ee18 40%, #9efb1b 40%)'
   };

@@ -116,6 +116,7 @@ export interface InboundEventParams {
     move: Move;
     userMoveIndex: [number, number]; // party index of the user
     targetIndexes?: number[]; // party indexes of the target
+    remainingEnergy: number;
     result: Array<
       {
         playerId: string;

@@ -9,6 +9,7 @@ export const move1Mock = {
   power: 40,
   accuracy: 80,
   pp: 35,
+  energy: 1,
 };
 
 export const move2Mock = {
@@ -19,6 +20,7 @@ export const move2Mock = {
   power: 20,
   accuracy: 100,
   pp: 40,
+  energy: 1,
 };
 
 export const move3Mock = {
@@ -29,6 +31,7 @@ export const move3Mock = {
   power: 40,
   accuracy: 80,
   pp: 10,
+  energy: 4,
 };
 
 export const move4Mock = {
@@ -39,6 +42,7 @@ export const move4Mock = {
   power: 40,
   accuracy: 80,
   pp: 35,
+  energy: 3,
 };
 
 export const move5Mock = {
@@ -49,6 +53,7 @@ export const move5Mock = {
   power: 20,
   accuracy: 80,
   pp: 40,
+  energy: 3,
 };
 
 export const statsMock = {
