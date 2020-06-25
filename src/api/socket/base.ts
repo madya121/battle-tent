@@ -110,12 +110,9 @@ export interface InboundEventParams {
   TurnStarted: {
     energy: number;
   };
-  RoundStarted: Array<
-    {
-      playerId: string;
-      party: BattlingPokemon[];
-    }
-  >;
+  RoundStarted: {
+    parties: Record<Player['id'], BattlingPokemon[]>;
+  };
   MoveUsed: {
     move: Move;
     userMoveIndex: [number, number]; // party index of the user

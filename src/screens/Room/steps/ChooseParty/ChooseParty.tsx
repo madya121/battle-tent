@@ -2,7 +2,6 @@ import React, { useState, useContext } from 'react';
 import { Button } from '../../../../components/basics';
 import LoadingIndicator from '../../../../components/LoadingIndicator';
 import { emitPlayerReady, subscribeRoundStarted } from '../../../../api';
-import * as helper from '../../../../api/socket/helper';
 import { TileContainer, Tile, TileDetail } from './ChooseParty.styled';
 import { append, without } from 'ramda';
 import GamplayContext from '../../GameplayContext';
@@ -14,10 +13,11 @@ export interface ChoosePartyProps {
 }
 
 export default function ChooseParty({ onFinish }: ChoosePartyProps) {
-  const [isWaitingOpponent, setIsWaitingOpponent] = useState(false);
+  const [isWaiting, setIsWaiting] = useState(false);
   const [choosen, setChoosen] = useState<Array<number>>([]);
   const [player] = useContext(PlayerContext);
   const {
+    opponent,
     availablePokemon,
     setParty,
     setOpponentParty,
@@ -26,20 +26,22 @@ export default function ChooseParty({ onFinish }: ChoosePartyProps) {
   function choosePokemon(index: number) {
     const updatedChoosen = choosen.includes(index)
       ? without([index], choosen)
-      : append(index, choosen);
+      : choosen.length === 3
+        ? choosen // party is full
+        : append(index, choosen);
     setChoosen(updatedChoosen);
   }
 
   function ready() {
-    emitPlayerReady(choosen);
-    const sRoundStarted = subscribeRoundStarted(battleState => {
-      setIsWaitingOpponent(false);
+    const sRoundStarted = subscribeRoundStarted(({ parties }) => {
+      setIsWaiting(false);
       sRoundStarted.off();
-      const { playerData, opponentData } = helper.splitPlayer(player, battleState);
-      setParty(playerData.party);
-      setOpponentParty(opponentData.party);
+      setParty(parties[player.id]);
+      opponent && setOpponentParty(parties[opponent.id]);
       onFinish();
     });
+    emitPlayerReady(choosen);
+    setIsWaiting(true);
   }
 
   function onConfirmParty() {
@@ -56,11 +58,11 @@ export default function ChooseParty({ onFinish }: ChoosePartyProps) {
     ready();
   }
 
-  return isWaitingOpponent
+  return isWaiting
     ? (
       <div>
         <LoadingIndicator />
-        waiting for opponent
+        <p>waiting for opponent...</p>
       </div>
     ) : (
       <div>

@@ -19,9 +19,9 @@ export function emitLeaveRoom() {
 }
 
 export function emitPlayerReady(
-  pokemonNdexs: OutboundEventParams['PlayerReady']
+  indexes: OutboundEventParams['PlayerReady']
 ) {
-  socket.emit(OutboundEvent.PlayerReady, pokemonNdexs);
+  socket.emit(OutboundEvent.PlayerReady, indexes);
 }
 
 export function emitChat(

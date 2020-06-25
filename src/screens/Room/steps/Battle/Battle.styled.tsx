@@ -27,6 +27,7 @@ export const PartyTile = styled(
 `;
 
 export const TileDetail = styled.div`
+  text-transform: capitalize;
 `;
 
 export const MoveOptionBox = styled.div`

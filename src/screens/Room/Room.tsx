@@ -32,7 +32,9 @@ export default function Room() {
   const [availablePokemon, setAvailablePokemon] = useState<Pokemon[]>([]);
   const [party, setParty] = useState<BattlingPokemon[]>([]);
   const [opponentParty, setOpponentParty] = useState<BattlingPokemon[]>([]);
+  const [opponent, setOpponent] = useState<Player | undefined>(undefined);
   const gameplayContextValue = {
+    opponent,
     availablePokemon,
     party, setParty,
     opponentParty, setOpponentParty,
@@ -41,7 +43,6 @@ export default function Room() {
 
   const [quitModalShown, setQuitModalShown] = useState(false);
   const [activeStep, setActiveStep] = useState(RoomStep.ChooseParty);
-  const [opponent, setOpponent] = useState<Player | undefined>(undefined);
   const navigate = useContext(NavigationContext);
   const [player] = useContext(PlayerContext);
 

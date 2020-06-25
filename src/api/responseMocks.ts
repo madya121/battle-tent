@@ -14,7 +14,7 @@ export const move1Mock = {
 
 export const move2Mock = {
   id: '1',
-  name: 'Poison Sting',
+  name: 'poison Sting',
   description: 'long string for poison string description',
   type: 'Bug',
   power: 20,
@@ -67,48 +67,48 @@ export const statsMock: Stats = {
 
 const pokemonMock1: Pokemon = {
   id: '001',
-  name: 'Bulbasaur',
-  types: ['Poison', 'Grass'],
+  name: 'bulbasaur',
+  types: ['poison', 'grass'],
   moves: [move1Mock, move3Mock],
   stats: statsMock,
 };
 
 const pokemonMock2: Pokemon = {
   id: '002',
-  name: 'Charmander',
-  types: ['Fire'],
+  name: 'charmander',
+  types: ['fire'],
   moves: [move1Mock, move4Mock],
   stats: statsMock,
 };
 
 const pokemonMock3: Pokemon = {
   id: '003',
-  name: 'Squirtle',
-  types: ['Water'],
+  name: 'squirtle',
+  types: ['water'],
   moves: [move1Mock, move5Mock],
   stats: statsMock,
 };
 
 const pokemonMock4: Pokemon = {
   id: '110',
-  name: 'Weezing',
-  types: ['Poison'],
+  name: 'weezing',
+  types: ['poison'],
   moves: [move1Mock, move2Mock],
   stats: statsMock,
 };
 
 export const pokemonMock5: Pokemon = {
   id: '024',
-  name: 'Arbok',
-  types: ['Poison'],
+  name: 'arbok',
+  types: ['poison'],
   moves: [move1Mock, move2Mock],
   stats: statsMock,
 };
 
 const pokemonMock6: Pokemon = {
   id: '052',
-  name: 'Meowth',
-  types: ['Normal'],
+  name: 'meowth',
+  types: ['normal'],
   moves: [move1Mock, move2Mock],
   stats: statsMock,
 };
@@ -122,31 +122,37 @@ export const pokemonListMock: Pokemon[] = [
 const battlingPokemonMock1: BattlingPokemon = {
   pokemon: pokemonMock1,
   health: 100,
+  maxHealth: 100,
 };
 
 const battlingPokemonMock2: BattlingPokemon = {
   pokemon: pokemonMock2,
   health: 100,
+  maxHealth: 100,
 };
 
 const battlingPokemonMock3: BattlingPokemon = {
   pokemon: pokemonMock3,
   health: 100,
+  maxHealth: 100,
 };
 
 const battlingPokemonMock4: BattlingPokemon = {
   pokemon: pokemonMock4,
   health: 100,
+  maxHealth: 100,
 };
 
 const battlingPokemonMock5: BattlingPokemon = {
   pokemon: pokemonMock5,
   health: 100,
+  maxHealth: 100,
 };
 
 const battlingPokemonMock6: BattlingPokemon = {
   pokemon: pokemonMock6,
   health: 100,
+  maxHealth: 100,
 };
 
 export const battlingPartyMock: BattlingPokemon[] = [
