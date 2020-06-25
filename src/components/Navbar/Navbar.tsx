@@ -6,13 +6,14 @@ import styled from 'styled-components';
 import { IconButton } from '@material-ui/core';
 import VolumeOn from '../../assets/images/sound.png';
 import VolumeOff from '../../assets/images/sound_off.png';
+import { guest } from '../../auth/PlayerContext';
 
 export default function Navbar() {
-  const [user, setUser] = useContext(PlayerContext);
+  const [player, setPlayer] = useContext(PlayerContext);
   const navigate = useContext(NavigationContext);
 
   function signout() {
-    setUser(null);
+    setPlayer(guest);
     navigate(ScreenState.Login);
   }
 

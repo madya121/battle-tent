@@ -32,7 +32,6 @@ export default function ChooseParty({ onFinish }: ChoosePartyProps) {
   }
 
   function ready() {
-    if (!player) return;
     emitPlayerReady(choosen);
     const sRoundStarted = subscribeRoundStarted(battleState => {
       setIsWaitingOpponent(false);
