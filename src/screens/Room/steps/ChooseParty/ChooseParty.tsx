@@ -1,11 +1,10 @@
 import React, { useState, useContext } from 'react';
-import Pokemon from '../../../../types/Pokemon';
 import { Button } from '../../../../components/basics';
 import LoadingIndicator from '../../../../components/LoadingIndicator';
 import { emitPlayerReady, subscribeRoundStarted } from '../../../../api';
 import * as helper from '../../../../api/socket/helper';
 import { TileContainer, Tile, TileDetail } from './ChooseParty.styled';
-import { find, equals, append, without } from 'ramda';
+import { append, without } from 'ramda';
 import GamplayContext from '../../GameplayContext';
 import { PlayerContext } from '../../../../auth';
 import { getPokemonModel } from '../../../../components/PokemonModel/helper';
@@ -16,7 +15,7 @@ export interface ChoosePartyProps {
 
 export default function ChooseParty({ onFinish }: ChoosePartyProps) {
   const [isWaitingOpponent, setIsWaitingOpponent] = useState(false);
-  const [choosen, setChoosen] = useState<Array<Pokemon['id']>>([]);
+  const [choosen, setChoosen] = useState<Array<number>>([]);
   const [player] = useContext(PlayerContext);
   const {
     availablePokemon,
@@ -24,10 +23,10 @@ export default function ChooseParty({ onFinish }: ChoosePartyProps) {
     setOpponentParty,
   } = useContext(GamplayContext);
 
-  function choosePokemon(pokemonId: Pokemon['id']) {
-    const updatedChoosen = find(equals(pokemonId))(choosen)
-      ? without([pokemonId], choosen)
-      : append(pokemonId, choosen);
+  function choosePokemon(index: number) {
+    const updatedChoosen = choosen.includes(index)
+      ? without([index], choosen)
+      : append(index, choosen);
     setChoosen(updatedChoosen);
   }
 
@@ -67,10 +66,10 @@ export default function ChooseParty({ onFinish }: ChoosePartyProps) {
       <div>
         <h5>Choose your Pokémon</h5>
         <TileContainer>
-          {availablePokemon.map(({ id, name, types }, index) => (
+          {availablePokemon.map(({ name, types }, index) => (
             <Tile
-              chosen={choosen.includes(id)}
-              onClick={() => choosePokemon(id)}
+              chosen={choosen.includes(index)}
+              onClick={() => choosePokemon(index)}
               key={index}
             >
               <img

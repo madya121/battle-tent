@@ -30,7 +30,7 @@ export enum OutboundEvent {
 
 export interface OutboundEventParams {
   Login: string; // Player's name
-  PlayerReady: Array<Pokemon['id']>; // Pokemon's National Dex number
+  PlayerReady: Array<number>; // array of available pokemon indexes
   Chat: QuickChatOption; // chat message
 
   // battle mechanics
