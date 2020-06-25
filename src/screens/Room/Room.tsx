@@ -20,6 +20,7 @@ import { find } from 'ramda';
 import { PlayerContext } from '../../auth';
 import GameplayContext from './GameplayContext';
 import BattlingPokemon from '../../types/BattlingPokemon';
+import Pokemon from '../../types/Pokemon';
 
 enum RoomStep {
   ChooseParty,
@@ -27,10 +28,19 @@ enum RoomStep {
 }
 
 export default function Room() {
-  const [quitModalShown, setQuitModalShown] = useState(false);
-  const [activeStep, setActiveStep] = useState(RoomStep.ChooseParty);
+  /** GameplayContexts */
+  const [availablePokemon, setAvailablePokemon] = useState<Pokemon[]>([]);
   const [party, setParty] = useState<BattlingPokemon[]>([]);
   const [opponentParty, setOpponentParty] = useState<BattlingPokemon[]>([]);
+  const gameplayContextValue = {
+    availablePokemon,
+    party, setParty,
+    opponentParty, setOpponentParty,
+  };
+  /** End of GameplayContexts */
+
+  const [quitModalShown, setQuitModalShown] = useState(false);
+  const [activeStep, setActiveStep] = useState(RoomStep.ChooseParty);
   const [opponent, setOpponent] = useState<Player | undefined>(undefined);
   const navigate = useContext(NavigationContext);
   const [player] = useContext(PlayerContext);
@@ -38,12 +48,13 @@ export default function Room() {
   // subscriptions
   useEffect(function subscribe() {
     const sPlayerJoinedTheRoom = subscribePlayerJoinedTheRoom(({
-      players
-      // name: lastJoinedPlayerName, // TODO for Toast
+      players,
+      availablePokemon,
     }) => {
       const checkMatchingName = ({ name }: Player) => name !== player?.name;
       const opponent = find(checkMatchingName, players);
       setOpponent(opponent);
+      setAvailablePokemon(availablePokemon);
     });
 
     const sPlayerLeftTheRoom = subscribePlayerLeftTheRoom(({ name }) => {
@@ -67,11 +78,6 @@ export default function Room() {
   function closeQuitModal() {
     setQuitModalShown(false);
   }
-
-  const gameplayContextValue = {
-    party, setParty,
-    opponentParty, setOpponentParty,
-  };
 
   const goToBattleStep = () => setActiveStep(RoomStep.Battle);
 

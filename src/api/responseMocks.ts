@@ -1,4 +1,4 @@
-import Pokemon from '../types/Pokemon';
+import Pokemon, { Stats } from '../types/Pokemon';
 import BattlingPokemon from '../types/BattlingPokemon';
 
 export const move1Mock = {
@@ -56,71 +56,59 @@ export const move5Mock = {
   energy: 3,
 };
 
-export const statsMock = {
-  hp: 0,
-  atk: 0,
-  def: 0,
-  sAtk: 0,
-  sDef: 0,
-  speed: 0,
+export const statsMock: Stats = {
+  hp: 20,
+  attack: 20,
+  defense: 20,
+  'special-attack': 20,
+  'special-defense': 20,
+  speed: 20,
 };
 
 const pokemonMock1: Pokemon = {
-  ndex: '001',
+  id: '001',
   name: 'Bulbasaur',
   types: ['Poison', 'Grass'],
-  image: 'https://projectpokemon.org/images/normal-sprite/bulbasaur.gif',
-  imageBack: 'https://projectpokemon.org/images/sprites-models/normal-back/bulbasaur.gif',
   moves: [move1Mock, move3Mock],
   stats: statsMock,
 };
 
 const pokemonMock2: Pokemon = {
-  ndex: '002',
+  id: '002',
   name: 'Charmander',
   types: ['Fire'],
-  image: 'https://projectpokemon.org/images/normal-sprite/charmander.gif',
-  imageBack: 'https://projectpokemon.org/images/sprites-models/normal-back/charmander.gif',
   moves: [move1Mock, move4Mock],
   stats: statsMock,
 };
 
 const pokemonMock3: Pokemon = {
-  ndex: '003',
+  id: '003',
   name: 'Squirtle',
   types: ['Water'],
-  image: 'https://projectpokemon.org/images/normal-sprite/squirtle.gif',
-  imageBack: 'https://projectpokemon.org/images/sprites-models/normal-back/squirtle.gif',
   moves: [move1Mock, move5Mock],
   stats: statsMock,
 };
 
 const pokemonMock4: Pokemon = {
-  ndex: '110',
+  id: '110',
   name: 'Weezing',
   types: ['Poison'],
-  image: 'https://projectpokemon.org/images/normal-sprite/weezing.gif',
-  imageBack: 'https://projectpokemon.org/images/sprites-models/normal-back/weezing.gif',
   moves: [move1Mock, move2Mock],
   stats: statsMock,
 };
 
 export const pokemonMock5: Pokemon = {
-  ndex: '024',
+  id: '024',
   name: 'Arbok',
   types: ['Poison'],
-  image: 'https://projectpokemon.org/images/normal-sprite/arbok.gif',
-  imageBack: 'https://projectpokemon.org/images/sprites-models/normal-back/arbok.gif',
   moves: [move1Mock, move2Mock],
   stats: statsMock,
 };
 
 const pokemonMock6: Pokemon = {
-  ndex: '052',
+  id: '052',
   name: 'Meowth',
   types: ['Normal'],
-  image: 'https://projectpokemon.org/images/normal-sprite/meowth.gif',
-  imageBack: 'https://projectpokemon.org/images/sprites-models/normal-back/meowth.gif',
   moves: [move1Mock, move2Mock],
   stats: statsMock,
 };

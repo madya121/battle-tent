@@ -25,6 +25,7 @@ import {
   animateAttacking,
   animateTakingDamage,
 } from './animate';
+import { getPokemonModel } from '../../../../components/PokemonModel/helper';
 
 type NullableIdx = number | null;
 
@@ -127,14 +128,14 @@ export default function Battle() {
     <>
       <BattleArea>
         <PartyArea style={{ alignSelf: 'flex-end' }}>
-          {opponentParty.map(({ health, pokemon: { image, name } }, index) => (
+          {opponentParty.map(({ health, pokemon: { name } }, index) => (
             <PartyTile
               chosen={choosenOpponentIdx === index}
               onClick={() => onClickOpponentPokemon(index)}
               key={index}
             >
               <img
-                src={image}
+                src={getPokemonModel(name)}
                 alt={name}
                 ref={opponentTileRef[index]}
               />
@@ -146,14 +147,14 @@ export default function Battle() {
           ))}
         </PartyArea>
         <PartyArea>
-          {party.map(({ health, pokemon: { imageBack, name } }, index) => (
+          {party.map(({ health, pokemon: { name } }, index) => (
             <PartyTile
               chosen={choosenPokemonIdx === index}
               onClick={() => setChoosenPokemonIdx(index)}
               key={index}
             >
               <img
-                src={imageBack}
+                src={getPokemonModel(name, 'back')}
                 alt={name}
                 ref={partyTileRef[index]}
               />
