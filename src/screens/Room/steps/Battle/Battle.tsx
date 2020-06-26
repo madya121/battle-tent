@@ -35,9 +35,7 @@ export default function Battle() {
   const [choosenMoveIdx, setChoosenMoveIdx] = useState<NullableIdx>(null);
   const [choosenPokemonIdx, setChoosenPokemonIdx] = useState<NullableIdx>(null);
   const [choosenOpponentIdx, setChoosenOpponentIdx] = useState<NullableIdx>(null);
-  // const [animation, setAnimation] = useState<[Animation, Animation, Animation]>(
-  //   [Animation.Idle, Animation.Idle, Animation.Idle]
-  // );
+
   const partyTileRef = [
     useRef<HTMLImageElement>(null),
     useRef<HTMLImageElement>(null),
@@ -55,28 +53,27 @@ export default function Battle() {
   } = useContext(GamplayContext);
   const [player] = useContext(PlayerContext);
 
-
+  // subscription
   useEffect(function subscription() {
-    if (!player) return;
-    const sMoveUsed = subscribeMoveUsed((
-      { move, userMoveIndex, targetIndexes, remainingEnergy, result }
-    ) => {
-      // animate user and targets
-      console.log(`${userMoveIndex[0]} used ${move.name}!`);
-      console.log(`${targetIndexes} affected`);
-      console.log(`remainingEnergy: ${remainingEnergy}`);
-      // setEnergy(remainingEnergy);
-      const { playerData, opponentData } = helper.splitPlayer(player, result);
-      setParty(playerData.party);
-      setOpponentParty(opponentData.party);
-    });
+    // const sMoveUsed = subscribeMoveUsed((
+    //   { move, userMoveIndex, targetIndexes, remainingEnergy, result }
+    // ) => {
+    //   // animate user and targets
+    //   console.log(`${userMoveIndex[0]} used ${move.name}!`);
+    //   console.log(`${targetIndexes} affected`);
+    //   console.log(`remainingEnergy: ${remainingEnergy}`);
+    //   // setEnergy(remainingEnergy);
+    //   const { playerData, opponentData } = helper.splitPlayer(player, result);
+    //   setParty(playerData.party);
+    //   setOpponentParty(opponentData.party);
+    // });
 
     const sTurnEnded = subscribeTurnEnded(({ moves }) => {
       setAvailableMoves(moves);
     });
 
     return function unsubscribe() {
-      sMoveUsed.off();
+      // sMoveUsed.off();
       sTurnEnded.off();
     }
   }, [player, setParty, setOpponentParty]);
@@ -128,7 +125,7 @@ export default function Battle() {
     <>
       <BattleArea>
         <PartyArea style={{ alignSelf: 'flex-end' }}>
-          {opponentParty.map(({ health, pokemon: { name } }, index) => (
+          {opponentParty.map(({ health, maxHealth, pokemon: { name } }, index) => (
             <PartyTile
               chosen={choosenOpponentIdx === index}
               onClick={() => onClickOpponentPokemon(index)}
@@ -141,13 +138,13 @@ export default function Battle() {
               />
               <TileDetail>
                 <div>{name}</div>
-                <HealthBar percentage={health} />
+                <HealthBar percentage={health / maxHealth * 100} />
               </TileDetail>
             </PartyTile>
           ))}
         </PartyArea>
         <PartyArea>
-          {party.map(({ health, pokemon: { name } }, index) => (
+          {party.map(({ health, maxHealth, pokemon: { name } }, index) => (
             <PartyTile
               chosen={choosenPokemonIdx === index}
               onClick={() => setChoosenPokemonIdx(index)}
@@ -160,7 +157,7 @@ export default function Battle() {
               />
               <TileDetail>
                 <div>{name}</div>
-                <HealthBar percentage={health} />
+                <HealthBar percentage={health / maxHealth * 100} />
               </TileDetail>
             </PartyTile>
           ))}

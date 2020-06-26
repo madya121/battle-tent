@@ -74,10 +74,8 @@ export interface InboundEventParams {
     name: string; // player's name // TODO deprecate
     player?: Player;
   }>;
-  LoggedIn: {
+  LoggedIn: Player & {
     state: PlayerState.MainMenu;
-    name: string; // TODO deprecate
-    player?: Player;
   };
   FindingMatch: {
     state: PlayerState.FindingMatch;
