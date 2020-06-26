@@ -6,7 +6,7 @@ import {
   move3Mock,
   move4Mock,
   move5Mock,
-} from '../responseMocks';
+} from './responseMocks';
 
 export function subscribePlayers(
   callback: (players: InboundEventParams['ListPlayers']) => void

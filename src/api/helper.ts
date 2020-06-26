@@ -1,6 +1,6 @@
 import { findIndex, omit } from 'ramda';
-import Player from '../../types/Player'
-import BattlingPokemon from '../../types/BattlingPokemon';
+import Player from '../types/Player'
+import BattlingPokemon from '../types/BattlingPokemon';
 
 export function splitPlayer(player: Player, allPlayersData: Array<{ playerId: string; party: BattlingPokemon[] }>) {
   const findPlayerIndex = findIndex<{ playerId: string }>(
