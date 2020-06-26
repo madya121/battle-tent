@@ -1,59 +1,47 @@
-import React, { useState, useEffect, useContext } from 'react';
-import Pokemon from '../../../../types/Pokemon';
+import React, { useState, useContext } from 'react';
 import { Button } from '../../../../components/basics';
 import LoadingIndicator from '../../../../components/LoadingIndicator';
-import {
-  fetchPokemonList,
-  emitSelectParty,
-  subscribeRoundStarted,
-} from '../../../../api';
-import * as helper from '../../../../api/socket/helper';
+import { emitPlayerReady, subscribeRoundStarted } from '../../../../api';
 import { TileContainer, Tile, TileDetail } from './ChooseParty.styled';
-import { find, equals, append, without } from 'ramda';
+import { append, without } from 'ramda';
 import GamplayContext from '../../GameplayContext';
 import { PlayerContext } from '../../../../auth';
+import { getPokemonModel } from '../../../../components/PokemonModel/helper';
 
 export interface ChoosePartyProps {
   onFinish: () => void;
 }
 
-export default function ChooseParty({
-  onFinish,
-}: ChoosePartyProps) {
-  const [isLoading, setIsLoading] = useState(false);
-  const [isWaitingOpponent, setIsWaitingOpponent] = useState(false);
-  const [pokemonList, setPokemonList] = useState<Pokemon[]>([]);
-  const [choosen, setChoosen] = useState<Array<Pokemon['ndex']>>([]);
-  const { setParty, setOpponentParty } = useContext(GamplayContext);
+export default function ChooseParty({ onFinish }: ChoosePartyProps) {
+  const [isWaiting, setIsWaiting] = useState(false);
+  const [choosen, setChoosen] = useState<Array<number>>([]);
   const [player] = useContext(PlayerContext);
+  const {
+    opponent,
+    availablePokemon,
+    setParty,
+    setOpponentParty,
+  } = useContext(GamplayContext);
 
-  useEffect(() => {
-    setIsLoading(true);
-    getPokemonList().finally(() => setIsLoading(false));
-  }, []);
-
-  async function getPokemonList() {
-    const response = await fetchPokemonList();
-    setPokemonList(response.data);
-  }
-  function choosePokemon(ndex: Pokemon['ndex']) {
-    const updatedChoosen = find(equals(ndex))(choosen)
-      ? without([ndex], choosen)
-      : append(ndex, choosen);
+  function choosePokemon(index: number) {
+    const updatedChoosen = choosen.includes(index)
+      ? without([index], choosen)
+      : choosen.length === 3
+        ? choosen // party is full
+        : append(index, choosen);
     setChoosen(updatedChoosen);
   }
 
   function ready() {
-    if (!player) return;
-    emitSelectParty(choosen);
-    const sRoundStarted = subscribeRoundStarted(battleState => {
-      setIsWaitingOpponent(false);
+    const sRoundStarted = subscribeRoundStarted(({ parties }) => {
+      setIsWaiting(false);
       sRoundStarted.off();
-      const { playerData, opponentData } = helper.splitPlayer(player, battleState);
-      setParty(playerData.party);
-      setOpponentParty(opponentData.party);
+      setParty(parties[player.id]);
+      opponent && setOpponentParty(parties[opponent.id]);
       onFinish();
     });
+    emitPlayerReady(choosen);
+    setIsWaiting(true);
   }
 
   function onConfirmParty() {
@@ -70,29 +58,34 @@ export default function ChooseParty({
     ready();
   }
 
-  return isLoading
-    ? <LoadingIndicator />
-    : isWaitingOpponent
-      ? <div>waiting for opponent</div>
-      : (
-        <div>
-          <h5>Choose your Pokémon</h5>
-          <TileContainer>
-            {pokemonList.map(({ ndex, image, name, types }) => (
-              <Tile
-                chosen={choosen.includes(ndex)}
-                onClick={() => choosePokemon(ndex)}
-                key={ndex}
-              >
-                <img src={image} alt={name} />
-                <TileDetail>
-                  <div>{name}</div>
-                  <div>{types}</div>
-                </TileDetail>
-              </Tile>
-            ))}
-          </TileContainer>
-          <Button onClick={onConfirmParty}>Battle!</Button>
-        </div>
-      );
+  return isWaiting
+    ? (
+      <div>
+        <LoadingIndicator />
+        <p>waiting for opponent...</p>
+      </div>
+    ) : (
+      <div>
+        <h5>Choose your Pokémon</h5>
+        <TileContainer>
+          {availablePokemon.map(({ name, types }, index) => (
+            <Tile
+              chosen={choosen.includes(index)}
+              onClick={() => choosePokemon(index)}
+              key={index}
+            >
+              <img
+                src={getPokemonModel(name)}
+                alt={name}
+              />
+              <TileDetail>
+                <div>{name}</div>
+                <div>{types}</div>
+              </TileDetail>
+            </Tile>
+          ))}
+        </TileContainer>
+        <Button onClick={onConfirmParty}>Battle!</Button>
+      </div>
+    );
 }

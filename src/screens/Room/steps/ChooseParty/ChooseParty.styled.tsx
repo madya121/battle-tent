@@ -18,5 +18,5 @@ export const Tile = styled(
 `;
 
 export const TileDetail = styled.div`
-  font-weight: bold;
+  text-transform: capitalize;
 `;

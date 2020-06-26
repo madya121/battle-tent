@@ -1,9 +1,7 @@
 export default interface Pokemon {
-  ndex: string; // National Dex number
+  id: string; // National Dex number
   name: string;
   types: Types;
-  image: string; // image url
-  imageBack: string; // image url
   moves: Move[];
   stats: Stats;
 }
@@ -24,9 +22,9 @@ export type Types = [Type] | [Type, Type];
 
 export interface Stats {
   hp: number;
-  atk: number;
-  def: number;
-  sAtk: number;
-  sDef: number;
+  attack: number;
+  defense: number;
+  'special-attack': number;
+  'special-defense': number;
   speed: number;
 }

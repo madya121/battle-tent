@@ -1,4 +1,4 @@
-import Pokemon from '../types/Pokemon';
+import Pokemon, { Stats } from '../types/Pokemon';
 import BattlingPokemon from '../types/BattlingPokemon';
 
 export const move1Mock = {
@@ -14,7 +14,7 @@ export const move1Mock = {
 
 export const move2Mock = {
   id: '1',
-  name: 'Poison Sting',
+  name: 'poison Sting',
   description: 'long string for poison string description',
   type: 'Bug',
   power: 20,
@@ -56,71 +56,59 @@ export const move5Mock = {
   energy: 3,
 };
 
-export const statsMock = {
-  hp: 0,
-  atk: 0,
-  def: 0,
-  sAtk: 0,
-  sDef: 0,
-  speed: 0,
+export const statsMock: Stats = {
+  hp: 20,
+  attack: 20,
+  defense: 20,
+  'special-attack': 20,
+  'special-defense': 20,
+  speed: 20,
 };
 
 const pokemonMock1: Pokemon = {
-  ndex: '001',
-  name: 'Bulbasaur',
-  types: ['Poison', 'Grass'],
-  image: 'https://projectpokemon.org/images/normal-sprite/bulbasaur.gif',
-  imageBack: 'https://projectpokemon.org/images/sprites-models/normal-back/bulbasaur.gif',
+  id: '001',
+  name: 'bulbasaur',
+  types: ['poison', 'grass'],
   moves: [move1Mock, move3Mock],
   stats: statsMock,
 };
 
 const pokemonMock2: Pokemon = {
-  ndex: '002',
-  name: 'Charmander',
-  types: ['Fire'],
-  image: 'https://projectpokemon.org/images/normal-sprite/charmander.gif',
-  imageBack: 'https://projectpokemon.org/images/sprites-models/normal-back/charmander.gif',
+  id: '002',
+  name: 'charmander',
+  types: ['fire'],
   moves: [move1Mock, move4Mock],
   stats: statsMock,
 };
 
 const pokemonMock3: Pokemon = {
-  ndex: '003',
-  name: 'Squirtle',
-  types: ['Water'],
-  image: 'https://projectpokemon.org/images/normal-sprite/squirtle.gif',
-  imageBack: 'https://projectpokemon.org/images/sprites-models/normal-back/squirtle.gif',
+  id: '003',
+  name: 'squirtle',
+  types: ['water'],
   moves: [move1Mock, move5Mock],
   stats: statsMock,
 };
 
 const pokemonMock4: Pokemon = {
-  ndex: '110',
-  name: 'Weezing',
-  types: ['Poison'],
-  image: 'https://projectpokemon.org/images/normal-sprite/weezing.gif',
-  imageBack: 'https://projectpokemon.org/images/sprites-models/normal-back/weezing.gif',
+  id: '110',
+  name: 'weezing',
+  types: ['poison'],
   moves: [move1Mock, move2Mock],
   stats: statsMock,
 };
 
 export const pokemonMock5: Pokemon = {
-  ndex: '024',
-  name: 'Arbok',
-  types: ['Poison'],
-  image: 'https://projectpokemon.org/images/normal-sprite/arbok.gif',
-  imageBack: 'https://projectpokemon.org/images/sprites-models/normal-back/arbok.gif',
+  id: '024',
+  name: 'arbok',
+  types: ['poison'],
   moves: [move1Mock, move2Mock],
   stats: statsMock,
 };
 
 const pokemonMock6: Pokemon = {
-  ndex: '052',
-  name: 'Meowth',
-  types: ['Normal'],
-  image: 'https://projectpokemon.org/images/normal-sprite/meowth.gif',
-  imageBack: 'https://projectpokemon.org/images/sprites-models/normal-back/meowth.gif',
+  id: '052',
+  name: 'meowth',
+  types: ['normal'],
   moves: [move1Mock, move2Mock],
   stats: statsMock,
 };
@@ -134,31 +122,37 @@ export const pokemonListMock: Pokemon[] = [
 const battlingPokemonMock1: BattlingPokemon = {
   pokemon: pokemonMock1,
   health: 100,
+  maxHealth: 100,
 };
 
 const battlingPokemonMock2: BattlingPokemon = {
   pokemon: pokemonMock2,
   health: 100,
+  maxHealth: 100,
 };
 
 const battlingPokemonMock3: BattlingPokemon = {
   pokemon: pokemonMock3,
   health: 100,
+  maxHealth: 100,
 };
 
 const battlingPokemonMock4: BattlingPokemon = {
   pokemon: pokemonMock4,
   health: 100,
+  maxHealth: 100,
 };
 
 const battlingPokemonMock5: BattlingPokemon = {
   pokemon: pokemonMock5,
   health: 100,
+  maxHealth: 100,
 };
 
 const battlingPokemonMock6: BattlingPokemon = {
   pokemon: pokemonMock6,
   health: 100,
+  maxHealth: 100,
 };
 
 export const battlingPartyMock: BattlingPokemon[] = [

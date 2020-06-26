@@ -29,9 +29,8 @@ export default function Login() {
 
   // subscriptions
   useEffect(function subscribe() {
-    const s = subscribeLoggedIn(({ name }) => {
-      setPlayer({ name, id: '0', avatar: '0' });
-      // setPlayer(player); // TODO deprecate name, use player instead
+    const s = subscribeLoggedIn(({ name, id, avatar }) => {
+      setPlayer({ name, id, avatar });
       navigate(ScreenState.Lobby);
     });
     return function unsubscribe() {

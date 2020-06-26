@@ -3,6 +3,7 @@ import Pokemon, { Stats } from './Pokemon';
 export default interface BattlingPokemon {
   pokemon: Pokemon;
   health: number;
+  maxHealth: number;
   statusCondition?: StatusCondition | null;
   statsModifier?: Record<
     keyof Stats,

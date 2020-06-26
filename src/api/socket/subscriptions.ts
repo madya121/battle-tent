@@ -77,10 +77,6 @@ export function subscribeRoundStarted(
   callback: (battleState: InboundEventParams['RoundStarted']) => void
 ) {
   socket.on(InboundEvent.RoundStarted, callback);
-  setTimeout(() => callback([
-    { playerId: '0', party: battlingPartyMock },
-    { playerId: '1', party: opponentPartyMock },
-  ]), 1000)
   return { off: () => socket.off(InboundEvent.RoundStarted) };
 }
 

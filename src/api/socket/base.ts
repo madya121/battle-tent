@@ -22,7 +22,7 @@ export enum OutboundEvent {
   FindMatch = 'find_match',
   CancelFindMatch = 'cancel_find_match',
   LeaveRoom = 'leave_room',
-  SelectParty = 'select_party',
+  PlayerReady = 'player_ready',
   Chat = 'chat',
   UseMove = 'use_move',
   EndTurn = 'end_turn',
@@ -30,7 +30,7 @@ export enum OutboundEvent {
 
 export interface OutboundEventParams {
   Login: string; // Player's name
-  SelectParty: Array<Pokemon['ndex']>; // Pokemon's National Dex number
+  PlayerReady: Array<number>; // array of available pokemon indexes
   Chat: QuickChatOption; // chat message
 
   // battle mechanics
@@ -74,10 +74,8 @@ export interface InboundEventParams {
     name: string; // player's name // TODO deprecate
     player?: Player;
   }>;
-  LoggedIn: {
+  LoggedIn: Player & {
     state: PlayerState.MainMenu;
-    name: string; // TODO deprecate
-    player?: Player;
   };
   FindingMatch: {
     state: PlayerState.FindingMatch;
@@ -87,14 +85,18 @@ export interface InboundEventParams {
   };
   JoinedTheRoom: {
     state: PlayerState.InRoom;
-    roomName: string // Room's ID
+    room: string // Room name
+    participant: Player[];
   };
   LeftTheRoom: {
     state: PlayerState.MainMenu;
   };
   PlayerJoinedTheRoom: {
-    name: string; // another player's name that joined the room
+    id: Player['id']; // another player that joined the room
+    name: Player['name'];
+    avatar: Player['avatar'];
     players: Player[];
+    availablePokemon: Pokemon[];
   };
   PlayerLeftTheRoom: {
     name: string; // another player's name that left the room
@@ -106,12 +108,9 @@ export interface InboundEventParams {
   TurnStarted: {
     energy: number;
   };
-  RoundStarted: Array<
-    {
-      playerId: string;
-      party: BattlingPokemon[];
-    }
-  >;
+  RoundStarted: {
+    parties: Record<Player['id'], BattlingPokemon[]>;
+  };
   MoveUsed: {
     move: Move;
     userMoveIndex: [number, number]; // party index of the user
