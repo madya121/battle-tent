@@ -61,10 +61,9 @@ export enum InboundEvent {
   PlayerLeftTheRoom = 'player_left_the_room',
   Chat = 'chat',
   // game event
-  TurnStarted = 'turn_started',
   RoundStarted = 'round_started',
+  TurnChanged = 'turn_changed',
   MoveUsed = 'moved_used',
-  TurnEnded = 'turn_ended',
   PlayerUsedItem = 'player_used_item',
 }
 
@@ -105,11 +104,17 @@ export interface InboundEventParams {
     name: string; // User's name
     message: string; // chat message
   };
-  TurnStarted: {
-    energy: number;
-  };
   RoundStarted: {
     parties: Record<Player['id'], BattlingPokemon[]>;
+  };
+  TurnChanged: {
+    my_turn: true;
+    energy: number;
+    moves: Move[][]; // array of moves, inside array of pokemon
+  } | {
+    my_turn: false;
+    energy: never;
+    moves: never;
   };
   MoveUsed: {
     move: Move;
@@ -122,9 +127,6 @@ export interface InboundEventParams {
         party: BattlingPokemon[];
       }
     >;
-  };
-  TurnEnded: {
-    moves: Move[][]; // array of moves, inside array of pokemon
   };
   PlayerUsedItem: {
     playerId: string;
