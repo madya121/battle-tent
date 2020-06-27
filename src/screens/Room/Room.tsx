@@ -59,9 +59,9 @@ export default function Room() {
       players,
       availablePokemon,
     }) => {
-      const checkMatchingName = ({ name }: Player) => name !== player?.name;
+      const checkMatchingName = ({ id }: Player) => id !== player?.id;
       const opponent = find(checkMatchingName, players);
-      setOpponent(opponent);
+      opponent && setOpponent(opponent);
       setAvailablePokemon(availablePokemon);
     });
 
