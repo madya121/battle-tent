@@ -18,9 +18,10 @@ import {
 } from './Room.styled';
 import { find } from 'ramda';
 import { PlayerContext } from '../../auth';
-import GameplayContext from './GameplayContext';
+import GameplayContext, { GameplayContextValue } from './GameplayContext';
 import BattlingPokemon from '../../types/BattlingPokemon';
 import Pokemon from '../../types/Pokemon';
+import { Parties } from '../../api/base';
 
 enum RoomStep {
   ChooseParty,
@@ -30,21 +31,27 @@ enum RoomStep {
 export default function Room() {
   /** GameplayContexts */
   const [availablePokemon, setAvailablePokemon] = useState<Pokemon[]>([]);
+  const [opponent, setOpponent] = useState<Player | undefined>(undefined);
+
   const [party, setParty] = useState<BattlingPokemon[]>([]);
   const [opponentParty, setOpponentParty] = useState<BattlingPokemon[]>([]);
-  const [opponent, setOpponent] = useState<Player | undefined>(undefined);
-  const gameplayContextValue = {
+  const [player] = useContext(PlayerContext);
+
+  function updateParties(parties: Parties) {
+    setParty(parties[player.id]);
+    opponent && setOpponentParty(parties[opponent.id]);
+  }
+
+  const gameplayContextValue: GameplayContextValue = {
     opponent,
     availablePokemon,
-    party, setParty,
-    opponentParty, setOpponentParty,
+    party, opponentParty, updateParties,
   };
   /** End of GameplayContexts */
 
   const [quitModalShown, setQuitModalShown] = useState(false);
   const [activeStep, setActiveStep] = useState(RoomStep.ChooseParty);
   const navigate = useContext(NavigationContext);
-  const [player] = useContext(PlayerContext);
 
   // subscriptions
   useEffect(function subscribe() {

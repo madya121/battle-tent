@@ -28,6 +28,8 @@ export enum OutboundEvent {
   EndTurn = 'end_turn',
 }
 
+export type Parties = Record<Player['id'], BattlingPokemon[]>;
+
 export interface OutboundEventParams {
   Login: string; // Player's name
   PlayerReady: Array<number>; // array of available pokemon indexes
@@ -105,7 +107,7 @@ export interface InboundEventParams {
     message: string; // chat message
   };
   RoundStarted: {
-    parties: Record<Player['id'], BattlingPokemon[]>;
+    parties: Parties;
   };
   TurnChanged: {
     my_turn: true;
@@ -118,15 +120,14 @@ export interface InboundEventParams {
   };
   MoveUsed: {
     move: Move;
-    userMoveIndex: [number, number]; // party index of the user
-    targetIndexes?: number[]; // party indexes of the target
+    userIndex: number; // party index of the user
+    moveIndex: number; // index of move the user has
+    targetIndexes?: {
+      myParty: number[]; // party indexes of the target
+      opponentParty: number[]; // party indexes of the target
+    };
     remainingEnergy: number;
-    result: Array<
-      {
-        playerId: string;
-        party: BattlingPokemon[];
-      }
-    >;
+    parties: Parties;
   };
   PlayerUsedItem: {
     playerId: string;

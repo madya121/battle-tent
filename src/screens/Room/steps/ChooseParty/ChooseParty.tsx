@@ -19,8 +19,7 @@ export default function ChooseParty({ onFinish }: ChoosePartyProps) {
   const {
     opponent,
     availablePokemon,
-    setParty,
-    setOpponentParty,
+    updateParties,
   } = useContext(GamplayContext);
 
   function choosePokemon(index: number) {
@@ -36,8 +35,7 @@ export default function ChooseParty({ onFinish }: ChoosePartyProps) {
     const sRoundStarted = subscribeRoundStarted(({ parties }) => {
       setIsWaiting(false);
       sRoundStarted.off();
-      setParty(parties[player.id]);
-      opponent && setOpponentParty(parties[opponent.id]);
+      updateParties(parties);
       onFinish();
     });
     emitPlayerReady(choosen);
