@@ -2,11 +2,10 @@ import React, { useState, useContext, useEffect, useRef } from 'react';
 import GamplayContext from '../../GameplayContext';
 import {
   emitEndTurn,
+  subscribeTurnChanged,
   subscribeMoveUsed,
-  subscribeTurnEnded,
   emitUseMove,
 } from '../../../../api';
-import * as helper from '../../../../api/socket/helper';
 import { Button } from '../../../../components/basics';
 import { Move } from '../../../../types/Pokemon';
 import { PlayerContext } from '../../../../auth';
@@ -55,6 +54,12 @@ export default function Battle() {
 
   // subscription
   useEffect(function subscription() {
+
+    const sTurnChanged = subscribeTurnChanged(({ my_turn, energy, moves }) => {
+      setEnergy(my_turn ? energy : 0);
+      setAvailableMoves(moves || []);
+    });
+
     // const sMoveUsed = subscribeMoveUsed((
     //   { move, userMoveIndex, targetIndexes, remainingEnergy, result }
     // ) => {
@@ -68,13 +73,9 @@ export default function Battle() {
     //   setOpponentParty(opponentData.party);
     // });
 
-    const sTurnEnded = subscribeTurnEnded(({ moves }) => {
-      setAvailableMoves(moves);
-    });
-
     return function unsubscribe() {
+      sTurnChanged.off();
       // sMoveUsed.off();
-      sTurnEnded.off();
     }
   }, [player, setParty, setOpponentParty]);
 
@@ -117,7 +118,6 @@ export default function Battle() {
 
   function endTurn() {
     emitEndTurn();
-    setEnergy(10);
   }
 
   const energyBar = new Array(energy).fill({ empty: false });

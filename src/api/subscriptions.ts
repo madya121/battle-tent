@@ -6,7 +6,7 @@ import {
   move3Mock,
   move4Mock,
   move5Mock,
-} from '../responseMocks';
+} from './responseMocks';
 
 export function subscribePlayers(
   callback: (players: InboundEventParams['ListPlayers']) => void
@@ -80,12 +80,16 @@ export function subscribeRoundStarted(
   return { off: () => socket.off(InboundEvent.RoundStarted) };
 }
 
-export function subscribeTurnStarted(
-  callback: (battleState: InboundEventParams['TurnStarted']) => void
+export function subscribeTurnChanged(
+  callback: (battleState: InboundEventParams['TurnChanged']) => void
 ) {
-  socket.on(InboundEvent.TurnStarted, callback);
-  setTimeout(() => callback({ energy: 10 }), 300)
-  return { off: () => socket.off(InboundEvent.TurnStarted) };
+  socket.on(InboundEvent.TurnChanged, callback);
+  // moves: [
+  //   [move1Mock, move3Mock],
+  //   [move1Mock, move4Mock],
+  //   [move1Mock, move5Mock],
+  // ]
+  return { off: () => socket.off(InboundEvent.TurnChanged) };
 }
 
 export function subscribeMoveUsed(
@@ -109,18 +113,4 @@ export function subscribeMoveUsed(
     ],
   }), 300);
   return { off: () => socket.off(InboundEvent.MoveUsed) };
-}
-
-export function subscribeTurnEnded(
-  callback: (params: InboundEventParams['TurnEnded']) => void
-) {
-  socket.on(InboundEvent.TurnEnded, callback);
-  setTimeout(() => callback({
-    moves: [
-      [move1Mock, move3Mock],
-      [move1Mock, move4Mock],
-      [move1Mock, move5Mock],
-    ]
-  }), 2000)
-  return { off: () => socket.off(InboundEvent.TurnEnded) };
 }
