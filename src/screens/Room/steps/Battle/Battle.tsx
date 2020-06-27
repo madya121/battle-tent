@@ -30,9 +30,6 @@ import { concat } from 'ramda';
 type NullableIdx = number | null;
 
 export default function Battle() {
-  const [energy, setEnergy] = useState(0);
-  const [maxEnergy, setMaxEnergy] = useState(1);
-  const [availableMoves, setAvailableMoves] = useState<Move[][]>([]);
   const [choosenMoveIdx, setChoosenMoveIdx] = useState<NullableIdx>(null);
   const [choosenPokemonIdx, setChoosenPokemonIdx] = useState<NullableIdx>(null);
   const [choosenOpponentIdx, setChoosenOpponentIdx] = useState<NullableIdx>(null);
@@ -48,17 +45,18 @@ export default function Battle() {
     useRef<HTMLImageElement>(null),
   ];
 
-  const { party, opponentParty, updateParties } = useContext(GamplayContext);
+  const {
+    party, opponentParty, updateParties,
+    myTurn, changeTurn,
+    availableMoves,
+    energy, maxEnergy, setEnergy,
+  } = useContext(GamplayContext);
   const [player] = useContext(PlayerContext);
 
   // subscription
   useEffect(function subscription() {
 
-    const sTurnChanged = subscribeTurnChanged(({ my_turn, energy, moves }) => {
-      setEnergy(my_turn ? energy : 0);
-      setMaxEnergy(my_turn ? energy : 1);
-      setAvailableMoves(my_turn ? moves : []);
-    });
+    const sTurnChanged = subscribeTurnChanged(changeTurn);
 
     const sMoveUsed = subscribeMoveUsed(({
       move,
@@ -82,7 +80,7 @@ export default function Battle() {
       sTurnChanged.off();
       sMoveUsed.off();
     }
-  }, [player, updateParties]);
+  }, [player, updateParties, changeTurn, setEnergy]);
 
   function animateMove(move: Move, userIndex: number, targetIndexes?: number[]) {
     const partyTileElement = partyTileRef[userIndex].current;
@@ -158,7 +156,7 @@ export default function Battle() {
           {party.map(({ health, maxHealth, pokemon: { name } }, index) => (
             <PartyTile
               chosen={choosenPokemonIdx === index}
-              onClick={() => setChoosenPokemonIdx(index)}
+              onClick={() => myTurn && setChoosenPokemonIdx(index)}
               key={index}
             >
               <img
@@ -187,7 +185,8 @@ export default function Battle() {
                 disabled={isDisabled}
               >
                 <div>{move.name}</div>
-                <div>Power {move.power} - PP {move.pp}</div>
+                <div>Power {move.power}</div>
+                <div>PP {move.pp}</div>
               </MoveTile>
             );
           })
@@ -198,12 +197,7 @@ export default function Battle() {
           <EnergyBar empty={empty} key={index} />
         ))}
       </EnergyBarContainer>
-      <Button onClick={endTurn}>End Turn</Button>
+      {myTurn && <Button onClick={endTurn}>End Turn</Button>}
     </>
   );
 }
-
-export type ChosenItem = null | {
-  itemId: string;
-  partyIndex?: number;
-};

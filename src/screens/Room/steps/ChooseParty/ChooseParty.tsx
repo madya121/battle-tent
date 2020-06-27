@@ -14,7 +14,11 @@ export interface ChoosePartyProps {
 export default function ChooseParty({ onFinish }: ChoosePartyProps) {
   const [isWaiting, setIsWaiting] = useState(false);
   const [choosen, setChoosen] = useState<Array<number>>([]);
-  const { availablePokemon, updateParties } = useContext(GamplayContext);
+  const {
+    availablePokemon,
+    updateParties,
+    changeTurn,
+  } = useContext(GamplayContext);
 
   function choosePokemon(index: number) {
     const updatedChoosen = choosen.includes(index)
@@ -26,10 +30,11 @@ export default function ChooseParty({ onFinish }: ChoosePartyProps) {
   }
 
   function ready() {
-    const sRoundStarted = subscribeRoundStarted(({ parties }) => {
+    const sRoundStarted = subscribeRoundStarted(({ parties, ...battleState }) => {
       setIsWaiting(false);
       sRoundStarted.off();
       updateParties(parties);
+      changeTurn(battleState);
       onFinish();
     });
     emitPlayerReady(choosen);

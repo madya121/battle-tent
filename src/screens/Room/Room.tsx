@@ -20,7 +20,7 @@ import { find } from 'ramda';
 import { PlayerContext } from '../../auth';
 import GameplayContext, { GameplayContextValue } from './GameplayContext';
 import BattlingPokemon from '../../types/BattlingPokemon';
-import Pokemon from '../../types/Pokemon';
+import Pokemon, { Move } from '../../types/Pokemon';
 import { Parties } from '../../api/base';
 
 enum RoomStep {
@@ -42,10 +42,24 @@ export default function Room() {
     opponent && setOpponentParty(parties[opponent.id]);
   }
 
+  const [myTurn, setMyTurn] = useState(false);
+
+  const [energy, setEnergy] = useState(0);
+  const [maxEnergy, setMaxEnergy] = useState(1);
+  const [availableMoves, setAvailableMoves] = useState<Move[][]>([]);
+
+  const changeTurn: GameplayContextValue['changeTurn'] = ({ my_turn, energy, moves }) => {
+    setMyTurn(my_turn);
+    setEnergy(my_turn ? energy : 0);
+    setMaxEnergy(my_turn ? energy : 1);
+    setAvailableMoves(my_turn ? moves : []);
+  };
   const gameplayContextValue: GameplayContextValue = {
     opponent,
-    availablePokemon,
+    myTurn, changeTurn,
+    availablePokemon, availableMoves,
     party, opponentParty, updateParties,
+    energy, maxEnergy, setEnergy,
   };
   /** End of GameplayContexts */
 
@@ -58,6 +72,7 @@ export default function Room() {
     const sPlayerJoinedTheRoom = subscribePlayerJoinedTheRoom(({
       players,
       availablePokemon,
+
     }) => {
       const checkMatchingName = ({ id }: Player) => id !== player?.id;
       const opponent = find(checkMatchingName, players);
