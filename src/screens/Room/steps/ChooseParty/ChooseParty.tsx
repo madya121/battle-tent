@@ -5,7 +5,6 @@ import { emitPlayerReady, subscribeRoundStarted } from '../../../../api';
 import { TileContainer, Tile, TileDetail } from './ChooseParty.styled';
 import { append, without } from 'ramda';
 import GamplayContext from '../../GameplayContext';
-import { PlayerContext } from '../../../../auth';
 import { getPokemonModel } from '../../../../components/PokemonModel/helper';
 
 export interface ChoosePartyProps {
@@ -15,13 +14,7 @@ export interface ChoosePartyProps {
 export default function ChooseParty({ onFinish }: ChoosePartyProps) {
   const [isWaiting, setIsWaiting] = useState(false);
   const [choosen, setChoosen] = useState<Array<number>>([]);
-  const [player] = useContext(PlayerContext);
-  const {
-    opponent,
-    availablePokemon,
-    setParty,
-    setOpponentParty,
-  } = useContext(GamplayContext);
+  const { availablePokemon, updateParties } = useContext(GamplayContext);
 
   function choosePokemon(index: number) {
     const updatedChoosen = choosen.includes(index)
@@ -36,8 +29,7 @@ export default function ChooseParty({ onFinish }: ChoosePartyProps) {
     const sRoundStarted = subscribeRoundStarted(({ parties }) => {
       setIsWaiting(false);
       sRoundStarted.off();
-      setParty(parties[player.id]);
-      opponent && setOpponentParty(parties[opponent.id]);
+      updateParties(parties);
       onFinish();
     });
     emitPlayerReady(choosen);

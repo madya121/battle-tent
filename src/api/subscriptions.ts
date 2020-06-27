@@ -96,21 +96,5 @@ export function subscribeMoveUsed(
   callback: (params: InboundEventParams['MoveUsed']) => void
 ) {
   socket.on(InboundEvent.MoveUsed, callback);
-  setTimeout(() => callback({
-    move: move1Mock,
-    userMoveIndex: [0, 0],
-    targetIndexes: [1],
-    remainingEnergy: 2,
-    result: [
-      {
-        playerId: '0',
-        party: battlingPartyMock,
-      },
-      {
-        playerId: '1',
-        party: opponentPartyMock,
-      }
-    ],
-  }), 300);
   return { off: () => socket.off(InboundEvent.MoveUsed) };
 }

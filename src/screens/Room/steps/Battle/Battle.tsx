@@ -25,11 +25,13 @@ import {
   animateTakingDamage,
 } from './animate';
 import { getPokemonModel } from '../../../../components/PokemonModel/helper';
+import { concat } from 'ramda';
 
 type NullableIdx = number | null;
 
 export default function Battle() {
-  const [energy, setEnergy] = useState(10);
+  const [energy, setEnergy] = useState(0);
+  const [maxEnergy, setMaxEnergy] = useState(1);
   const [availableMoves, setAvailableMoves] = useState<Move[][]>([]);
   const [choosenMoveIdx, setChoosenMoveIdx] = useState<NullableIdx>(null);
   const [choosenPokemonIdx, setChoosenPokemonIdx] = useState<NullableIdx>(null);
@@ -46,10 +48,7 @@ export default function Battle() {
     useRef<HTMLImageElement>(null),
   ];
 
-  const {
-    party, setParty,
-    opponentParty, setOpponentParty,
-  } = useContext(GamplayContext);
+  const { party, opponentParty, updateParties } = useContext(GamplayContext);
   const [player] = useContext(PlayerContext);
 
   // subscription
@@ -57,27 +56,33 @@ export default function Battle() {
 
     const sTurnChanged = subscribeTurnChanged(({ my_turn, energy, moves }) => {
       setEnergy(my_turn ? energy : 0);
-      setAvailableMoves(moves || []);
+      setMaxEnergy(my_turn ? energy : 1);
+      setAvailableMoves(my_turn ? moves : []);
     });
 
-    // const sMoveUsed = subscribeMoveUsed((
-    //   { move, userMoveIndex, targetIndexes, remainingEnergy, result }
-    // ) => {
-    //   // animate user and targets
-    //   console.log(`${userMoveIndex[0]} used ${move.name}!`);
-    //   console.log(`${targetIndexes} affected`);
-    //   console.log(`remainingEnergy: ${remainingEnergy}`);
-    //   // setEnergy(remainingEnergy);
-    //   const { playerData, opponentData } = helper.splitPlayer(player, result);
-    //   setParty(playerData.party);
-    //   setOpponentParty(opponentData.party);
-    // });
+    const sMoveUsed = subscribeMoveUsed(({
+      move,
+      userIndex,
+      moveIndex,
+      remainingEnergy,
+      parties,
+      targetIndexes: { myParty, opponentParty } = {},
+    }) => {
+      // animate user and targets
+      console.log(`${userIndex} used ${move.name}!`);
+      if (myParty && opponentParty) {
+        console.log(`${myParty.concat(opponentParty)} affected`);
+      }
+      console.log(`remainingEnergy: ${remainingEnergy}`);
+      setEnergy(remainingEnergy);
+      updateParties(parties);
+    });
 
     return function unsubscribe() {
       sTurnChanged.off();
-      // sMoveUsed.off();
+      sMoveUsed.off();
     }
-  }, [player, setParty, setOpponentParty]);
+  }, [player, updateParties]);
 
   function animateMove(move: Move, userIndex: number, targetIndexes?: number[]) {
     const partyTileElement = partyTileRef[userIndex].current;
@@ -108,8 +113,11 @@ export default function Battle() {
       targetIndexes = [choosenOpponentIdx, index];
     }
     emitUseMove({
-      userMoveIndex: [choosenPokemonIdx, choosenMoveIdx],
-      targetIndexes: targetIndexes,
+      userIndex: choosenPokemonIdx,
+      moveIndex: choosenMoveIdx,
+      targetIndexes: {
+        opponentParty: targetIndexes,
+      },
     });
     // TODO: make move unusable
     setChoosenOpponentIdx(null);
@@ -120,7 +128,10 @@ export default function Battle() {
     emitEndTurn();
   }
 
-  const energyBar = new Array(energy).fill({ empty: false });
+  const energyBar = concat(
+    new Array(energy).fill({ empty: false }),
+    new Array(maxEnergy - energy).fill({ empty: true })
+  );
   return (
     <>
       <BattleArea>
