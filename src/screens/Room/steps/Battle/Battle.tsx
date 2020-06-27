@@ -6,7 +6,6 @@ import {
   subscribeMoveUsed,
   emitUseMove,
 } from '../../../../api';
-import * as helper from '../../../../api/socket/helper';
 import { Button } from '../../../../components/basics';
 import { Move } from '../../../../types/Pokemon';
 import { PlayerContext } from '../../../../auth';
