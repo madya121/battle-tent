@@ -37,14 +37,12 @@ export interface OutboundEventParams {
 
   // battle mechanics
   UseMove: {
-    userMoveIndex: [number, number]; // [user index, move index]
-    targetIndexes?: number[];
-  };
-
-  // scrapped
-  EndTurn: {
-    moves: string[]; // array of moves, follows party array index
-    item?: ChosenItem;
+    userIndex: number;
+    moveIndex: number;
+    targetIndexes?: {
+      myParty?: number[];
+      opponentParty?: number[];
+    }
   };
 }
 
@@ -123,8 +121,8 @@ export interface InboundEventParams {
     userIndex: number; // party index of the user
     moveIndex: number; // index of move the user has
     targetIndexes?: {
-      myParty: number[]; // party indexes of the target
-      opponentParty: number[]; // party indexes of the target
+      myParty?: number[]; // party indexes of the target
+      opponentParty?: number[]; // party indexes of the target
     };
     remainingEnergy: number;
     parties: Parties;

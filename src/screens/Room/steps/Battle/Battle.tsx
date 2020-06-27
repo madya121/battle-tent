@@ -113,8 +113,11 @@ export default function Battle() {
       targetIndexes = [choosenOpponentIdx, index];
     }
     emitUseMove({
-      userMoveIndex: [choosenPokemonIdx, choosenMoveIdx],
-      targetIndexes: targetIndexes,
+      userIndex: choosenPokemonIdx,
+      moveIndex: choosenMoveIdx,
+      targetIndexes: {
+        opponentParty: targetIndexes,
+      },
     });
     // TODO: make move unusable
     setChoosenOpponentIdx(null);
