@@ -3,6 +3,7 @@ import { Button } from '../../components/basics';
 import * as Steps from './steps';
 import QuitModal from './QuitModal';
 import {
+  emitLeaveRoom,
   subscribePlayerJoinedTheRoom,
   subscribePlayerLeftTheRoom,
   subscribeLeftTheRoom,
@@ -70,7 +71,10 @@ export default function Room() {
   const navigate = useContext(NavigationContext);
 
   const backToLobby = useCallback(
-    () => navigate(ScreenState.Lobby),
+    () => {
+      emitLeaveRoom();
+      navigate(ScreenState.Lobby);
+    },
     [navigate],
   );
 
@@ -111,7 +115,11 @@ export default function Room() {
 
   return (
     <LayoutContainer>
-      <QuitModal shown={quitModalShown} onClose={closeQuitModal} />
+      <QuitModal
+        shown={quitModalShown}
+        onClose={closeQuitModal}
+        onQuit={backToLobby}
+      />
       <TopArea>
         <OpponentInfo>
           <OpponentAvatar />
