@@ -59,7 +59,7 @@ export default function Room() {
   const gameplayContextValue: GameplayContextValue = {
     opponent,
     myTurn, changeTurn,
-    availablePokemon, availableMoves,
+    availablePokemon, availableMoves, setAvailableMoves,
     party, opponentParty, updateParties,
     energy, maxEnergy, setEnergy,
   };

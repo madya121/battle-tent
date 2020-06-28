@@ -113,6 +113,7 @@ export interface InboundEventParams {
     move: Move;
     remainingEnergy: number;
     parties: Parties;
+    availableMoves: Move[][];
   };
   PlayerUsedItem: {
     playerId: string;

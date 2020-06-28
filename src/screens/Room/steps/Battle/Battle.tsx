@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect, useRef } from 'react';
+import React, { useState, useContext, useEffect, useRef, useCallback } from 'react';
 import GamplayContext from '../../GameplayContext';
 import {
   emitEndTurn,
@@ -8,7 +8,6 @@ import {
 } from '../../../../api';
 import { Button } from '../../../../components/basics';
 import { Move } from '../../../../types/Pokemon';
-import { PlayerContext } from '../../../../auth';
 import {
   BattleArea,
   PartyArea,
@@ -49,10 +48,22 @@ export default function Battle() {
   const {
     party, opponentParty, updateParties,
     myTurn, changeTurn,
-    availableMoves,
+    availableMoves, setAvailableMoves,
     energy, maxEnergy, setEnergy,
   } = useContext(GamplayContext);
-  const [player] = useContext(PlayerContext);
+
+  const animateMove = useCallback((
+    move: Move,
+    userIndex: number,
+    targetIndexes?: UseMoveParams['targetIndexes']
+  ) => {
+    const partyTileElement = partyTileRef[userIndex].current;
+    animateAttacking(partyTileElement);
+    targetIndexes?.opponentParty?.forEach(index => {
+      const opponentTileElement = opponentTileRef[index].current;
+      animateTakingDamage(opponentTileElement);
+    });
+  }, [partyTileRef, opponentTileRef]);
 
   // subscription
   useEffect(function subscription() {
@@ -65,41 +76,25 @@ export default function Battle() {
       moveIndex,
       remainingEnergy,
       parties,
-      targetIndexes: { myParty, opponentParty } = {},
+      availableMoves,
+      targetIndexes = {},
     }) => {
       // animate user and targets
-      console.log(`${userIndex} used ${move.name}!`);
-      if (myParty && opponentParty) {
-        console.log(`${myParty.concat(opponentParty)} affected`);
-      }
-
-      animateMove(
-        move,
-        userIndex,
-        { myParty, opponentParty }
-      );
-      if (myTurn) {
-        console.log(`remainingEnergy: ${remainingEnergy}`);
-        setEnergy(remainingEnergy);
-        console.log(availableMoves)
-      }
+      animateMove(move, userIndex, targetIndexes);
       updateParties(parties);
+      if (myTurn) {
+        setEnergy(remainingEnergy);
+        setAvailableMoves(availableMoves)
+      }
     });
 
     return function unsubscribe() {
       sTurnChanged.off();
       sMoveUsed.off();
     }
-  }, [player, updateParties, changeTurn, setEnergy]);
-
-  function animateMove(move: Move, userIndex: number, targetIndexes?: UseMoveParams['targetIndexes']) {
-    const partyTileElement = partyTileRef[userIndex].current;
-    animateAttacking(partyTileElement);
-    targetIndexes?.opponentParty?.forEach(index => {
-      const opponentTileElement = opponentTileRef[index].current;
-      animateTakingDamage(opponentTileElement);
-    });
-  }
+  }, [
+    updateParties, changeTurn, setEnergy, animateMove, myTurn, setAvailableMoves
+  ]);
 
   function onClickOpponentPokemon(index: number) {
     if (choosenPokemonIdx === null || choosenMoveIdx === null) {
@@ -179,7 +174,7 @@ export default function Battle() {
         {choosenPokemonIdx === null || availableMoves[choosenPokemonIdx] === undefined
           ? null
           : availableMoves[choosenPokemonIdx].map((move, index) => {
-            const isDisabled = move.energy > energy;
+            const isDisabled = move.used || move.energy > energy;
             return (
               <MoveTile
                 chosen={choosenMoveIdx === index}
