@@ -26,6 +26,7 @@ import {
 } from './animate';
 import { getPokemonModel } from '../../../../components/PokemonModel/helper';
 import { concat } from 'ramda';
+import { UseMoveParams } from '../../../../api/base';
 
 type NullableIdx = number | null;
 
@@ -71,8 +72,17 @@ export default function Battle() {
       if (myParty && opponentParty) {
         console.log(`${myParty.concat(opponentParty)} affected`);
       }
-      console.log(`remainingEnergy: ${remainingEnergy}`);
-      setEnergy(remainingEnergy);
+
+      animateMove(
+        move,
+        userIndex,
+        { myParty, opponentParty }
+      );
+      if (myTurn) {
+        console.log(`remainingEnergy: ${remainingEnergy}`);
+        setEnergy(remainingEnergy);
+        console.log(availableMoves)
+      }
       updateParties(parties);
     });
 
@@ -82,10 +92,10 @@ export default function Battle() {
     }
   }, [player, updateParties, changeTurn, setEnergy]);
 
-  function animateMove(move: Move, userIndex: number, targetIndexes?: number[]) {
+  function animateMove(move: Move, userIndex: number, targetIndexes?: UseMoveParams['targetIndexes']) {
     const partyTileElement = partyTileRef[userIndex].current;
     animateAttacking(partyTileElement);
-    targetIndexes?.forEach(index => {
+    targetIndexes?.opponentParty?.forEach(index => {
       const opponentTileElement = opponentTileRef[index].current;
       animateTakingDamage(opponentTileElement);
     });
@@ -95,12 +105,6 @@ export default function Battle() {
     if (choosenPokemonIdx === null || choosenMoveIdx === null) {
       return;
     }
-    animateMove(
-      availableMoves[choosenMoveIdx][choosenMoveIdx],
-      choosenPokemonIdx,
-      [index]
-    );
-    setEnergy(energy => energy - 1);
     const moveTargetMultipleOpponent = false;
     let targetIndexes = [index];
     if (moveTargetMultipleOpponent) {
@@ -117,7 +121,6 @@ export default function Battle() {
         opponentParty: targetIndexes,
       },
     });
-    // TODO: make move unusable
     setChoosenOpponentIdx(null);
     setChoosenMoveIdx(null);
   }

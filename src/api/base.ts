@@ -56,7 +56,7 @@ export enum InboundEvent {
   // game event
   RoundStarted = 'round_started',
   TurnChanged = 'turn_changed',
-  MoveUsed = 'moved_used',
+  MoveUsed = 'move_used',
   PlayerUsedItem = 'player_used_item',
 }
 
@@ -123,7 +123,7 @@ export interface InboundEventParams {
 
 export type Parties = Record<Player['id'], BattlingPokemon[]>;
 
-interface UseMoveParams {
+export interface UseMoveParams {
   userIndex: number; // party index of the user
   moveIndex: number; // index of move the user has
   targetIndexes?: {
