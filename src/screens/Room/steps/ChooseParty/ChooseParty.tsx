@@ -6,6 +6,7 @@ import { TileContainer, Tile, TileDetail } from './ChooseParty.styled';
 import { append, without } from 'ramda';
 import GamplayContext from '../../GameplayContext';
 import { getPokemonModel } from '../../../../components/PokemonModel/helper';
+import Modal from '../../../../components/Modal';
 
 export interface ChoosePartyProps {
   onFinish: () => void;
@@ -14,6 +15,8 @@ export interface ChoosePartyProps {
 export default function ChooseParty({ onFinish }: ChoosePartyProps) {
   const [isWaiting, setIsWaiting] = useState(false);
   const [choosen, setChoosen] = useState<Array<number>>([]);
+  const [alertShown, setAlertShown] = useState(false);
+  const [confirmShown, setConfirmShown] = useState(false);
   const {
     availablePokemon,
     updateParties,
@@ -44,13 +47,11 @@ export default function ChooseParty({ onFinish }: ChoosePartyProps) {
   function onConfirmParty() {
     const { length } = choosen;
     if (length === 0) {
-      alert('Please select pokemon for your party!');
+      setAlertShown(true);
       return;
-    } else if (length < 3) {
-      const confirm = window.confirm(
-        `You only selected ${length} pokemon for your party. Are you sure?`
-      );
-      if (!confirm) return;
+    } else if (length < 3 && confirmShown === false) {
+      setConfirmShown(true);
+      return;
     }
     ready();
   }
@@ -83,6 +84,15 @@ export default function ChooseParty({ onFinish }: ChoosePartyProps) {
           ))}
         </TileContainer>
         <Button onClick={onConfirmParty}>Battle!</Button>
+        <Modal shown={alertShown} onClose={() => setAlertShown(false)}>
+          Please select pokemon for your party!
+          <Button onClick={() => setAlertShown(false)}>OK</Button>
+        </Modal>
+        <Modal shown={confirmShown} onClose={() => setConfirmShown(false)}>
+          You only selected {choosen.length} pokemon for your party. Are you sure?
+          <Button onClick={() => setConfirmShown(false)}>No</Button>
+          <Button onClick={onConfirmParty}>Yes</Button>
+        </Modal>
       </div>
     );
 }
