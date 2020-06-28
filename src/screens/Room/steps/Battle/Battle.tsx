@@ -128,7 +128,7 @@ export default function Battle() {
 
   const energyBar = concat(
     new Array(energy).fill({ empty: false }),
-    new Array(maxEnergy - energy).fill({ empty: true })
+    new Array(Math.abs(maxEnergy - energy)).fill({ empty: true })
   );
   return (
     <>

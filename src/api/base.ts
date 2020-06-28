@@ -6,7 +6,10 @@ import { QuickChatOption } from '../screens/Room/QuickChatPanel/constants';
 
 export const socket = io.connect(
   process.env.REACT_APP_SOCKET_ENDPOINT || '',
-  { path: '/ws/', transports: ['websocket'] }
+  {
+    path: process.env.REACT_APP_SOCKET_PATH,
+    transports: ['websocket'],
+  }
 );
 
 enum PlayerState {
