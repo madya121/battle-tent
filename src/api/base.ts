@@ -3,11 +3,13 @@ import Pokemon, { Move } from '../types/Pokemon';
 import Player from '../types/Player';
 import BattlingPokemon from '../types/BattlingPokemon';
 import { QuickChatOption } from '../screens/Room/QuickChatPanel/constants';
-import { ChosenItem } from '../screens/Room/steps/Battle/Battle';
 
 export const socket = io.connect(
   process.env.REACT_APP_SOCKET_ENDPOINT || '',
-  { path: '/ws/', transports: ['websocket'] }
+  {
+    path: process.env.REACT_APP_SOCKET_PATH,
+    transports: ['websocket'],
+  }
 );
 
 enum PlayerState {
@@ -28,22 +30,13 @@ export enum OutboundEvent {
   EndTurn = 'end_turn',
 }
 
-export type Parties = Record<Player['id'], BattlingPokemon[]>;
-
 export interface OutboundEventParams {
   Login: string; // Player's name
   PlayerReady: Array<number>; // array of available pokemon indexes
   Chat: QuickChatOption; // chat message
 
   // battle mechanics
-  UseMove: {
-    userIndex: number;
-    moveIndex: number;
-    targetIndexes?: {
-      myParty?: number[];
-      opponentParty?: number[];
-    }
-  };
+  UseMove: UseMoveParams;
 }
 
 export enum InboundEvent {
@@ -66,6 +59,16 @@ export enum InboundEvent {
   MoveUsed = 'moved_used',
   PlayerUsedItem = 'player_used_item',
 }
+
+type InitialTurnStates = {
+  my_turn: true;
+  energy: number;
+  moves: Move[][]; // array of moves, inside array of pokemon
+} | {
+  my_turn: false;
+  energy: never;
+  moves: never;
+};
 
 export interface InboundEventParams {
   ListPlayers: Array<{
@@ -104,26 +107,10 @@ export interface InboundEventParams {
     name: string; // User's name
     message: string; // chat message
   };
-  RoundStarted: {
-    parties: Parties;
-  };
-  TurnChanged: {
-    my_turn: true;
-    energy: number;
-    moves: Move[][]; // array of moves, inside array of pokemon
-  } | {
-    my_turn: false;
-    energy: never;
-    moves: never;
-  };
-  MoveUsed: {
+  RoundStarted: InitialTurnStates & { parties: Parties };
+  TurnChanged: InitialTurnStates;
+  MoveUsed: UseMoveParams & {
     move: Move;
-    userIndex: number; // party index of the user
-    moveIndex: number; // index of move the user has
-    targetIndexes?: {
-      myParty?: number[]; // party indexes of the target
-      opponentParty?: number[]; // party indexes of the target
-    };
     remainingEnergy: number;
     parties: Parties;
   };
@@ -131,5 +118,16 @@ export interface InboundEventParams {
     playerId: string;
     itemId: string;
     partyIndex: number;
+  };
+}
+
+export type Parties = Record<Player['id'], BattlingPokemon[]>;
+
+interface UseMoveParams {
+  userIndex: number; // party index of the user
+  moveIndex: number; // index of move the user has
+  targetIndexes?: {
+    myParty?: number[]; // party indexes of the target
+    opponentParty?: number[]; // party indexes of the target
   };
 }
