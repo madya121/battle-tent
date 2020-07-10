@@ -1,8 +1,5 @@
 import './animation.css';
-
-const ScratchSfx = require('../../../../assets/audio/sfx/moves/scratch.mp3');
-
-// enum Animation { Idle, TakingDamage, Attacking }
+import { Move } from '../../../../types/Pokemon';
 
 const ATTACK_DIRECTION_DOWN_CLASS = 'attack-direction-down';
 
@@ -30,8 +27,21 @@ export function animateTakingDamage(element: HTMLDivElement | null) {
   animateOnce('taking-damage', element);
 }
 
-export function animateAttacking(element: HTMLDivElement | null, attackDirection: 'up' | 'down') {
+export function animateAttacking(
+  move: Move,
+  element: HTMLDivElement | null,
+  attackDirection: 'up' | 'down'
+) {
   if (element === null) return;
-  new Audio(ScratchSfx).play();
+  let moveSfx;
+  try {
+    // move SFX based on Gen III asset.
+    // currently support move starts from A to D
+    moveSfx = require(`../../../../assets/audio/sfx/moves/${move.name}.mp3`);
+  } catch (e) {
+    // fallback for unsupported move (E onwards, except Scratch)
+    moveSfx = require(`../../../../assets/audio/sfx/moves/Cut.mp3`);
+  }
+  new Audio(moveSfx).play();
   animateOnce('attacking', element, attackDirection);
 }

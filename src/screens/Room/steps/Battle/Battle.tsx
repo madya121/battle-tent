@@ -58,7 +58,7 @@ export default function Battle() {
     targetIndexes?: UseMoveParams['targetIndexes']
   ) => {
     const attackingPokemon = (myTurn ? partyTileRef : opponentTileRef)[userIndex].current;
-    animateAttacking(attackingPokemon, myTurn ? 'up' : 'down');
+    animateAttacking(move, attackingPokemon, myTurn ? 'up' : 'down');
     targetIndexes?.opponentParty?.forEach(index => {
       const affectedPokemon = (myTurn ? opponentTileRef : partyTileRef)[index].current;
       animateTakingDamage(affectedPokemon);
