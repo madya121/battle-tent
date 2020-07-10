@@ -68,7 +68,11 @@ export default function Battle() {
   // subscription
   useEffect(function subscription() {
 
-    const sTurnChanged = subscribeTurnChanged(changeTurn);
+    const sTurnChanged = subscribeTurnChanged(battleState => {
+      setChoosenPokemonIdx(null);
+      setChoosenOpponentIdx(null);
+      changeTurn(battleState);
+    });
 
     const sMoveUsed = subscribeMoveUsed(({
       move,
@@ -136,6 +140,7 @@ export default function Battle() {
             <PartyTile
               chosen={choosenOpponentIdx === index}
               onClick={() => onClickOpponentPokemon(index)}
+              disabled={!myTurn}
               key={index}
             >
               <img
@@ -155,6 +160,7 @@ export default function Battle() {
             <PartyTile
               chosen={choosenPokemonIdx === index}
               onClick={() => myTurn && setChoosenPokemonIdx(index)}
+              disabled={!myTurn}
               key={index}
             >
               <img
