@@ -2,6 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 import { Touchable } from '../../../../components/basics';
 import { TouchableProps } from '../../../../components/basics/Touchable/Touchable';
+import { Type } from '../../../../types/Pokemon';
+import { getTypeColor } from '../../../../components/Type';
 
 export const BattleArea = styled.div`
   flex: 1;
@@ -17,7 +19,7 @@ export const PartyArea = styled.div`
   width: 100%;
 `;
 
-export const MoveOptionBox = styled.div`
+export const MoveOptionsBox = styled.div`
   align-self: center;
   width: 90%;
   height: 120px;
@@ -27,15 +29,20 @@ export const MoveOptionBox = styled.div`
   border-radius: 16px;
 `;
 
+interface MoveTileProps extends TouchableProps {
+  type: Type;
+  chosen: boolean;
+  disabled: boolean;
+}
+
 export const MoveTile = styled(
-  ({ chosen, disabled, ...props }: { chosen: boolean; disabled: boolean } & TouchableProps) =>
-    disabled ? <div {...props} /> : <Touchable {...props} />
+  ({ type, chosen, ...props }: MoveTileProps) => <Touchable {...props} />
 )`
   height: 36px;
   margin: 4px;
   padding: 8px;
-  background-color: teal;
   border-radius: 12px;
+  background-color: ${props => getTypeColor(props.type)};
   ${props => props.chosen ? 'border: 1px solid white;' : ''}
   ${props => props.disabled ? 'color: gray;' : ''}
 `;

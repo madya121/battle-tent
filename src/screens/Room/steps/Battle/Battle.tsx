@@ -11,7 +11,7 @@ import { Move } from '../../../../types/Pokemon';
 import {
   BattleArea,
   PartyArea,
-  MoveOptionBox,
+  MoveOptionsBox,
   MoveTile,
   EnergyBarContainer,
   EnergyBar,
@@ -176,17 +176,18 @@ export default function Battle() {
           ))}
         </PartyArea>
       </BattleArea>
-      <MoveOptionBox>
+      <MoveOptionsBox>
         {choosenPokemonIdx === null || availableMoves[choosenPokemonIdx] === undefined
           ? null
           : availableMoves[choosenPokemonIdx].map((move, index) => {
             const isDisabled = move.used || move.energy > energy;
             return (
               <MoveTile
+                type={move.type}
                 chosen={choosenMoveIdx === index}
+                disabled={isDisabled}
                 onClick={() => isDisabled || setChoosenMoveIdx(index)}
                 key={index}
-                disabled={isDisabled}
               >
                 <div>{move.name}</div>
                 <div>Power {move.power}</div>
@@ -195,7 +196,7 @@ export default function Battle() {
             );
           })
         }
-      </MoveOptionBox>
+      </MoveOptionsBox>
       <EnergyBarContainer>
         {energyBar.map(({ empty }, index) => (
           <EnergyBar empty={empty} key={index} />

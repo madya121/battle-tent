@@ -2,12 +2,10 @@ import React from 'react';
 
 const PlinkSfx = require('../../../assets/audio/sfx/plink.mp3');
 
-export type TouchableProps =
-  React.HTMLAttributes<HTMLDivElement> &
-  {
-    audioPath?: string;
-    disabled?: boolean;
-  };
+export interface TouchableProps extends React.HTMLAttributes<HTMLDivElement> {
+  audioPath?: string;
+  disabled?: boolean;
+};
 
 export default function Touchable({
   onClick,

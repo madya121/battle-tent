@@ -7,6 +7,7 @@ import { append, without } from 'ramda';
 import GamplayContext from '../../GameplayContext';
 import { getPokemonModel } from '../../../../components/PokemonModel/helper';
 import Modal from '../../../../components/Modal';
+import TypeLabel from '../../../../components/Type';
 
 export interface ChoosePartyProps {
   onFinish: () => void;
@@ -78,7 +79,7 @@ export default function ChooseParty({ onFinish }: ChoosePartyProps) {
               />
               <TileDetail>
                 <div>{name}</div>
-                <div>{types}</div>
+                <TypeLabel types={types} icon />
               </TileDetail>
             </Tile>
           ))}

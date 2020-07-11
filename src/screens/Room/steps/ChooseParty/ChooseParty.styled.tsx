@@ -15,6 +15,11 @@ export const Tile = styled(
 )`
   border: 1px solid ${props => props.chosen ? 'yellow' : 'white'};
   margin: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+}
 `;
 
 export const TileDetail = styled.div`
