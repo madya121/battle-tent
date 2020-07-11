@@ -11,21 +11,15 @@ import { Move } from '../../../../types/Pokemon';
 import {
   BattleArea,
   PartyArea,
-  PokemonTile,
-  TileDetail,
-  HealthBar,
   MoveOptionBox,
   MoveTile,
   EnergyBarContainer,
   EnergyBar,
 } from './Battle.styled';
-import {
-  animateAttacking,
-  animateTakingDamage,
-} from './animate';
-import { getPokemonModel } from '../../../../components/PokemonModel/helper';
+import { animateAttacking, animateTakingDamage } from './animate';
 import { concat } from 'ramda';
 import { UseMoveParams } from '../../../../api/base';
+import BattlingPokemonTile from './BattlingPokemonTile'
 
 type NullableIdx = number | null;
 
@@ -52,15 +46,33 @@ export default function Battle() {
     energy, maxEnergy, setEnergy,
   } = useContext(GamplayContext);
 
+  function getImageTileElement(
+    tileRef: React.RefObject<HTMLImageElement>[],
+    index: number
+  ) {
+    return tileRef[index].current;
+  }
+
+  useEffect(function checkEachPokemon() {
+    // check if the pokemon has fainted
+    // party.forEach((battlingPokemon, index) => {
+    //   if (battlingPokemon.health <= 0) {}
+    // });
+
+    // TODO check status condition (e.g. Poison, Binded, Whirpool, Seeded)
+  }, [party, opponentParty]);
+
   const animateMove = useCallback((
     move: Move,
     userIndex: number,
     targetIndexes?: UseMoveParams['targetIndexes']
   ) => {
-    const attackingPokemon = (myTurn ? partyTileRef : opponentTileRef)[userIndex].current;
+    const attackingPartyRef = myTurn ? partyTileRef : opponentTileRef;
+    const affectedPartyRef = myTurn ? opponentTileRef : partyTileRef;
+    const attackingPokemon = getImageTileElement(attackingPartyRef, userIndex);
     animateAttacking(move, attackingPokemon, myTurn ? 'up' : 'down');
     targetIndexes?.opponentParty?.forEach(index => {
-      const affectedPokemon = (myTurn ? opponentTileRef : partyTileRef)[index].current;
+      const affectedPokemon = getImageTileElement(affectedPartyRef, index);
       animateTakingDamage(affectedPokemon);
     });
   }, [partyTileRef, opponentTileRef]);
@@ -132,47 +144,35 @@ export default function Battle() {
     new Array(energy).fill({ empty: false }),
     new Array(Math.abs(maxEnergy - energy)).fill({ empty: true })
   );
+
   return (
     <>
       <BattleArea>
         <PartyArea style={{ alignSelf: 'flex-end', justifyContent: 'flex-end' }}>
           {opponentParty.map(({ health, maxHealth, pokemon: { name } }, index) => (
-            <PokemonTile
+            <BattlingPokemonTile
               chosen={choosenOpponentIdx === index}
               onClick={() => onClickOpponentPokemon(index)}
-              disabled={!myTurn}
+              name={name}
+              health={health}
+              maxHealth={maxHealth}
+              imageRef={opponentTileRef[index]}
               key={index}
-            >
-              <img
-                src={getPokemonModel(name)}
-                alt={name}
-                ref={opponentTileRef[index]}
-              />
-              <TileDetail>
-                <div>{name}</div>
-                <HealthBar percentage={health / maxHealth * 100} />
-              </TileDetail>
-            </PokemonTile>
+            />
           ))}
         </PartyArea>
         <PartyArea style={{ alignSelf: 'flex-start' }}>
           {party.map(({ health, maxHealth, pokemon: { name } }, index) => (
-            <PokemonTile
+            <BattlingPokemonTile
               chosen={choosenPokemonIdx === index}
               onClick={() => myTurn && setChoosenPokemonIdx(index)}
-              disabled={!myTurn}
+              name={name}
+              health={health}
+              maxHealth={maxHealth}
+              imageRef={partyTileRef[index]}
+              backSprite
               key={index}
-            >
-              <img
-                src={getPokemonModel(name, 'back')}
-                alt={name}
-                ref={partyTileRef[index]}
-              />
-              <TileDetail>
-                <div>{name}</div>
-                <HealthBar percentage={health / maxHealth * 100} />
-              </TileDetail>
-            </PokemonTile>
+            />
           ))}
         </PartyArea>
       </BattleArea>

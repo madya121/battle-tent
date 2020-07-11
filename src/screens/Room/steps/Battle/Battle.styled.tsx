@@ -16,25 +16,6 @@ export const PartyArea = styled.div`
   align-items: flex-end;
 `;
 
-type PartyTileProps = { chosen?: boolean, blurred?: boolean } & TouchableProps;
-
-export const PokemonTile = styled(
-  ({ chosen, blurred, ...props }: PartyTileProps) => <Touchable {...props} />
-)`
-  width: 25%;
-  align-items: center;
-  display: flex;
-  flex-direction: column;
-  margin: 8px;
-  filter: ${({ chosen, blurred }) =>
-    chosen ? 'drop-shadow(0 0 0.25rem lightyellow)' : 'none'
-  };
-`;
-
-export const TileDetail = styled.div`
-  text-transform: capitalize;
-`;
-
 export const MoveOptionBox = styled.div`
   align-self: center;
   width: 90%;
@@ -81,15 +62,4 @@ export const EnergyBar = styled.div<{ empty?: boolean }>`
   :not(:last-child) {
     border-right: 2px solid teal;
   }
-`;
-
-export const HealthBar = styled.div<{ percentage: number }>`
-  width: 100%;
-  height: 8px;
-  background: ${({ percentage }) => `
-    linear-gradient(to right, #9efb1b ${percentage}%, gray ${percentage}%)
-  `};
-  border: 1px solid white;
-  border-radius: 8px;
-  box-sizing: border-box;
 `;

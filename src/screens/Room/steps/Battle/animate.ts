@@ -12,14 +12,19 @@ function refreshElementAnimation(
   void element.offsetWidth;
 }
 
-function animateOnce(
+async function animateOnce(
   animationClass: string,
   element: HTMLDivElement,
-  attackDirection: 'up' | 'down' = 'up'
+  attackDirection?: 'up' | 'down'
 ) {
   element.classList.add(animationClass);
   attackDirection === 'down' && element.classList.add(ATTACK_DIRECTION_DOWN_CLASS);
-  setTimeout(() => refreshElementAnimation(animationClass, element), 200);
+  return new Promise(resolve => {
+    setTimeout(() => {
+      refreshElementAnimation(animationClass, element);
+      resolve();
+    }, 1000);
+  });
 }
 
 export function animateTakingDamage(element: HTMLDivElement | null) {
@@ -44,4 +49,12 @@ export function animateAttacking(
   }
   new Audio(moveSfx).play();
   animateOnce('attacking', element, attackDirection);
+}
+
+export function animateFainted(element: HTMLDivElement | null) {
+  if (element === null) return;
+  // new Audio(crySfx).play();
+  animateOnce('returning-to-pokeball', element).then(() => {
+    element.classList.add('fainted');
+  });
 }
