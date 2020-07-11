@@ -31,7 +31,7 @@ export default function BattlingPokemonTile({
   const isFainted = health <= 0;
 
   if (isFainted) {
-    animateFainted(imageRef.current);
+    setTimeout(() => animateFainted(imageRef.current), 500);
   }
 
   return (
