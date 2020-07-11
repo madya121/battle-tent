@@ -14,6 +14,7 @@ export const BattleArea = styled.div`
 export const PartyArea = styled.div`
   display: flex;
   align-items: flex-end;
+  width: 100%;
 `;
 
 export const MoveOptionBox = styled.div`

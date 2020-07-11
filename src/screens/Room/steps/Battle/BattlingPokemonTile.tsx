@@ -59,7 +59,7 @@ type PartyTileProps = { chosen?: boolean, blurred?: boolean } & TouchableProps;
 export const Container = styled(
   ({ chosen, blurred, ...props }: PartyTileProps) => <Touchable {...props} />
 )`
-  width: 25%;
+  width: 20%;
   align-items: center;
   display: flex;
   flex-direction: column;
