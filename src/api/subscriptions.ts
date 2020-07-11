@@ -98,3 +98,10 @@ export function subscribeMoveUsed(
   socket.on(InboundEvent.MoveUsed, callback);
   return { off: () => socket.off(InboundEvent.MoveUsed) };
 }
+
+export function subscribeGameOver(
+  callback: (params: InboundEventParams['GameOver']) => void
+) {
+  socket.on(InboundEvent.GameOver, callback);
+  return { off: () => socket.off(InboundEvent.GameOver) };
+}

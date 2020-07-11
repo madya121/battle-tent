@@ -58,6 +58,7 @@ export enum InboundEvent {
   TurnChanged = 'turn_changed',
   MoveUsed = 'move_used',
   PlayerUsedItem = 'player_used_item',
+  GameOver = 'game_over',
 }
 
 type InitialTurnStates = {
@@ -119,6 +120,10 @@ export interface InboundEventParams {
     playerId: string;
     itemId: string;
     partyIndex: number;
+  };
+  GameOver: {
+    winner: boolean;
+    draw?: boolean;
   };
 }
 
