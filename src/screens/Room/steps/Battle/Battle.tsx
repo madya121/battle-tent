@@ -11,7 +11,7 @@ import { Move } from '../../../../types/Pokemon';
 import {
   BattleArea,
   PartyArea,
-  PartyTile,
+  PokemonTile,
   TileDetail,
   HealthBar,
   MoveOptionBox,
@@ -135,9 +135,9 @@ export default function Battle() {
   return (
     <>
       <BattleArea>
-        <PartyArea style={{ alignSelf: 'flex-end' }}>
+        <PartyArea style={{ alignSelf: 'flex-end', justifyContent: 'flex-end' }}>
           {opponentParty.map(({ health, maxHealth, pokemon: { name } }, index) => (
-            <PartyTile
+            <PokemonTile
               chosen={choosenOpponentIdx === index}
               onClick={() => onClickOpponentPokemon(index)}
               disabled={!myTurn}
@@ -152,12 +152,12 @@ export default function Battle() {
                 <div>{name}</div>
                 <HealthBar percentage={health / maxHealth * 100} />
               </TileDetail>
-            </PartyTile>
+            </PokemonTile>
           ))}
         </PartyArea>
-        <PartyArea>
+        <PartyArea style={{ alignSelf: 'flex-start' }}>
           {party.map(({ health, maxHealth, pokemon: { name } }, index) => (
-            <PartyTile
+            <PokemonTile
               chosen={choosenPokemonIdx === index}
               onClick={() => myTurn && setChoosenPokemonIdx(index)}
               disabled={!myTurn}
@@ -172,7 +172,7 @@ export default function Battle() {
                 <div>{name}</div>
                 <HealthBar percentage={health / maxHealth * 100} />
               </TileDetail>
-            </PartyTile>
+            </PokemonTile>
           ))}
         </PartyArea>
       </BattleArea>

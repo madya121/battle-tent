@@ -8,6 +8,7 @@ export const BattleArea = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  overflow: hidden;
 `;
 
 export const PartyArea = styled.div`
@@ -17,9 +18,13 @@ export const PartyArea = styled.div`
 
 type PartyTileProps = { chosen?: boolean, blurred?: boolean } & TouchableProps;
 
-export const PartyTile = styled(
+export const PokemonTile = styled(
   ({ chosen, blurred, ...props }: PartyTileProps) => <Touchable {...props} />
 )`
+  width: 25%;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
   margin: 8px;
   filter: ${({ chosen, blurred }) =>
     chosen ? 'drop-shadow(0 0 0.25rem lightyellow)' : 'none'
@@ -79,7 +84,7 @@ export const EnergyBar = styled.div<{ empty?: boolean }>`
 `;
 
 export const HealthBar = styled.div<{ percentage: number }>`
-  width: 80px;
+  width: 100%;
   height: 8px;
   background: ${({ percentage }) => `
     linear-gradient(to right, #9efb1b ${percentage}%, gray ${percentage}%)
