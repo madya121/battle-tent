@@ -4,6 +4,7 @@ import {
   emitEndTurn,
   subscribeTurnChanged,
   subscribeMoveUsed,
+  subscribeGameOver,
   emitUseMove,
 } from '../../../../api';
 import { Button } from '../../../../components/basics';
@@ -53,15 +54,6 @@ export default function Battle() {
     return tileRef[index].current;
   }
 
-  useEffect(function checkEachPokemon() {
-    // check if the pokemon has fainted
-    // party.forEach((battlingPokemon, index) => {
-    //   if (battlingPokemon.health <= 0) {}
-    // });
-
-    // TODO check status condition (e.g. Poison, Binded, Whirpool, Seeded)
-  }, [party, opponentParty]);
-
   const animateMove = useCallback((
     move: Move,
     userIndex: number,
@@ -104,9 +96,14 @@ export default function Battle() {
       }
     });
 
+    const sGameOver = subscribeGameOver(({ winner, draw }) => {
+      // TODO: show modal, then quit the game
+    });
+
     return function unsubscribe() {
       sTurnChanged.off();
       sMoveUsed.off();
+      sGameOver.off();
     }
   }, [
     updateParties, changeTurn, setEnergy, animateMove, myTurn, setAvailableMoves
@@ -134,10 +131,6 @@ export default function Battle() {
     });
     setChoosenOpponentIdx(null);
     setChoosenMoveIdx(null);
-  }
-
-  function endTurn() {
-    emitEndTurn();
   }
 
   const energyBar = concat(
@@ -190,8 +183,10 @@ export default function Battle() {
                 key={index}
               >
                 <div>{move.name}</div>
-                <div>Power {move.power}</div>
-                <div>PP {move.pp}</div>
+                <div style={{ display: 'flex', justifyContent: 'space-around' }}>
+                  <div>Power {move.power}</div>
+                  <div>Energy {move.energy}</div>
+                </div>
               </MoveTile>
             );
           })
@@ -202,7 +197,7 @@ export default function Battle() {
           <EnergyBar empty={empty} key={index} />
         ))}
       </EnergyBarContainer>
-      {myTurn && <Button onClick={endTurn}>End Turn</Button>}
+      {myTurn && <Button onClick={emitEndTurn}>End Turn</Button>}
     </>
   );
 }
