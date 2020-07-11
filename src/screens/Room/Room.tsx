@@ -1,8 +1,9 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useCallback } from 'react';
 import { Button } from '../../components/basics';
 import * as Steps from './steps';
 import QuitModal from './QuitModal';
 import {
+  emitLeaveRoom,
   subscribePlayerJoinedTheRoom,
   subscribePlayerLeftTheRoom,
   subscribeLeftTheRoom,
@@ -22,6 +23,7 @@ import GameplayContext, { GameplayContextValue } from './GameplayContext';
 import BattlingPokemon from '../../types/BattlingPokemon';
 import Pokemon, { Move } from '../../types/Pokemon';
 import { Parties } from '../../api/base';
+import Modal from '../../components/Modal';
 
 enum RoomStep {
   ChooseParty,
@@ -57,15 +59,24 @@ export default function Room() {
   const gameplayContextValue: GameplayContextValue = {
     opponent,
     myTurn, changeTurn,
-    availablePokemon, availableMoves,
+    availablePokemon, availableMoves, setAvailableMoves,
     party, opponentParty, updateParties,
     energy, maxEnergy, setEnergy,
   };
   /** End of GameplayContexts */
 
+  const [playerLeftModalShowns, setPlayerLeftModalShowns] = useState(false);
   const [quitModalShown, setQuitModalShown] = useState(false);
   const [activeStep, setActiveStep] = useState(RoomStep.ChooseParty);
   const navigate = useContext(NavigationContext);
+
+  const backToLobby = useCallback(
+    () => {
+      emitLeaveRoom();
+      navigate(ScreenState.Lobby);
+    },
+    [navigate],
+  );
 
   // subscriptions
   useEffect(function subscribe() {
@@ -81,19 +92,17 @@ export default function Room() {
     });
 
     const sPlayerLeftTheRoom = subscribePlayerLeftTheRoom(({ name }) => {
-      alert(`Player ${name} left the room!`);
+      setPlayerLeftModalShowns(true);
     });
 
-    const sLeftTheRoom = subscribeLeftTheRoom(() => {
-      navigate(ScreenState.Lobby);
-    });
+    const sLeftTheRoom = subscribeLeftTheRoom(backToLobby);
 
     return function unsubscribe() {
       sPlayerJoinedTheRoom.off();
       sPlayerLeftTheRoom.off();
       sLeftTheRoom.off();
     }
-  }, [navigate, player]);
+  }, [navigate, player, backToLobby]);
 
   function openQuitModal() {
     setQuitModalShown(true);
@@ -106,7 +115,11 @@ export default function Room() {
 
   return (
     <LayoutContainer>
-      <QuitModal shown={quitModalShown} onClose={closeQuitModal} />
+      <QuitModal
+        shown={quitModalShown}
+        onClose={closeQuitModal}
+        onQuit={backToLobby}
+      />
       <TopArea>
         <OpponentInfo>
           <OpponentAvatar />
@@ -126,6 +139,10 @@ export default function Room() {
         </div>
         <QuickChatPanel />
       </main>
+      <Modal shown={playerLeftModalShowns} onClose={backToLobby}>
+        The opponent left the room!
+          <Button onClick={backToLobby}>OK</Button>
+      </Modal>
     </LayoutContainer>
   );
 }

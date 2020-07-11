@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect, useRef } from 'react';
+import React, { useState, useContext, useEffect, useRef, useCallback } from 'react';
 import GamplayContext from '../../GameplayContext';
 import {
   emitEndTurn,
@@ -8,24 +8,18 @@ import {
 } from '../../../../api';
 import { Button } from '../../../../components/basics';
 import { Move } from '../../../../types/Pokemon';
-import { PlayerContext } from '../../../../auth';
 import {
   BattleArea,
   PartyArea,
-  PartyTile,
-  TileDetail,
-  HealthBar,
-  MoveOptionBox,
+  MoveOptionsBox,
   MoveTile,
   EnergyBarContainer,
   EnergyBar,
 } from './Battle.styled';
-import {
-  animateAttacking,
-  animateTakingDamage,
-} from './animate';
-import { getPokemonModel } from '../../../../components/PokemonModel/helper';
+import { animateAttacking, animateTakingDamage } from './animate';
 import { concat } from 'ramda';
+import { UseMoveParams } from '../../../../api/base';
+import BattlingPokemonTile from './BattlingPokemonTile'
 
 type NullableIdx = number | null;
 
@@ -48,15 +42,49 @@ export default function Battle() {
   const {
     party, opponentParty, updateParties,
     myTurn, changeTurn,
-    availableMoves,
+    availableMoves, setAvailableMoves,
     energy, maxEnergy, setEnergy,
   } = useContext(GamplayContext);
-  const [player] = useContext(PlayerContext);
+
+  function getImageTileElement(
+    tileRef: React.RefObject<HTMLImageElement>[],
+    index: number
+  ) {
+    return tileRef[index].current;
+  }
+
+  useEffect(function checkEachPokemon() {
+    // check if the pokemon has fainted
+    // party.forEach((battlingPokemon, index) => {
+    //   if (battlingPokemon.health <= 0) {}
+    // });
+
+    // TODO check status condition (e.g. Poison, Binded, Whirpool, Seeded)
+  }, [party, opponentParty]);
+
+  const animateMove = useCallback((
+    move: Move,
+    userIndex: number,
+    targetIndexes?: UseMoveParams['targetIndexes']
+  ) => {
+    const attackingPartyRef = myTurn ? partyTileRef : opponentTileRef;
+    const affectedPartyRef = myTurn ? opponentTileRef : partyTileRef;
+    const attackingPokemon = getImageTileElement(attackingPartyRef, userIndex);
+    animateAttacking(move, attackingPokemon, myTurn ? 'up' : 'down');
+    targetIndexes?.opponentParty?.forEach(index => {
+      const affectedPokemon = getImageTileElement(affectedPartyRef, index);
+      animateTakingDamage(affectedPokemon);
+    });
+  }, [partyTileRef, opponentTileRef]);
 
   // subscription
   useEffect(function subscription() {
 
-    const sTurnChanged = subscribeTurnChanged(changeTurn);
+    const sTurnChanged = subscribeTurnChanged(battleState => {
+      setChoosenPokemonIdx(null);
+      setChoosenOpponentIdx(null);
+      changeTurn(battleState);
+    });
 
     const sMoveUsed = subscribeMoveUsed(({
       move,
@@ -64,43 +92,30 @@ export default function Battle() {
       moveIndex,
       remainingEnergy,
       parties,
-      targetIndexes: { myParty, opponentParty } = {},
+      availableMoves,
+      targetIndexes = {},
     }) => {
       // animate user and targets
-      console.log(`${userIndex} used ${move.name}!`);
-      if (myParty && opponentParty) {
-        console.log(`${myParty.concat(opponentParty)} affected`);
-      }
-      console.log(`remainingEnergy: ${remainingEnergy}`);
-      setEnergy(remainingEnergy);
+      animateMove(move, userIndex, targetIndexes);
       updateParties(parties);
+      if (myTurn) {
+        setEnergy(remainingEnergy);
+        setAvailableMoves(availableMoves)
+      }
     });
 
     return function unsubscribe() {
       sTurnChanged.off();
       sMoveUsed.off();
     }
-  }, [player, updateParties, changeTurn, setEnergy]);
-
-  function animateMove(move: Move, userIndex: number, targetIndexes?: number[]) {
-    const partyTileElement = partyTileRef[userIndex].current;
-    animateAttacking(partyTileElement);
-    targetIndexes?.forEach(index => {
-      const opponentTileElement = opponentTileRef[index].current;
-      animateTakingDamage(opponentTileElement);
-    });
-  }
+  }, [
+    updateParties, changeTurn, setEnergy, animateMove, myTurn, setAvailableMoves
+  ]);
 
   function onClickOpponentPokemon(index: number) {
     if (choosenPokemonIdx === null || choosenMoveIdx === null) {
       return;
     }
-    animateMove(
-      availableMoves[choosenMoveIdx][choosenMoveIdx],
-      choosenPokemonIdx,
-      [index]
-    );
-    setEnergy(energy => energy - 1);
     const moveTargetMultipleOpponent = false;
     let targetIndexes = [index];
     if (moveTargetMultipleOpponent) {
@@ -117,7 +132,6 @@ export default function Battle() {
         opponentParty: targetIndexes,
       },
     });
-    // TODO: make move unusable
     setChoosenOpponentIdx(null);
     setChoosenMoveIdx(null);
   }
@@ -130,59 +144,50 @@ export default function Battle() {
     new Array(energy).fill({ empty: false }),
     new Array(Math.abs(maxEnergy - energy)).fill({ empty: true })
   );
+
   return (
     <>
       <BattleArea>
-        <PartyArea style={{ alignSelf: 'flex-end' }}>
+        <PartyArea style={{ alignSelf: 'flex-end', justifyContent: 'flex-end' }}>
           {opponentParty.map(({ health, maxHealth, pokemon: { name } }, index) => (
-            <PartyTile
+            <BattlingPokemonTile
               chosen={choosenOpponentIdx === index}
               onClick={() => onClickOpponentPokemon(index)}
+              name={name}
+              health={health}
+              maxHealth={maxHealth}
+              imageRef={opponentTileRef[index]}
               key={index}
-            >
-              <img
-                src={getPokemonModel(name)}
-                alt={name}
-                ref={opponentTileRef[index]}
-              />
-              <TileDetail>
-                <div>{name}</div>
-                <HealthBar percentage={health / maxHealth * 100} />
-              </TileDetail>
-            </PartyTile>
+            />
           ))}
         </PartyArea>
-        <PartyArea>
+        <PartyArea style={{ alignSelf: 'flex-start' }}>
           {party.map(({ health, maxHealth, pokemon: { name } }, index) => (
-            <PartyTile
+            <BattlingPokemonTile
               chosen={choosenPokemonIdx === index}
               onClick={() => myTurn && setChoosenPokemonIdx(index)}
+              name={name}
+              health={health}
+              maxHealth={maxHealth}
+              imageRef={partyTileRef[index]}
+              backSprite
               key={index}
-            >
-              <img
-                src={getPokemonModel(name, 'back')}
-                alt={name}
-                ref={partyTileRef[index]}
-              />
-              <TileDetail>
-                <div>{name}</div>
-                <HealthBar percentage={health / maxHealth * 100} />
-              </TileDetail>
-            </PartyTile>
+            />
           ))}
         </PartyArea>
       </BattleArea>
-      <MoveOptionBox>
+      <MoveOptionsBox>
         {choosenPokemonIdx === null || availableMoves[choosenPokemonIdx] === undefined
           ? null
           : availableMoves[choosenPokemonIdx].map((move, index) => {
-            const isDisabled = move.energy > energy;
+            const isDisabled = move.used || move.energy > energy;
             return (
               <MoveTile
+                type={move.type}
                 chosen={choosenMoveIdx === index}
+                disabled={isDisabled}
                 onClick={() => isDisabled || setChoosenMoveIdx(index)}
                 key={index}
-                disabled={isDisabled}
               >
                 <div>{move.name}</div>
                 <div>Power {move.power}</div>
@@ -191,7 +196,7 @@ export default function Battle() {
             );
           })
         }
-      </MoveOptionBox>
+      </MoveOptionsBox>
       <EnergyBarContainer>
         {energyBar.map(({ empty }, index) => (
           <EnergyBar empty={empty} key={index} />

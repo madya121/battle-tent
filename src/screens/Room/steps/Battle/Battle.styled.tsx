@@ -2,35 +2,24 @@ import React from 'react';
 import styled from 'styled-components';
 import { Touchable } from '../../../../components/basics';
 import { TouchableProps } from '../../../../components/basics/Touchable/Touchable';
+import { Type } from '../../../../types/Pokemon';
+import { getTypeColor } from '../../../../components/Type';
 
 export const BattleArea = styled.div`
   flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  overflow: hidden;
 `;
 
 export const PartyArea = styled.div`
   display: flex;
   align-items: flex-end;
+  width: 100%;
 `;
 
-type PartyTileProps = { chosen?: boolean, blurred?: boolean } & TouchableProps;
-
-export const PartyTile = styled(
-  ({ chosen, blurred, ...props }: PartyTileProps) => <Touchable {...props} />
-)`
-  margin: 8px;
-  filter: ${({ chosen, blurred }) =>
-    chosen ? 'drop-shadow(0 0 0.25rem lightyellow)' : 'none'
-  };
-`;
-
-export const TileDetail = styled.div`
-  text-transform: capitalize;
-`;
-
-export const MoveOptionBox = styled.div`
+export const MoveOptionsBox = styled.div`
   align-self: center;
   width: 90%;
   height: 120px;
@@ -40,15 +29,20 @@ export const MoveOptionBox = styled.div`
   border-radius: 16px;
 `;
 
+interface MoveTileProps extends TouchableProps {
+  type: Type;
+  chosen: boolean;
+  disabled: boolean;
+}
+
 export const MoveTile = styled(
-  ({ chosen, disabled, ...props }: { chosen: boolean; disabled: boolean } & TouchableProps) =>
-    disabled ? <div {...props} /> : <Touchable {...props} />
+  ({ type, chosen, ...props }: MoveTileProps) => <Touchable {...props} />
 )`
   height: 36px;
   margin: 4px;
   padding: 8px;
-  background-color: teal;
   border-radius: 12px;
+  background-color: ${props => getTypeColor(props.type)};
   ${props => props.chosen ? 'border: 1px solid white;' : ''}
   ${props => props.disabled ? 'color: gray;' : ''}
 `;
@@ -76,15 +70,4 @@ export const EnergyBar = styled.div<{ empty?: boolean }>`
   :not(:last-child) {
     border-right: 2px solid teal;
   }
-`;
-
-export const HealthBar = styled.div<{ percentage: number }>`
-  width: 80px;
-  height: 8px;
-  background: ${({ percentage }) => `
-    linear-gradient(to right, #9efb1b ${percentage}%, gray ${percentage}%)
-  `};
-  border: 1px solid white;
-  border-radius: 8px;
-  box-sizing: border-box;
 `;

@@ -62,6 +62,7 @@ const StyledMaterialModal = styled(MaterialModal)`
 const ContentContainer = styled(Centered)`
   position: relative;
   width: 100%;
+  height: 200px;
   background-image: url(${ModalBg});
   background-repeat: no-repeat;
   background-size: contain;

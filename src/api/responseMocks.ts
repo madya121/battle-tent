@@ -1,11 +1,11 @@
-import Pokemon, { Stats } from '../types/Pokemon';
+import Pokemon, { Stats, Type } from '../types/Pokemon';
 import BattlingPokemon from '../types/BattlingPokemon';
 
 export const move1Mock = {
   id: '0',
   name: 'Tackle',
   description: 'description',
-  type: 'Normal',
+  type: Type.normal,
   power: 40,
   accuracy: 80,
   pp: 35,
@@ -16,7 +16,7 @@ export const move2Mock = {
   id: '1',
   name: 'poison Sting',
   description: 'long string for poison string description',
-  type: 'Bug',
+  type: Type.bug,
   power: 20,
   accuracy: 100,
   pp: 40,
@@ -27,7 +27,7 @@ export const move3Mock = {
   id: '2',
   name: 'Vine Whip',
   description: 'long string',
-  type: 'Grass',
+  type: Type.grass,
   power: 40,
   accuracy: 80,
   pp: 10,
@@ -38,7 +38,7 @@ export const move4Mock = {
   id: '3',
   name: 'Ember',
   description: 'long string',
-  type: 'Fire',
+  type: Type.fire,
   power: 40,
   accuracy: 80,
   pp: 35,
@@ -49,7 +49,7 @@ export const move5Mock = {
   id: '4',
   name: 'Bubble',
   description: 'long string',
-  type: 'Water',
+  type: Type.water,
   power: 20,
   accuracy: 80,
   pp: 40,
@@ -68,7 +68,7 @@ export const statsMock: Stats = {
 const pokemonMock1: Pokemon = {
   id: '001',
   name: 'bulbasaur',
-  types: ['poison', 'grass'],
+  types: [Type.poison, Type.grass],
   moves: [move1Mock, move3Mock],
   stats: statsMock,
 };
@@ -76,7 +76,7 @@ const pokemonMock1: Pokemon = {
 const pokemonMock2: Pokemon = {
   id: '002',
   name: 'charmander',
-  types: ['fire'],
+  types: [Type.fire],
   moves: [move1Mock, move4Mock],
   stats: statsMock,
 };
@@ -84,7 +84,7 @@ const pokemonMock2: Pokemon = {
 const pokemonMock3: Pokemon = {
   id: '003',
   name: 'squirtle',
-  types: ['water'],
+  types: [Type.water],
   moves: [move1Mock, move5Mock],
   stats: statsMock,
 };
@@ -92,7 +92,7 @@ const pokemonMock3: Pokemon = {
 const pokemonMock4: Pokemon = {
   id: '110',
   name: 'weezing',
-  types: ['poison'],
+  types: [Type.poison],
   moves: [move1Mock, move2Mock],
   stats: statsMock,
 };
@@ -100,7 +100,7 @@ const pokemonMock4: Pokemon = {
 export const pokemonMock5: Pokemon = {
   id: '024',
   name: 'arbok',
-  types: ['poison'],
+  types: [Type.poison],
   moves: [move1Mock, move2Mock],
   stats: statsMock,
 };
@@ -108,7 +108,7 @@ export const pokemonMock5: Pokemon = {
 const pokemonMock6: Pokemon = {
   id: '052',
   name: 'meowth',
-  types: ['normal'],
+  types: [Type.normal],
   moves: [move1Mock, move2Mock],
   stats: statsMock,
 };

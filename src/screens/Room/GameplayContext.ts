@@ -10,6 +10,7 @@ export interface GameplayContextValue {
   changeTurn: (battleState: InboundEventParams['TurnChanged']) => void;
   availablePokemon: Pokemon[];
   availableMoves: Move[][];
+  setAvailableMoves: React.Dispatch<React.SetStateAction<Move[][]>>;
   party: BattlingPokemon[];
   opponentParty: BattlingPokemon[];
   updateParties: (parties: Parties) => void;
@@ -24,6 +25,7 @@ export default React.createContext<GameplayContextValue>({
   changeTurn: () => { },
   availablePokemon: [],
   availableMoves: [],
+  setAvailableMoves: () => { },
   party: [],
   opponentParty: [],
   updateParties: () => { },
