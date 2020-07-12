@@ -29,6 +29,13 @@ export function subscribeFindingMatch(
   return { off: () => socket.off(InboundEvent.FindingMatch) };
 }
 
+export function subscribeFindingAi(
+  callback: (status: InboundEventParams['FindingAi']) => void
+) {
+  socket.on(InboundEvent.FindingAi, callback);
+  return { off: () => socket.off(InboundEvent.FindingAi) };
+}
+
 export function subscribeCancelledFindingMatch(
   callback: (status: InboundEventParams['CancelledFindingMatch']) => void
 ) {

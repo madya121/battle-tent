@@ -16,6 +16,7 @@ enum PlayerState {
   Connected = 'CONNECTED',
   MainMenu = 'MAIN_MENU',
   FindingMatch = 'FINDING_MATCH',
+  FindingAi = 'FINDING_AI',
   InRoom = 'IN_ROOM',
 }
 
@@ -28,6 +29,7 @@ export enum OutboundEvent {
   Chat = 'chat',
   UseMove = 'use_move',
   EndTurn = 'end_turn',
+  PlaySinglePlayer = 'play_single_player',
 }
 
 export interface OutboundEventParams {
@@ -46,6 +48,7 @@ export enum InboundEvent {
   ListPlayers = 'players_list',
   FindingMatch = 'finding_match',
   CancelledFindingMatch = 'cancelled_finding_match',
+  FindingAi = 'finding_ai',
   // lobby - room
   JoinedTheRoom = 'joined_the_room',
   // room
@@ -85,6 +88,9 @@ export interface InboundEventParams {
   };
   CancelledFindingMatch: {
     state: PlayerState.MainMenu;
+  };
+  FindingAi: {
+    state: PlayerState.FindingAi;
   };
   JoinedTheRoom: {
     state: PlayerState.InRoom;
