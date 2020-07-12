@@ -14,6 +14,10 @@ export function emitCancelFindMatch() {
   socket.emit(OutboundEvent.CancelFindMatch);
 }
 
+export function emitPlaySinglePlayer() {
+  socket.emit(OutboundEvent.PlaySinglePlayer);
+}
+
 export function emitLeaveRoom() {
   socket.emit(OutboundEvent.LeaveRoom);
 }

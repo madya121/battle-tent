@@ -8,9 +8,11 @@ import Music from '../../Music';
 import {
   subscribeFindingMatch,
   subscribeCancelledFindingMatch,
+  subscribeFindingAi,
   subscribeJoinedTheRoom,
   emitFindMatch,
   emitCancelFindMatch,
+  emitPlaySinglePlayer,
 } from '../../api';
 import Navbar from '../../components/Navbar';
 
@@ -30,6 +32,7 @@ export default function Lobby() {
   // subscriptions
   useEffect(function subscribe() {
     const sFindingMatch = subscribeFindingMatch(() => setIsFindingMatch(true));
+    const sFindingAi = subscribeFindingAi(() => setIsFindingMatch(true));
     const sCancelledFindingMatch = subscribeCancelledFindingMatch(() => {
       setIsFindingMatch(false);
     });
@@ -39,18 +42,11 @@ export default function Lobby() {
     });
     return function unsubscribe() {
       sFindingMatch.off();
+      sFindingAi.off();
       sJoinedTheRoom.off();
       sCancelledFindingMatch.off();
     }
   }, [navigate]);
-
-  async function onClickFindMatch() {
-    emitFindMatch();
-  }
-
-  async function onClickCancelFindMatch() {
-    emitCancelFindMatch();
-  }
 
   async function onInviteMatch() {
     setIsFindingMatch(true);
@@ -84,11 +80,12 @@ export default function Lobby() {
         {isFindingMatch ? (
           <>
             <LoadingIndicator />
-            <Button onClick={onClickCancelFindMatch}>Cancel</Button>
+            <Button onClick={emitCancelFindMatch}>Cancel</Button>
           </>
         ) :
           <div>
-            <Button onClick={onClickFindMatch}>Find Match</Button>
+            <Button onClick={emitPlaySinglePlayer}>Single Player</Button>
+            <Button onClick={emitFindMatch}>Find Match</Button>
             <Button disabled onClick={openInviteModal}>Invite</Button>
           </div>
         }
