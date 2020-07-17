@@ -7,7 +7,6 @@ import {
   subscribeGameOver,
   emitUseMove,
 } from '../../../../api';
-import { Button } from '../../../../components/basics';
 import { Move } from '../../../../types/Pokemon';
 import {
   BattleArea,
@@ -16,6 +15,7 @@ import {
   MoveTile,
   EnergyBarContainer,
   EnergyBar,
+  EndTurnButton,
 } from './Battle.styled';
 import { animateAttacking, animateTakingDamage } from './animate';
 import { concat } from 'ramda';
@@ -200,13 +200,16 @@ export default function Battle() {
           })
         }
       </MoveOptionsBox>
+      <EndTurnButton hidden={!myTurn} onClick={emitEndTurn}>
+        End Turn
+        </EndTurnButton>
+      {activeModal}
+
       <EnergyBarContainer>
         {energyBar.map(({ empty }, index) => (
           <EnergyBar empty={empty} key={index} />
         ))}
       </EnergyBarContainer>
-      {myTurn && <Button onClick={emitEndTurn}>End Turn</Button>}
-      {activeModal}
     </>
   );
 }

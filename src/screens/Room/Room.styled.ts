@@ -16,6 +16,22 @@ export const TopArea = styled.header`
   box-sizing: border-box;
   padding: 16px;
 `;
+export const MainArea = styled.main`
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  width: 100%;
+  position: relative;
+`;
+
+export const BottomArea = styled.footer`
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 16px;
+`;
 
 export const OpponentAvatar = styled.div`
   display: inline-block;
