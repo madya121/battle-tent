@@ -21,6 +21,7 @@ import { animateAttacking, animateTakingDamage } from './animate';
 import { concat } from 'ramda';
 import { UseMoveParams } from '../../../../api/base';
 import BattlingPokemonTile from './BattlingPokemonTile'
+import GameOverModal from './GameOverModal'
 
 type NullableIdx = number | null;
 
@@ -28,6 +29,7 @@ export default function Battle() {
   const [choosenMoveIdx, setChoosenMoveIdx] = useState<NullableIdx>(null);
   const [choosenPokemonIdx, setChoosenPokemonIdx] = useState<NullableIdx>(null);
   const [choosenOpponentIdx, setChoosenOpponentIdx] = useState<NullableIdx>(null);
+  const [activeModal, setActiveModal] = useState<JSX.Element | null>(null);
 
   const partyTileRef = [
     useRef<HTMLImageElement>(null),
@@ -97,7 +99,13 @@ export default function Battle() {
     });
 
     const sGameOver = subscribeGameOver(({ winner, draw }) => {
-      // TODO: show modal, then quit the game
+      setActiveModal(
+        <GameOverModal
+          shown={true}
+          gameResult={draw ? 'draw' : winner ? 'win' : 'lose'}
+          onRematch={() => setActiveModal(null)}
+        />
+      );
     });
 
     return function unsubscribe() {
@@ -198,6 +206,7 @@ export default function Battle() {
         ))}
       </EnergyBarContainer>
       {myTurn && <Button onClick={emitEndTurn}>End Turn</Button>}
+      {activeModal}
     </>
   );
 }
