@@ -8,6 +8,7 @@ import { PlayerContext } from '../../auth';
 import Navbar from '../../components/Navbar';
 import Logo from '../../assets/images/logo.png';
 import Modal from '../../components/Modal';
+import Banner from '../../components/Banner';
 
 const loginScreenBgm = new Audio(
   require('../../assets/audio/bgm/03_Title_Screen.mp3')
@@ -45,6 +46,7 @@ export default function Login() {
       </LogoHeader>
       <main style={{ flex: 2 }}>
         <Modal shown onClose={() => { }} hideBackdrop>
+          <Banner>Welcome</Banner>
           <Navbar />
           <h3>What is your display name?</h3>
           <Input
