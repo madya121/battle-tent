@@ -59,6 +59,10 @@ function VolumeButton() {
 }
 
 const NavbarContainer = styled.nav`
+  position: absolute;
+  top: 0;
+  left: 0;
   display: flex;
   width: 100%;
+  padding: 16px 32px;
 `;

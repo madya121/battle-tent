@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { Input, Button } from '../../components/basics';
+import { Input, Button, Centered } from '../../components/basics';
 import Modal, { ModalProps } from '../../components/Modal';
 import LoadingIndicator from '../../components/LoadingIndicator';
 import { NavigationContext, ScreenState } from '../../navigation';
@@ -15,6 +15,10 @@ import {
   emitPlaySinglePlayer,
 } from '../../api';
 import Navbar from '../../components/Navbar';
+import Banner from '../../components/Banner';
+import Logo from '../../assets/images/logo.png';
+import Welcome from '../../assets/images/welcome.png';
+import { PlayerContext } from '../../auth';
 
 const LobbyScreenBgm = new Audio(
   require('../../assets/audio/bgm/2-41_Battle_Tower.mp3')
@@ -48,6 +52,8 @@ export default function Lobby() {
     }
   }, [navigate]);
 
+  const [player] = useContext(PlayerContext);
+
   async function onInviteMatch() {
     setIsFindingMatch(true);
     try {
@@ -71,11 +77,15 @@ export default function Lobby() {
 
   return (
     <LayoutContainer>
-      <header>
+      <header style={{ marginTop: 80 }}>
         <Navbar />
-        <h1>Battle Tent</h1>
+        <Centered>
+          <img src={Logo} alt='Battle Tent' style={{ width: 200 }} />
+          <img src={Welcome} alt='Welcome' style={{ width: 250 }} />
+          <Banner style={{ marginBottom: 20 }}>{player.name}</Banner>
+        </Centered>
       </header>
-      <main>
+      <main style={{ flex: 1 }}>
         <InviteModal shown={inviteModalShown} onClose={closeInviteModal} />
         {isFindingMatch ? (
           <>

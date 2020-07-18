@@ -9,5 +9,6 @@ export default styled.div`
   background-size: contain;
   padding: 12px 24px;
   min-width: 200px;
+  max-width: 230px;
   background-position: center 4px;
 `;
