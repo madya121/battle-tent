@@ -13,8 +13,14 @@ export default function ConnectionProblemIndicator() {
   const [showIndicator, setShowIndicator] = useState(false);
 
   useEffect(() => {
-    subscribeReconnecting(() => setShowIndicator(true));
-    subscribeReconnected(() => setShowIndicator(false));
+    subscribeReconnecting(() => {
+      setShowIndicator(true);
+      console.warn('Disconnected, attempt to reconnect...');
+    });
+    subscribeReconnected(() => {
+      setShowIndicator(false);
+      console.warn('Reconnected!');
+    });
   }, []);
 
   return (
