@@ -1,12 +1,46 @@
 import { socket, InboundEventParams, InboundEvent } from './base';
-import {
-  battlingPartyMock,
-  opponentPartyMock,
-  move1Mock,
-  move3Mock,
-  move4Mock,
-  move5Mock,
-} from './responseMocks';
+
+socket.on('disconnect', (reason: string) => {
+  if (reason === 'io server disconnect') {
+    // the disconnection was initiated by the server, you need to reconnect manually
+    socket.connect();
+  }
+  // else the socket will automatically try to reconnect
+});
+
+socket.on('reconnect_failed', () => {
+  // ...
+});
+
+export function subscribeDisconnected(
+  callback: (reason: string) => void
+) {
+  socket.on('disconnect', callback);
+}
+
+export function subscribeReconnecting(
+  callback: () => void
+) {
+  socket.on('reconnecting', callback);
+}
+
+export function subscribeReconnected(
+  callback: () => void
+) {
+  socket.on('reconnect', callback);
+}
+
+export function subscribeReconnectError(
+  callback: (error: any) => void
+) {
+  socket.on('reconnect_error', callback);
+}
+
+export function subscribeReconnectFailed(
+  callback: () => void
+) {
+  socket.on('reconnect_failed', callback);
+}
 
 export function subscribePlayers(
   callback: (players: InboundEventParams['ListPlayers']) => void
@@ -91,11 +125,6 @@ export function subscribeTurnChanged(
   callback: (battleState: InboundEventParams['TurnChanged']) => void
 ) {
   socket.on(InboundEvent.TurnChanged, callback);
-  // moves: [
-  //   [move1Mock, move3Mock],
-  //   [move1Mock, move4Mock],
-  //   [move1Mock, move5Mock],
-  // ]
   return { off: () => socket.off(InboundEvent.TurnChanged) };
 }
 
