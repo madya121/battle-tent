@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { Centered } from '../../components/basics';
-import BackgroundImage from '../../assets/images/title-background.jpg';
+import BackgroundImage from '../../assets/images/ui/title-background.jpg';
 
 export const LayoutContainer = styled(Centered)`
   background: url(${BackgroundImage}) no-repeat fixed center;

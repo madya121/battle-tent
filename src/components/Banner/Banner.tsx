@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import BannerBase from '../../assets/images/banner_base.png';
+import BannerBase from '../../assets/images/ui/banner_base.png';
 
 export default styled.div`
   font-family: HeadTextFont;

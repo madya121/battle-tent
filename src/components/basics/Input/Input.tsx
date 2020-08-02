@@ -1,5 +1,5 @@
 import React from 'react';
-import TextFieldBg from '../../../assets/images/text_field_bg.png';
+import TextFieldBg from '../../../assets/images/ui/text_field_bg.png';
 import styled from 'styled-components';
 
 export default function Input(props: React.InputHTMLAttributes<HTMLInputElement>) {

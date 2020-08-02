@@ -47,5 +47,6 @@ function StateRouter() {
 const ScreenContainer = styled.div`
   max-width: 425px;
   margin: auto;
+  overflow: hidden;
   position: relative;
 `;

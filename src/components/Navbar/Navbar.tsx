@@ -4,8 +4,8 @@ import { NavigationContext, ScreenState } from '../../navigation';
 import Music from '../../Music';
 import styled from 'styled-components';
 import { IconButton } from '@material-ui/core';
-import VolumeOn from '../../assets/images/sound.png';
-import VolumeOff from '../../assets/images/sound_off.png';
+import VolumeOn from '../../assets/images/ui/sound.png';
+import VolumeOff from '../../assets/images/ui/sound_off.png';
 import { guest } from '../../auth/PlayerContext';
 
 export default function Navbar() {
