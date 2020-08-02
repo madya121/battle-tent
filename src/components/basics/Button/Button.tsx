@@ -5,7 +5,7 @@ import {
   ButtonProps,
 } from '@material-ui/core/Button';
 import { Touchable } from '..';
-import ButtonBase from '../../../assets/images/button_base.png'
+import ButtonBase from '../../../assets/images/ui/button_base.png'
 
 export default function Button({ disabled, ...props }:
   Required<Pick<ButtonProps, 'onClick' | 'children'>>

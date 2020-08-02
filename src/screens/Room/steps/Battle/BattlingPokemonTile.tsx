@@ -67,15 +67,19 @@ export const Container = styled(
   filter: ${({ chosen }) =>
     chosen ? 'drop-shadow(0 0 0.25rem lightyellow)' : 'none'
   };
+  z-index: 1;
 `;
 
 export const TileDetail = styled.div<{ fainted: boolean }>`
   text-transform: capitalize;
   ${props => props.fainted && 'visibility: hidden'}
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
 export const HealthBar = styled.div<{ percentage: number }>`
-  width: 100%;
+  width: 70px;
   height: 8px;
   background: ${({ percentage }) => `
     linear-gradient(to right, #9efb1b ${percentage}%, gray ${percentage}%)

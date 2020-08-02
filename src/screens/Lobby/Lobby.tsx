@@ -16,8 +16,8 @@ import {
 } from '../../api';
 import Navbar from '../../components/Navbar';
 import Banner from '../../components/Banner';
-import Logo from '../../assets/images/logo.png';
-import Welcome from '../../assets/images/welcome.png';
+import Logo from '../../assets/images/ui/logo.png';
+import Welcome from '../../assets/images/ui/welcome.png';
 import { PlayerContext } from '../../auth';
 
 const LobbyScreenBgm = new Audio(

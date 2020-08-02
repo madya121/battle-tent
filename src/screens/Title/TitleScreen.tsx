@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { NavigationContext, ScreenState } from '../../navigation';
 import { Touchable } from '../../components/basics';
 import { LayoutContainer, LogoHeader } from './TitleScreen.styled';
-import Logo from '../../assets/images/logo.png';
+import Logo from '../../assets/images/ui/logo.png';
 
 export default function TitleScreen() {
   const navigate = useContext(NavigationContext);

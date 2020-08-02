@@ -4,8 +4,8 @@ import Modal, { ModalProps } from '../../../../components/Modal';
 import Banner from '../../../../components/Banner';
 import { NavigationContext, ScreenState } from '../../../../navigation';
 import { emitLeaveRoom } from '../../../../api';
-import Win from '../../../../assets/images/win.png';
-import Lose from '../../../../assets/images/lose.png';
+import Win from '../../../../assets/images/ui/win.png';
+import Lose from '../../../../assets/images/ui/lose.png';
 
 export default function GameOverModal({
   shown,

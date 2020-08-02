@@ -6,7 +6,7 @@ import { LayoutContainer, LogoHeader } from './Login.styled';
 import Music from '../../Music';
 import { PlayerContext } from '../../auth';
 import Navbar from '../../components/Navbar';
-import Logo from '../../assets/images/logo.png';
+import Logo from '../../assets/images/ui/logo.png';
 import Modal from '../../components/Modal';
 import Banner from '../../components/Banner';
 

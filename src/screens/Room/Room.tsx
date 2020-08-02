@@ -17,7 +17,7 @@ import {
   MainArea,
   BottomArea,
   OpponentInfo,
-  OpponentAvatar,
+  TrainerAvatar,
 } from './Room.styled';
 import { find } from 'ramda';
 import { PlayerContext } from '../../auth';
@@ -126,7 +126,7 @@ export default function Room() {
         <Button onClick={openQuitModal}>Quit</Button>
         <OpponentInfo>
           <div>{opponent && opponent.name}</div>
-          <OpponentAvatar />
+          <TrainerAvatar />
         </OpponentInfo>
       </TopArea>
       <MainArea>
@@ -139,7 +139,7 @@ export default function Room() {
         </GameplayContext.Provider>
       </MainArea>
       <BottomArea>
-        <OpponentAvatar />
+        <TrainerAvatar />
         <QuickChatPanel />
       </BottomArea>
       <Modal shown={playerLeftModalShowns} onClose={backToLobby}>

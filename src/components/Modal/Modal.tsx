@@ -7,8 +7,8 @@ import {
 import Fade from '@material-ui/core/Fade';
 import Backdrop from '@material-ui/core/Backdrop';
 import { Centered } from '../basics';
-import ModalBg from '../../assets/images/modal_bg.png';
-import CloseIcon from '../../assets/images/close_button.png';
+import ModalBg from '../../assets/images/ui/modal_bg.png';
+import CloseIcon from '../../assets/images/ui/close_button.png';
 
 const PlinkSfx = require('../../assets/audio/sfx/plink.mp3');
 
