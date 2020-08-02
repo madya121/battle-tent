@@ -4,6 +4,7 @@ import TitleScreen from '../screens/Title';
 import LoginScreen from '../screens/Login';
 import LobbyScreen from '../screens/Lobby';
 import RoomScreen from '../screens/Room';
+import ConnectionProblemIndicator from '../components/ConnectionProblemIndicator';
 import { NavigationContext, ScreenState } from '.';
 import styled from 'styled-components';
 
@@ -37,6 +38,7 @@ function StateRouter() {
     <NavigationContext.Provider value={setScreenState}>
       <ScreenContainer>
         <ActiveScreen />
+        <ConnectionProblemIndicator />
       </ScreenContainer>
     </NavigationContext.Provider>
   );
@@ -45,4 +47,5 @@ function StateRouter() {
 const ScreenContainer = styled.div`
   max-width: 425px;
   margin: auto;
+  position: relative;
 `;

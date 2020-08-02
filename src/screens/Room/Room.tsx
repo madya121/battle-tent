@@ -14,6 +14,8 @@ import QuickChatPanel from './QuickChatPanel';
 import {
   LayoutContainer,
   TopArea,
+  MainArea,
+  BottomArea,
   OpponentInfo,
   OpponentAvatar,
 } from './Room.styled';
@@ -121,24 +123,25 @@ export default function Room() {
         onQuit={backToLobby}
       />
       <TopArea>
-        <OpponentInfo>
-          <OpponentAvatar />
-          <div>{opponent && opponent.name}</div>
-        </OpponentInfo>
         <Button onClick={openQuitModal}>Quit</Button>
+        <OpponentInfo>
+          <div>{opponent && opponent.name}</div>
+          <OpponentAvatar />
+        </OpponentInfo>
       </TopArea>
-      <main style={{ display: 'flex', flexDirection: 'column', flex: 1, width: '100%' }}>
-        <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
-          <GameplayContext.Provider value={gameplayContextValue}>
-            {activeStep === RoomStep.ChooseParty ? (
-              <Steps.ChooseParty onFinish={goToBattleStep} />
-            ) : activeStep === RoomStep.Battle ? (
-              <Steps.Battle />
-            ) : null}
-          </GameplayContext.Provider>
-        </div>
+      <MainArea>
+        <GameplayContext.Provider value={gameplayContextValue}>
+          {activeStep === RoomStep.ChooseParty ? (
+            <Steps.ChooseParty onFinish={goToBattleStep} />
+          ) : activeStep === RoomStep.Battle ? (
+            <Steps.Battle />
+          ) : null}
+        </GameplayContext.Provider>
+      </MainArea>
+      <BottomArea>
+        <OpponentAvatar />
         <QuickChatPanel />
-      </main>
+      </BottomArea>
       <Modal shown={playerLeftModalShowns} onClose={backToLobby}>
         The opponent left the room!
           <Button onClick={backToLobby}>OK</Button>
