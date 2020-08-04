@@ -7,7 +7,7 @@ import { getTypeColor } from '../../../../components/Type';
 import { Button } from '../../../../components/basics';
 
 export const BattleArea = styled.div`
-  height: 400px;
+  height: 375px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -51,7 +51,7 @@ export const MoveTile = styled(
 
 export const EnergyBarContainer = styled.div`
   position: absolute;
-  bottom: -120px;
+  bottom: 30px;
   left: 75px;
   width: 64%;
   align-self: center;
