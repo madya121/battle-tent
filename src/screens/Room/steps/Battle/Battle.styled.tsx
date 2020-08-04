@@ -7,7 +7,7 @@ import { getTypeColor } from '../../../../components/Type';
 import { Button } from '../../../../components/basics';
 
 export const BattleArea = styled.div`
-  flex: 1;
+  height: 400px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -18,19 +18,6 @@ export const PartyArea = styled.div`
   align-items: flex-end;
   width: 100%;
   height: 140px;
-  position: relative;
-  
-  &::after {
-    content: "";
-    position: absolute;
-    background: #1a4860;
-    width: 70%;
-    height: 60%;
-    top: 60px;
-    border-radius: 50%;
-    border: 4px solid #96b6c2;
-    z-index: 0;
-  }
 `;
 
 export const MoveOptionsBox = styled.div`

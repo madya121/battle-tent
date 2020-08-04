@@ -34,17 +34,16 @@ export default function BattlingPokemonTile({
     setTimeout(() => animateFainted(imageRef.current), 500);
   }
 
+  const src = getPokemonModel(name, backSprite ? 'back' : 'idle');
   return (
     <Container
       chosen={chosen}
       onClick={onClick}
       disabled={!myTurn || isFainted}
     >
-      <img
-        src={getPokemonModel(name, backSprite ? 'back' : 'idle')}
-        alt={name}
-        ref={imageRef}
-      />
+      <TileImageContainer src={src}>
+        <img src={src} alt={name} ref={imageRef} />
+      </TileImageContainer>
       <TileDetail fainted={isFainted}>
         <div>{name}</div>
         <HealthBar percentage={health / maxHealth * 100} />
@@ -68,6 +67,25 @@ export const Container = styled(
     chosen ? 'drop-shadow(0 0 0.25rem lightyellow)' : 'none'
   };
   z-index: 1;
+`;
+
+export const TileImageContainer = styled.div<{ src: string }>`
+  position: relative;
+
+  :after {
+    content: "";
+    position: absolute;
+    background: url(${props => props.src});
+    z-index: -1;
+    bottom: -18px;
+    left: 9px;
+    height: 100%;
+    width: 100%;
+    filter: drop-shadow(-18px -4px 4px rgba(0,0,0,0.75));
+    transform: skewX(-30deg) scaleY(0.2);
+    filter: contrast(0%) grayscale(1) brightness(0.5) blur(8px);
+    opacity: 0.25;
+  }
 `;
 
 export const TileDetail = styled.div<{ fainted: boolean }>`

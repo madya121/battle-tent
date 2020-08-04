@@ -2,8 +2,6 @@ import styled from 'styled-components';
 import { IconButton } from '../../../components/basics';
 
 export const Container = styled.div`
-  position: relative;
-  height: 120px;
   display: flex;
   justify-content: flex-end;
   align-items: flex-end;
@@ -18,8 +16,10 @@ export const ModalToggle = styled(IconButton)`
 
 // top: ${props => props.shown ? 0 : '120px'};
 export const OptionModal = styled.div<{ shown: boolean }>`
-  right: 40px;
-  height: ${props => props.shown ? '100%' : 0};
+  position: absolute;
+  right: 54px;
+  bottom: 10px;
+  height: ${props => props.shown ? '120px' : 0};
   width: ${props => props.shown ? 'calc(100% - 60px)' : 0};
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;

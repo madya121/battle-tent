@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext, useCallback } from 'react';
-import { Button } from '../../components/basics';
+import { Button, IconButton } from '../../components/basics';
 import * as Steps from './steps';
-import QuitModal from './QuitModal';
+import SettingModal from './SettingModal';
 import {
   emitLeaveRoom,
   subscribePlayerJoinedTheRoom,
@@ -26,6 +26,7 @@ import BattlingPokemon from '../../types/BattlingPokemon';
 import Pokemon, { Move } from '../../types/Pokemon';
 import { Parties } from '../../api/base';
 import Modal from '../../components/Modal';
+import SettingIcon from '../../assets/images/ui/setting.png';
 
 enum RoomStep {
   ChooseParty,
@@ -68,7 +69,7 @@ export default function Room() {
   /** End of GameplayContexts */
 
   const [playerLeftModalShowns, setPlayerLeftModalShowns] = useState(false);
-  const [quitModalShown, setQuitModalShown] = useState(false);
+  const [settingModalShown, setSettingModalShown] = useState(false);
   const [activeStep, setActiveStep] = useState(RoomStep.ChooseParty);
   const navigate = useContext(NavigationContext);
 
@@ -106,24 +107,21 @@ export default function Room() {
     }
   }, [navigate, player, backToLobby]);
 
-  function openQuitModal() {
-    setQuitModalShown(true);
+  function openSettingModal() {
+    setSettingModalShown(true);
   }
-  function closeQuitModal() {
-    setQuitModalShown(false);
+  function closeSettingModal() {
+    setSettingModalShown(false);
   }
 
   const goToBattleStep = () => setActiveStep(RoomStep.Battle);
 
   return (
     <LayoutContainer>
-      <QuitModal
-        shown={quitModalShown}
-        onClose={closeQuitModal}
-        onQuit={backToLobby}
-      />
       <TopArea>
-        <Button onClick={openQuitModal}>Quit</Button>
+        <IconButton aria-label="setting" onClick={openSettingModal}>
+          <img alt="setting" src={SettingIcon} width="28px" />
+        </IconButton>
         <OpponentInfo>
           <div>{opponent && opponent.name}</div>
           <TrainerAvatar />
@@ -142,6 +140,11 @@ export default function Room() {
         <TrainerAvatar />
         <QuickChatPanel />
       </BottomArea>
+      <SettingModal
+        shown={settingModalShown}
+        onClose={closeSettingModal}
+        onQuit={backToLobby}
+      />
       <Modal shown={playerLeftModalShowns} onClose={backToLobby}>
         The opponent left the room!
           <Button onClick={backToLobby}>OK</Button>
