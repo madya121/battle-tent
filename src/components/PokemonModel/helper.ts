@@ -5,9 +5,19 @@ export function getPokemonModel(
   variant: ModelVariant = 'idle'
 ) {
   const ENDPOINT = 'https://projectpokemon.org/images';
+  const fileName = getModelFileName(name);
   return variant === 'idle'
-    ? `${ENDPOINT}/normal-sprite/${name}.gif`
-    : `${ENDPOINT}/sprites-models/normal-back/${name}.gif`;
+    ? `${ENDPOINT}/normal-sprite/${fileName}`
+    : `${ENDPOINT}/sprites-models/normal-back/${fileName}`;
 }
 
 type ModelVariant = 'idle' | 'back';
+
+function getModelFileName(name: string) {
+  switch (name) {
+    case 'nidoran-f': return 'nidoran_f.gif';
+    case 'nidoran-m': return 'nidoran_m.gif';
+    case 'mr-mime': return 'mr.mime.gif';
+    default: return `${name}.gif`
+  }
+}
