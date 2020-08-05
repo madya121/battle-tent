@@ -4,7 +4,6 @@ import { Touchable } from '../../../../components/basics';
 import { TouchableProps } from '../../../../components/basics/Touchable/Touchable';
 import { Type } from '../../../../types/Pokemon';
 import { getTypeColor } from '../../../../components/Type';
-import { Button } from '../../../../components/basics';
 
 export const BattleArea = styled.div`
   height: 375px;
@@ -74,7 +73,4 @@ export const EnergyBar = styled.div<{ empty?: boolean }>`
   :not(:last-child) {
     border-right: 2px solid #adadad;
   }
-`;
-export const EndTurnButton = styled(Button) <{ hidden?: boolean }>`
-  ${props => props.hidden && 'visibility: hidden;'}
 `;

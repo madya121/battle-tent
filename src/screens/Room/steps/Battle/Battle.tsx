@@ -15,19 +15,19 @@ import {
   MoveTile,
   EnergyBarContainer,
   EnergyBar,
-  EndTurnButton,
 } from './Battle.styled';
 import { animateAttacking, animateTakingDamage } from './animate';
-import { concat } from 'ramda';
+import { concat, head, pluck } from 'ramda';
 import { UseMoveParams } from '../../../../api/base';
 import BattlingPokemonTile from './BattlingPokemonTile'
 import GameOverModal from './GameOverModal'
+import { Button } from '../../../../components/basics';
 
 type NullableIdx = number | null;
 
 export default function Battle() {
   const [choosenMoveIdx, setChoosenMoveIdx] = useState<NullableIdx>(null);
-  const [choosenPokemonIdx, setChoosenPokemonIdx] = useState<NullableIdx>(null);
+  const [choosenPokemonIdx, setChoosenPokemonIdx] = useState<number>(0);
   const [choosenOpponentIdx, setChoosenOpponentIdx] = useState<NullableIdx>(null);
   const [activeModal, setActiveModal] = useState<JSX.Element | null>(null);
 
@@ -74,8 +74,15 @@ export default function Battle() {
   // subscription
   useEffect(function subscription() {
 
+    function getRemainingPartyIndex(): number[] {
+      return party
+        .map(({ health }, index) => health > 0 ? index : -1)
+        .filter(index => index !== -1);
+    }
+
     const sTurnChanged = subscribeTurnChanged(battleState => {
-      setChoosenPokemonIdx(null);
+      const defaultChosenPokemonIdx = head(getRemainingPartyIndex()) || 0;
+      setChoosenPokemonIdx(defaultChosenPokemonIdx);
       setChoosenOpponentIdx(null);
       changeTurn(battleState);
     });
@@ -177,39 +184,43 @@ export default function Battle() {
           ))}
         </PartyArea>
       </BattleArea>
-      <MoveOptionsBox>
-        {choosenPokemonIdx === null || availableMoves[choosenPokemonIdx] === undefined
-          ? null
-          : availableMoves[choosenPokemonIdx].map((move, index) => {
-            const isDisabled = move.used || move.energy > energy;
-            return (
-              <MoveTile
-                type={move.type}
-                chosen={choosenMoveIdx === index}
-                disabled={isDisabled}
-                onClick={() => isDisabled || setChoosenMoveIdx(index)}
-                key={index}
-              >
-                <div>{move.name}</div>
-                <div style={{ display: 'flex', justifyContent: 'space-around' }}>
-                  <div>Power {move.power}</div>
-                  <div>Energy {move.energy}</div>
-                </div>
-              </MoveTile>
-            );
-          })
-        }
-      </MoveOptionsBox>
-      <EndTurnButton hidden={!myTurn} onClick={emitEndTurn}>
-        End Turn
-        </EndTurnButton>
-      {activeModal}
-
+      {myTurn && (
+        <>
+          <MoveOptionsBox>
+            {choosenPokemonIdx === null || availableMoves[choosenPokemonIdx] === undefined
+              ? null
+              : availableMoves[choosenPokemonIdx].map((move, index) => {
+                const isDisabled = move.used || move.energy > energy;
+                return (
+                  <MoveTile
+                    type={move.type}
+                    chosen={choosenMoveIdx === index}
+                    disabled={isDisabled}
+                    onClick={() => isDisabled || setChoosenMoveIdx(index)}
+                    key={index}
+                  >
+                    <div>{move.name}</div>
+                    <div style={{ display: 'flex', justifyContent: 'space-around' }}>
+                      <div>Power {move.power}</div>
+                      <div>Energy {move.energy}</div>
+                    </div>
+                  </MoveTile>
+                );
+              })
+            }
+          </MoveOptionsBox>
+          <Button onClick={emitEndTurn}>
+            End Turn
+          </Button>
+        </>
+      )}
       <EnergyBarContainer>
         {energyBar.map(({ empty }, index) => (
           <EnergyBar empty={empty} key={index} />
         ))}
       </EnergyBarContainer>
+
+      {activeModal}
     </>
   );
 }

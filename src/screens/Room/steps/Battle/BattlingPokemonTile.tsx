@@ -41,7 +41,7 @@ export default function BattlingPokemonTile({
       onClick={onClick}
       disabled={!myTurn || isFainted}
     >
-      <TileImageContainer src={src}>
+      <TileImageContainer src={src} fainted={isFainted}>
         <img src={src} alt={name} ref={imageRef} />
       </TileImageContainer>
       <TileDetail fainted={isFainted}>
@@ -53,7 +53,10 @@ export default function BattlingPokemonTile({
 }
 
 
-type PartyTileProps = { chosen?: boolean, blurred?: boolean } & TouchableProps;
+interface PartyTileProps extends TouchableProps {
+  chosen?: boolean;
+  blurred?: boolean;
+}
 
 export const Container = styled(
   ({ chosen, blurred, ...props }: PartyTileProps) => <Touchable {...props} />
@@ -69,11 +72,11 @@ export const Container = styled(
   z-index: 1;
 `;
 
-export const TileImageContainer = styled.div<{ src: string }>`
+export const TileImageContainer = styled.div<{ src: string; fainted: boolean; }>`
   position: relative;
 
   :after {
-    content: "";
+    content: ${props => props.fainted ? 'none' : ''};
     position: absolute;
     background: url(${props => props.src});
     z-index: -1;
@@ -90,7 +93,7 @@ export const TileImageContainer = styled.div<{ src: string }>`
 
 export const TileDetail = styled.div<{ fainted: boolean }>`
   text-transform: capitalize;
-  ${props => props.fainted && 'visibility: hidden'}
+  visibility: ${props => props.fainted ? 'hidden' : 'visible'};
   display: flex;
   flex-direction: column;
   align-items: center;
