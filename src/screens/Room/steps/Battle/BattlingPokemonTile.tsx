@@ -76,7 +76,8 @@ export const TileImageContainer = styled.div<{ src: string; fainted: boolean; }>
   position: relative;
 
   :after {
-    content: ${props => props.fainted ? 'none' : ''};
+    content: "";
+    visibility: ${props => props.fainted ? 'hidden' : 'visible'};
     position: absolute;
     background: url(${props => props.src});
     z-index: -1;
@@ -87,7 +88,7 @@ export const TileImageContainer = styled.div<{ src: string; fainted: boolean; }>
     filter: drop-shadow(-18px -4px 4px rgba(0,0,0,0.75));
     transform: skewX(-30deg) scaleY(0.2);
     filter: contrast(0%) grayscale(1) brightness(0.5) blur(8px);
-    opacity: 0.25;
+    opacity: 0.3;
   }
 `;
 
