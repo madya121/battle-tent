@@ -114,17 +114,34 @@ export function subscribeChat(
   return { off: () => socket.off(InboundEvent.Chat) };
 }
 
+// TODO: workaround.
+// remove this when the backend changed the move generated from 4 to 2
+function limitMovesTo2(callback: any) {
+  return function (battleState:
+    | InboundEventParams['RoundStarted']
+    | InboundEventParams['TurnChanged']
+  ) {
+    const adjustedBattleState = !battleState.moves ? battleState : {
+      ...battleState,
+      moves: battleState.moves.map(pkmnMoves => pkmnMoves.slice(0, 2)),
+    };
+    callback(adjustedBattleState);
+  }
+}
+
 export function subscribeRoundStarted(
   callback: (battleState: InboundEventParams['RoundStarted']) => void
 ) {
-  socket.on(InboundEvent.RoundStarted, callback);
+  socket.on(InboundEvent.RoundStarted, limitMovesTo2(callback));
+  // socket.on(InboundEvent.RoundStarted, callback);
   return { off: () => socket.off(InboundEvent.RoundStarted) };
 }
 
 export function subscribeTurnChanged(
   callback: (battleState: InboundEventParams['TurnChanged']) => void
 ) {
-  socket.on(InboundEvent.TurnChanged, callback);
+  socket.on(InboundEvent.TurnChanged, limitMovesTo2(callback));
+  // socket.on(InboundEvent.TurnChanged, callback);
   return { off: () => socket.off(InboundEvent.TurnChanged) };
 }
 

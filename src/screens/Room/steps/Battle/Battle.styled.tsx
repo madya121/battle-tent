@@ -23,7 +23,7 @@ export const PartyArea = styled.div`
 export const MoveOptionsBox = styled.div`
   align-self: center;
   width: 90%;
-  height: 120px;
+  height: 60px;
   display: grid;
   grid-template-columns: 1fr 1fr;
   background-color: rgba(20, 20, 20, 0.5);
