@@ -1,4 +1,6 @@
 import { socket, InboundEventParams, InboundEvent } from './base';
+import { propOr } from 'ramda';
+import { Move } from '../types/Pokemon';
 
 socket.on('disconnect', (reason: string) => {
   if (reason === 'io server disconnect') {
@@ -117,15 +119,19 @@ export function subscribeChat(
 // TODO: workaround.
 // remove this when the backend changed the move generated from 4 to 2
 function limitMovesTo2(callback: any) {
-  return function (battleState:
+  return function (params:
     | InboundEventParams['RoundStarted']
     | InboundEventParams['TurnChanged']
+    | InboundEventParams['MoveUsed']
   ) {
-    const adjustedBattleState = !battleState.moves ? battleState : {
-      ...battleState,
-      moves: battleState.moves.map(pkmnMoves => pkmnMoves.slice(0, 2)),
+    const moves: Move[][] | null = propOr(null, 'moves', params) ||
+      propOr(null, 'availableMoves', params);
+    const adjustedParams = !moves ? params : {
+      ...params,
+      moves: moves.map(pkmnMoves => pkmnMoves.slice(0, 2)),
+      availableMoves: moves.map(pkmnMoves => pkmnMoves.slice(0, 2)),
     };
-    callback(adjustedBattleState);
+    callback(adjustedParams);
   }
 }
 
@@ -148,7 +154,8 @@ export function subscribeTurnChanged(
 export function subscribeMoveUsed(
   callback: (params: InboundEventParams['MoveUsed']) => void
 ) {
-  socket.on(InboundEvent.MoveUsed, callback);
+  socket.on(InboundEvent.MoveUsed, limitMovesTo2(callback));
+  // socket.on(InboundEvent.MoveUsed, callback);
   return { off: () => socket.off(InboundEvent.MoveUsed) };
 }
 
