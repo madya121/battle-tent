@@ -10,6 +10,7 @@ export const BattleArea = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  user-select: none;
 `;
 
 export const PartyArea = styled.div`
