@@ -8,6 +8,7 @@ class AudioManager {
   currentBgm: HTMLAudioElement = new Audio();
   bgmVolume = this.defaultVolume;
   sfxVolume = this.defaultVolume;
+  fadeInterval: number | null = null; // return value from setInterval() | null
 
   /**
    * @param {number} volume between 0 to 1
@@ -20,11 +21,24 @@ class AudioManager {
 
   /**
    * @param {number} volume between 0 to 1
+   * @param {number} fadeTime in milliseconds
   */
-  setBgmVolume(volume: number, fade = true) {
+  setFadeAudio(targetVolume: number, fadeTime: number) {
+    this.fadeInterval && clearInterval(this.fadeInterval);
+    this.fadeInterval = fadeAudio(
+      this.currentBgm,
+      fadeTime,
+      targetVolume * .1,
+    );
+  }
+
+  /**
+   * @param {number} volume between 0 to 1
+   * @param {number} fadeTime in milliseconds
+  */
+  setBgmVolume(volume: number, fadeTime = 500) {
     this.bgmVolume = volume;
-    const fadeTime = fade ? 500 : 0;
-    fadeAudio(this.currentBgm, fadeTime, volume * .1)
+    this.setFadeAudio(volume, fadeTime);
   }
 
   /**
@@ -39,9 +53,14 @@ class AudioManager {
    * Stop the currently played music
    * @param option delay in milliseconds
   */
-  async stopBgm({ delay }: { delay?: number } = {}) {
+  async stopBgm(delay = 2000) {
     if (this.currentBgm) {
-      await fadeAudio(this.currentBgm, delay, 0);
+      const VOLUME_OFF = 0;
+      this.setFadeAudio(VOLUME_OFF, delay);
+      const wait = (ms: number) => new Promise(
+        resolve => setTimeout(resolve, ms)
+      );
+      await wait(delay);
       this.currentBgm.pause();
       this.currentBgm.currentTime = 0;
     }
@@ -57,7 +76,7 @@ class AudioManager {
     { loop, delay }: { loop?: boolean; delay?: number; } = {}
   ) {
     // if there's any music stopping, wait for it to finish to avoid overlaps
-    await this.stopBgm({ delay });
+    await this.stopBgm(delay);
 
     this.currentBgm = new Audio(audioSrc);
     this.currentBgm.volume = this.bgmVolume * .1;

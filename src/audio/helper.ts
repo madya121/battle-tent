@@ -1,4 +1,4 @@
-export async function fadeAudio(audio: HTMLAudioElement, delay = 2000, targetVolume = 0) {
+export function fadeAudio(audio: HTMLAudioElement, delay: number, targetVolume = 0): number | null {
   // This fade interval last for the {delay} duration. If the audio already reached
   // the last {delay} seconds, let it finish by itself
   // Also check if the audio already reached the {targetVolume}
@@ -8,7 +8,7 @@ export async function fadeAudio(audio: HTMLAudioElement, delay = 2000, targetVol
     return reachedEndOfPlayback && volumeReachedTarget;
   }
 
-  if (shouldNotFade(audio, delay, targetVolume)) return;
+  if (shouldNotFade(audio, delay, targetVolume)) return null;
   // the total difference between current volume and target volume
   // if its a fadeIn, the value will be positive, and vice versa.
 
@@ -18,23 +18,20 @@ export async function fadeAudio(audio: HTMLAudioElement, delay = 2000, targetVol
   const numberOfInstances = 10;
   const changePerInstance = delta / numberOfInstances;
 
-  return new Promise(resolve => {
-    const fadeAudioInterval = setInterval(() => {
-      // Stop all the intervalling when the volume is about to reach zero
-      // and reset the audio to the initial state
-      const result = audio.volume + changePerInstance;
-      const hasReachedTarget =
-        Math.abs(changePerInstance) >= Math.abs(targetVolume - result);
+  const fadeAudioInterval = setInterval(() => {
+    // Stop all the intervalling when the volume is about to reach zero
+    // and reset the audio to the initial state
+    const result = audio.volume + changePerInstance;
+    const hasReachedTarget =
+      Math.abs(changePerInstance) >= Math.abs(targetVolume - result);
 
-      if (hasReachedTarget) {
-        audio.volume = targetVolume;
-        clearInterval(fadeAudioInterval);
-        resolve();
-      } else {
-        audio.volume = result;
-      }
-    }, delay / numberOfInstances);
-  });
+    if (hasReachedTarget) {
+      audio.volume = targetVolume;
+      clearInterval(fadeAudioInterval);
+    } else {
+      audio.volume = result;
+    }
+  }, delay / numberOfInstances);
+
+  return fadeAudioInterval;
 }
-// TODO this fadeAudio can be called twice at the same time,
-// resulting 2 different intervals set and may cause any unexpected behavior

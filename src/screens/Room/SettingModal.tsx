@@ -36,7 +36,7 @@ function SettingLayout({ onQuitClick }: { onQuitClick: () => void }) {
         <div>BGM</div>
         <Slider
           defaultValue={audio.bgmVolume}
-          onChange={(_, value) => audio.setBgmVolume(value as number, false)}
+          onChange={(_, value) => audio.setBgmVolume(value as number, 0)}
         />
       </SoundSettings>
       <Button onClick={onQuitClick}>Quit</Button>
