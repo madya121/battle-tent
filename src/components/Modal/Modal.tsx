@@ -6,11 +6,9 @@ import {
 } from '@material-ui/core/Modal';
 import Fade from '@material-ui/core/Fade';
 import Backdrop from '@material-ui/core/Backdrop';
-import { Centered } from '../basics';
+import { Centered, Touchable } from '../basics';
 import ModalBg from '../../assets/images/ui/modal_bg.png';
 import CloseIcon from '../../assets/images/ui/close_button.png';
-
-const PlinkSfx = require('../../assets/audio/sfx/plink.mp3');
 
 export interface ModalProps extends Omit<MaterialModalProps, 'children' | 'open'> {
   shown?: boolean;
@@ -20,7 +18,6 @@ export interface ModalProps extends Omit<MaterialModalProps, 'children' | 'open'
 
 export default function Modal({
   shown = true,
-  onClose,
   children,
   BackdropProps,
   ...props
@@ -28,13 +25,12 @@ export default function Modal({
   return (
     <StyledMaterialModal
       open={shown}
-      onClose={() => {
-        const plinkSfx = new Audio(PlinkSfx);
-        plinkSfx.play();
-        onClose();
-      }}
       closeAfterTransition
-      BackdropComponent={Backdrop}
+      BackdropComponent={(props) => (
+        <Touchable>
+          <Backdrop {...props} />
+        </Touchable>
+      )}
       BackdropProps={{
         timeout: 500,
         ...BackdropProps,
@@ -43,7 +39,7 @@ export default function Modal({
     >
       <Fade in={shown}>
         <ContentContainer>
-          <CloseButton onClick={onClose} />
+          <CloseButton onClick={props.onClose} />
           {children}
         </ContentContainer>
       </Fade>

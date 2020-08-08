@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
-import { Button } from '../../components/basics';
+import styled from 'styled-components';
+import { Button, Slider } from '../../components/basics';
 import Modal, { ModalProps } from '../../components/Modal';
+import audio from '../../audio';
 
 export default function SettingModal({
   shown,
@@ -21,9 +23,24 @@ export default function SettingModal({
 
 function SettingLayout({ onQuitClick }: { onQuitClick: () => void }) {
   return (
-    <>
+    <SettingLayoutContainer>
+      <SoundSettings>
+        <div>SFX</div>
+        <Slider
+          defaultValue={audio.sfxVolume}
+          onChangeCommitted={(e, value) => {
+            if (Array.isArray(value)) throw value;
+            audio.setSfxVolume(value)
+          }}
+        />
+        <div>BGM</div>
+        <Slider
+          defaultValue={audio.bgmVolume}
+          onChange={(_, value) => audio.setBgmVolume(value as number, false)}
+        />
+      </SoundSettings>
       <Button onClick={onQuitClick}>Quit</Button>
-    </>
+    </SettingLayoutContainer>
   );
 }
 
@@ -44,3 +61,14 @@ enum State {
   Setting,
   Quit,
 }
+
+const SettingLayoutContainer = styled.div`
+  font-family: HeadTextFont;
+  font-size: 24px;
+  color: #874a0c;
+`;
+
+const SoundSettings = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 4fr;
+`;

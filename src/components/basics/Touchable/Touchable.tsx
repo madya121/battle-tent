@@ -1,9 +1,8 @@
 import React from 'react';
-
-const PlinkSfx = require('../../../assets/audio/sfx/plink.mp3');
+import audio from '../../../audio';
 
 export interface TouchableProps extends React.HTMLAttributes<HTMLDivElement> {
-  audioPath?: string;
+  audioSrc?: string;
   disabled?: boolean;
 };
 
@@ -19,8 +18,7 @@ export default function Touchable({
         // create an Audio object each time onClick triggered
         // to allow the SFX to be stacked
         if (!disabled) {
-          const touchSfx = new Audio(props.audioPath || PlinkSfx);
-          touchSfx.play();
+          audio.playSfx(props.audioSrc);
           onClick && onClick(e);
         }
       }}

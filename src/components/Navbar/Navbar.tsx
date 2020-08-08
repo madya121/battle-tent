@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { PlayerContext } from '../../auth';
 import { NavigationContext, ScreenState } from '../../navigation';
-import Music from '../../Music';
+import audio from '../../audio';
 import styled from 'styled-components';
 import { IconButton } from '@material-ui/core';
 import VolumeOn from '../../assets/images/ui/sound.png';
@@ -34,16 +34,16 @@ export default function Navbar() {
 
 function VolumeButton() {
   // state is just for triggering re-render
-  const [isMuted, setIsMuted] = useState(Music.masterVolume === 0)
+  const [isMuted, setIsMuted] = useState(audio.masterVolume === 0)
 
   function onChangeVolume() {
     // now its just on/off, // TODO make it float between 0 to 1
     setIsMuted(!isMuted);
     // always check from the source of truth
-    if (Music.masterVolume === 0) {
-      Music.setMasterVolume(Music.defaultMasterVolume);
+    if (audio.masterVolume === 0) {
+      audio.setVolume(audio.defaultVolume);
     } else {
-      Music.setMasterVolume(0);
+      audio.setVolume(0);
     }
   }
 

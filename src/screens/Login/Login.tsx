@@ -3,16 +3,14 @@ import { NavigationContext, ScreenState } from '../../navigation';
 import { subscribeLoggedIn, emitLogin } from '../../api';
 import { Input, Button } from '../../components/basics';
 import { LayoutContainer, LogoHeader } from './Login.styled';
-import Music from '../../Music';
+import audio from '../../audio';
 import { PlayerContext } from '../../auth';
 import Navbar from '../../components/Navbar';
 import Logo from '../../assets/images/ui/logo.png';
 import Modal from '../../components/Modal';
 import Banner from '../../components/Banner';
 
-const loginScreenBgm = new Audio(
-  require('../../assets/audio/bgm/03_Title_Screen.mp3')
-);
+const loginScreenBgm = require('../../assets/audio/bgm/03_Title_Screen.mp3');
 
 export default function Login() {
   const [username, setUsername] = useState('');
@@ -25,7 +23,7 @@ export default function Login() {
   }
 
   useEffect(() => {
-    Music.play(loginScreenBgm, { delay: 0 });
+    audio.playBgm(loginScreenBgm, { delay: 0 });
   }, []);
 
   // subscriptions

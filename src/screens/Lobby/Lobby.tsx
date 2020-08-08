@@ -4,7 +4,7 @@ import Modal, { ModalProps } from '../../components/Modal';
 import LoadingIndicator from '../../components/LoadingIndicator';
 import { NavigationContext, ScreenState } from '../../navigation';
 import { LayoutContainer } from './Lobby.styled';
-import Music from '../../Music';
+import audio from '../../audio';
 import {
   subscribeFindingMatch,
   subscribeCancelledFindingMatch,
@@ -20,9 +20,7 @@ import Logo from '../../assets/images/ui/logo.png';
 import Welcome from '../../assets/images/ui/welcome.png';
 import { PlayerContext } from '../../auth';
 
-const LobbyScreenBgm = new Audio(
-  require('../../assets/audio/bgm/2-41_Battle_Tower.mp3')
-);
+const LobbyScreenBgm = require('../../assets/audio/bgm/2-41_Battle_Tower.mp3');
 
 export default function Lobby() {
   const [inviteModalShown, setInviteModalShown] = useState(false);
@@ -30,7 +28,7 @@ export default function Lobby() {
   const navigate = useContext(NavigationContext);
 
   useEffect(() => {
-    Music.play(LobbyScreenBgm);
+    audio.playBgm(LobbyScreenBgm);
   }, []);
 
   // subscriptions
