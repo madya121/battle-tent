@@ -1,5 +1,6 @@
 import './animation.css';
 import { Move } from '../../../../types/Pokemon';
+import audio from '../../../../audio';
 
 const ATTACK_DIRECTION_DOWN_CLASS = 'attack-direction-down';
 
@@ -47,13 +48,13 @@ export function animateAttacking(
     // fallback for unsupported move (E onwards, except Scratch)
     moveSfx = require(`../../../../assets/audio/sfx/moves/Cut.mp3`);
   }
-  new Audio(moveSfx).play();
+  audio.playSfx(moveSfx);
   animateOnce('attacking', element, attackDirection);
 }
 
 export function animateFainted(element: HTMLDivElement | null) {
   if (element === null) return;
-  // new Audio(crySfx).play();
+  // audio.playSfx(crySfx);
   animateOnce('returning-to-pokeball', element).then(() => {
     element.classList.add('fainted');
   });
