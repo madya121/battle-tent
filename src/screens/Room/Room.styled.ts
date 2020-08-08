@@ -1,12 +1,12 @@
 import styled from 'styled-components';
 import { Centered } from '../../components/basics';
 import TrainerImage from '../../assets/images/trainer/Red.png';
-import RoomBackground from '../../assets/images/ui/room-background.png';
+import { GymLocation, getLocationBackground } from '../../constants/gym';
 
-export const LayoutContainer = styled(Centered)`
+export const LayoutContainer = styled(Centered) <{ location: GymLocation }>`
   background-color: #0c6479;
   background-image: linear-gradient(141deg,#1294a2 35%,#0a4861 75%);
-  background-image: url(${RoomBackground});
+  background-image: url(${props => getLocationBackground(props.location)});
   background-size: cover;
   background-position: center;
   justify-content: flex-start;

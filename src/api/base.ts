@@ -3,6 +3,7 @@ import Pokemon, { Move } from '../types/Pokemon';
 import Player from '../types/Player';
 import BattlingPokemon from '../types/BattlingPokemon';
 import { QuickChatOption } from '../screens/Room/QuickChat/constants';
+import { GymLocation } from '../constants/gym';
 
 export const socket = io.connect(
   process.env.REACT_APP_SOCKET_ENDPOINT || '',
@@ -30,6 +31,7 @@ export enum OutboundEvent {
   UseMove = 'use_move',
   EndTurn = 'end_turn',
   PlaySinglePlayer = 'play_single_player',
+  ChallengeGymLeader = 'challenge_gym_leader',
 }
 
 export interface OutboundEventParams {
@@ -39,6 +41,7 @@ export interface OutboundEventParams {
 
   // battle mechanics
   UseMove: UseMoveParams;
+  ChallengeGymLeader: GymLocation;
 }
 
 export enum InboundEvent {
@@ -106,6 +109,7 @@ export interface InboundEventParams {
     avatar: Player['avatar'];
     players: Player[];
     availablePokemon: Pokemon[];
+    gymBattleIndex: GymLocation
   };
   PlayerLeftTheRoom: {
     name: string; // another player's name that left the room

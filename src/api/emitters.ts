@@ -18,6 +18,12 @@ export function emitPlaySinglePlayer() {
   socket.emit(OutboundEvent.PlaySinglePlayer);
 }
 
+export function emitChallengeGymLeader(
+  gymLocation: OutboundEventParams['ChallengeGymLeader']
+) {
+  socket.emit(OutboundEvent.ChallengeGymLeader, gymLocation);
+}
+
 export function emitLeaveRoom() {
   socket.emit(OutboundEvent.LeaveRoom);
 }

@@ -13,6 +13,7 @@ import {
   emitFindMatch,
   emitCancelFindMatch,
   emitPlaySinglePlayer,
+  emitChallengeGymLeader,
 } from '../../api';
 import Navbar from '../../components/Navbar';
 import Banner from '../../components/Banner';
@@ -93,6 +94,7 @@ export default function Lobby() {
         ) :
           <div>
             <Button onClick={emitPlaySinglePlayer}>Single Player</Button>
+            <Button onClick={() => navigate(ScreenState.GymChallenge)}>Gym Challenge</Button>
             <Button onClick={emitFindMatch}>Find Match</Button>
             <Button disabled onClick={openInviteModal}>Invite</Button>
           </div>

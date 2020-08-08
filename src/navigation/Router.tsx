@@ -3,6 +3,7 @@ import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 import TitleScreen from '../screens/Title';
 import LoginScreen from '../screens/Login';
 import LobbyScreen from '../screens/Lobby';
+import GymChallengeScreen from '../screens/GymChallenge';
 import RoomScreen from '../screens/Room';
 import ConnectionProblemIndicator from '../components/ConnectionProblemIndicator';
 import { NavigationContext, ScreenState } from '.';
@@ -29,6 +30,7 @@ function StateRouter() {
     switch (screenState) {
       case ScreenState.Login: return <LoginScreen />;
       case ScreenState.Lobby: return <LobbyScreen />;
+      case ScreenState.GymChallenge: return <GymChallengeScreen />;
       case ScreenState.Room: return <RoomScreen />;
       default: return <TitleScreen />;
     }

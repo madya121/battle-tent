@@ -27,6 +27,8 @@ import Pokemon, { Move } from '../../types/Pokemon';
 import { Parties } from '../../api/base';
 import Modal from '../../components/Modal';
 import SettingIcon from '../../assets/images/ui/setting.png';
+import { GymLocation, getLocationBgm } from '../../constants/gym';
+import audio from '../../audio';
 
 enum RoomStep {
   ChooseParty,
@@ -71,6 +73,7 @@ export default function Room() {
   const [playerLeftModalShowns, setPlayerLeftModalShowns] = useState(false);
   const [settingModalShown, setSettingModalShown] = useState(false);
   const [activeStep, setActiveStep] = useState(RoomStep.ChooseParty);
+  const [location, setLocation] = useState(GymLocation.None);
   const navigate = useContext(NavigationContext);
 
   const backToLobby = useCallback(
@@ -86,8 +89,9 @@ export default function Room() {
     const sPlayerJoinedTheRoom = subscribePlayerJoinedTheRoom(({
       players,
       availablePokemon,
-
+      gymBattleIndex,
     }) => {
+      setLocation(gymBattleIndex);
       const checkMatchingPlayer = ({ id }: Player) => id !== player?.id;
       const findOpponent = find(checkMatchingPlayer);
       const opponent = findOpponent(players);
@@ -115,10 +119,13 @@ export default function Room() {
     setSettingModalShown(false);
   }
 
-  const goToBattleStep = () => setActiveStep(RoomStep.Battle);
+  const goToBattleStep = () => {
+    setActiveStep(RoomStep.Battle);
+    audio.playBgm(getLocationBgm(location), { delay: 0 });
+  }
 
   return (
-    <LayoutContainer>
+    <LayoutContainer location={location}>
       <TopArea>
         <IconButton aria-label="setting" onClick={openSettingModal}>
           <img alt="setting" src={SettingIcon} width="28px" />
