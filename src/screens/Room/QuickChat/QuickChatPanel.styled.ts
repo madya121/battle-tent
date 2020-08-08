@@ -11,10 +11,8 @@ export const ModalToggle = styled(IconButton)`
   position: absolute;
   bottom: 0;
   right: 0;
-  color: white;
 `;
 
-// top: ${props => props.shown ? 0 : '120px'};
 export const OptionModal = styled.div<{ shown: boolean }>`
   position: absolute;
   right: 54px;
@@ -27,29 +25,7 @@ export const OptionModal = styled.div<{ shown: boolean }>`
   flex-wrap: wrap;
   transition: width .2s, height .2s, transform .2s;
   background-color: darkgray;
-`;
-
-export const QuickChatBalloon = styled.div<{ shown: boolean }>`
-  position: absolute;
-  justify-self: flex-start;
-  right: 52px; /* size of the ModalToggle + 8px margin */
-  bottom: 0;
-  display: ${props => props.shown ? 'block' : 'none'};
-  padding: 8px;
-  min-width: 100px;
-  background-color: white;
-  color: black;
-  border-radius: 12px;
-  border: 2px solid gray;
-
-  &:after {
-    content: '';
-    position: absolute;
-    bottom: -12px;
-    left: 8px;
-    border: 8px solid;
-    border-color: white transparent transparent white;
-  }
+  z-index: 2;
 `;
 
 export const Option = styled.div`

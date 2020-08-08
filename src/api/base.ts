@@ -2,7 +2,7 @@ import io from 'socket.io-client';
 import Pokemon, { Move } from '../types/Pokemon';
 import Player from '../types/Player';
 import BattlingPokemon from '../types/BattlingPokemon';
-import { QuickChatOption } from '../screens/Room/QuickChatPanel/constants';
+import { QuickChatOption } from '../screens/Room/QuickChat/constants';
 
 export const socket = io.connect(
   process.env.REACT_APP_SOCKET_ENDPOINT || '',
@@ -26,7 +26,7 @@ export enum OutboundEvent {
   CancelFindMatch = 'cancel_find_match',
   LeaveRoom = 'leave_room',
   PlayerReady = 'player_ready',
-  Chat = 'chat',
+  RoomChat = 'room_chat',
   UseMove = 'use_move',
   EndTurn = 'end_turn',
   PlaySinglePlayer = 'play_single_player',
@@ -35,7 +35,7 @@ export enum OutboundEvent {
 export interface OutboundEventParams {
   Login: string; // Player's name
   PlayerReady: Array<number>; // array of available pokemon indexes
-  Chat: QuickChatOption; // chat message
+  RoomChat: QuickChatOption; // chat message
 
   // battle mechanics
   UseMove: UseMoveParams;
@@ -55,7 +55,7 @@ export enum InboundEvent {
   LeftTheRoom = 'left_the_room',
   PlayerJoinedTheRoom = 'player_joined_the_room',
   PlayerLeftTheRoom = 'player_left_the_room',
-  Chat = 'chat',
+  RoomChat = 'room_chat',
   // game event
   RoundStarted = 'round_started',
   TurnChanged = 'turn_changed',
@@ -110,9 +110,9 @@ export interface InboundEventParams {
   PlayerLeftTheRoom: {
     name: string; // another player's name that left the room
   };
-  Chat: {
-    name: string; // User's name
-    message: string; // chat message
+  RoomChat: {
+    chat: QuickChatOption; // chat message
+    sender: string; // User's id
   };
   RoundStarted: InitialTurnStates & { parties: Parties };
   TurnChanged: InitialTurnStates;

@@ -107,13 +107,11 @@ export function subscribePlayerLeftTheRoom(
   return { off: () => socket.off(InboundEvent.PlayerLeftTheRoom) };
 }
 
-// unimplemented from backend
-
-export function subscribeChat(
-  callback: (chat: InboundEventParams['Chat']) => void
+export function subscribeRoomChat(
+  callback: ({ chat, sender }: InboundEventParams['RoomChat']) => void
 ) {
-  socket.on(InboundEvent.Chat, callback);
-  return { off: () => socket.off(InboundEvent.Chat) };
+  socket.on(InboundEvent.RoomChat, callback);
+  return { off: () => socket.off(InboundEvent.RoomChat) };
 }
 
 // TODO: workaround.

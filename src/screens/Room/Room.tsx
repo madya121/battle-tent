@@ -10,7 +10,7 @@ import {
 } from '../../api';
 import Player from '../../types/Player';
 import { NavigationContext, ScreenState } from '../../navigation';
-import QuickChatPanel from './QuickChatPanel';
+import { QuickChatPanel } from './QuickChat';
 import {
   LayoutContainer,
   TopArea,
@@ -88,8 +88,9 @@ export default function Room() {
       availablePokemon,
 
     }) => {
-      const checkMatchingName = ({ id }: Player) => id !== player?.id;
-      const opponent = find(checkMatchingName, players);
+      const checkMatchingPlayer = ({ id }: Player) => id !== player?.id;
+      const findOpponent = find(checkMatchingPlayer);
+      const opponent = findOpponent(players);
       opponent && setOpponent(opponent);
       setAvailablePokemon(availablePokemon);
     });

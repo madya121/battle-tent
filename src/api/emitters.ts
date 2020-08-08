@@ -28,10 +28,10 @@ export function emitPlayerReady(
   socket.emit(OutboundEvent.PlayerReady, indexes);
 }
 
-export function emitChat(
-  quickChat: OutboundEventParams['Chat']
+export function emitRoomChat(
+  chat: OutboundEventParams['RoomChat']
 ) {
-  socket.emit(OutboundEvent.Chat, quickChat);
+  socket.emit(OutboundEvent.RoomChat, chat);
 }
 
 export function emitUseMove(
