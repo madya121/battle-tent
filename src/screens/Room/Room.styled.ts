@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 import { Centered } from '../../components/basics';
-import TrainerImage from '../../assets/images/trainer/Red.png';
-import { GymLocation, getLocationBackground } from '../../constants/gym';
+import { GymLocation, getLocationBackground } from '../../constants/location';
 
 export const LayoutContainer = styled(Centered) <{ location: GymLocation }>`
   background-color: #0c6479;
@@ -41,32 +40,6 @@ export const BottomArea = styled.footer`
   padding: 16px;
 `;
 
-export const TrainerAvatar = styled.div`
-  display: inline-block;
-  height: 32px;
-  width: 32px;
-  border-radius: 50%;
-  border: 2px solid white;
-  padding: 16px;
-  z-index: 1;
-  
-  // set default image
-  background-color: #bbb;
-  position: relative;
-  overflow: hidden;
-  &::after {
-    content: "";
-    position: absolute;
-    top: 2px;
-    left: 17px;
-    width: 100%;
-    height: 100%;
-    background-image: url(${TrainerImage});
-    background-size: 36px;
-    background-repeat: no-repeat;
-    filter: contrast(0%) grayscale(1) brightness(0.5);
-  }
-`;
 export const OpponentInfo = styled.div`
   display: flex;
   justify-content: flex-start;

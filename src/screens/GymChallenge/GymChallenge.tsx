@@ -9,7 +9,6 @@ import {
 } from '../../api';
 import Navbar from '../../components/Navbar';
 import Banner from '../../components/Banner';
-import { PlayerContext } from '../../auth';
 
 const GymBgm = require('../../assets/audio/bgm/25_Pokemon_Gym.mp3');
 
@@ -29,8 +28,6 @@ export default function GymChallenge() {
       sJoinedTheRoom.off();
     }
   }, [navigate]);
-
-  const [] = useContext(PlayerContext);
 
   return (
     <LayoutContainer>

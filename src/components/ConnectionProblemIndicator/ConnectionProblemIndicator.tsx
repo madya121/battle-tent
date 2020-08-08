@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import styled from 'styled-components';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import {
@@ -8,9 +8,11 @@ import {
   subscribeReconnectFailed,
   subscribeReconnected,
 } from '../../api';
+import { NavigationContext, ScreenState } from '../../navigation';
 
 export default function ConnectionProblemIndicator() {
   const [showIndicator, setShowIndicator] = useState(false);
+  const navigate = useContext(NavigationContext);
 
   useEffect(() => {
     subscribeReconnecting(() => {
@@ -20,6 +22,7 @@ export default function ConnectionProblemIndicator() {
     subscribeReconnected(() => {
       setShowIndicator(false);
       console.warn('Reconnected!');
+      navigate(ScreenState.Title);
     });
   }, []);
 

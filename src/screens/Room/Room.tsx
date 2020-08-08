@@ -17,7 +17,6 @@ import {
   MainArea,
   BottomArea,
   OpponentInfo,
-  TrainerAvatar,
 } from './Room.styled';
 import { find } from 'ramda';
 import { PlayerContext } from '../../auth';
@@ -27,8 +26,9 @@ import Pokemon, { Move } from '../../types/Pokemon';
 import { Parties } from '../../api/base';
 import Modal from '../../components/Modal';
 import SettingIcon from '../../assets/images/ui/setting.png';
-import { GymLocation, getLocationBgm } from '../../constants/gym';
+import { GymLocation, getLocationBgm } from '../../constants/location';
 import audio from '../../audio';
+import { SmallAvatar } from '../../components/Avatar';
 
 enum RoomStep {
   ChooseParty,
@@ -132,7 +132,7 @@ export default function Room() {
         </IconButton>
         <OpponentInfo>
           <div>{opponent && opponent.name}</div>
-          <TrainerAvatar />
+          <SmallAvatar code={opponent?.avatar} />
         </OpponentInfo>
       </TopArea>
       <MainArea>
@@ -145,7 +145,7 @@ export default function Room() {
         </GameplayContext.Provider>
       </MainArea>
       <BottomArea>
-        <TrainerAvatar />
+        <SmallAvatar code={player.avatar} />
         <QuickChatPanel />
       </BottomArea>
       <SettingModal

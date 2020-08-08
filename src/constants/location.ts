@@ -9,6 +9,7 @@ export enum GymLocation {
   None = -1,
   Pewter,
   Celadon,
+  Vermilion,
 }
 
 export function getLocationBackground(location: GymLocation) {
