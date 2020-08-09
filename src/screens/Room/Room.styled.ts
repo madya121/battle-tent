@@ -30,8 +30,7 @@ export const MainArea = styled.main`
 `;
 
 export const BottomArea = styled.footer`
-  position: absolute;
-  bottom: 0;
+  position: relative;
   display: flex;
   align-items: flex-end;
   justify-content: space-between;

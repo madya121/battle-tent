@@ -1,6 +1,6 @@
 {
   "name": "battle-tent",
-  "version": "0.1.2a",
+  "version": "0.1.2b",
   "private": true,
   "dependencies": {
     "@material-ui/core": "^4.9.14",

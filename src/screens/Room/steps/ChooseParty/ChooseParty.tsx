@@ -2,12 +2,11 @@ import React, { useState, useContext } from 'react';
 import { Button } from '../../../../components/basics';
 import LoadingIndicator from '../../../../components/LoadingIndicator';
 import { emitPlayerReady, subscribeRoundStarted } from '../../../../api';
-import { TileContainer, Tile, TileDetail } from './ChooseParty.styled';
+import { TileContainer, Tile, PokemonSummaryContainer, PokemonSummary } from './ChooseParty.styled';
 import { append, without } from 'ramda';
 import GamplayContext from '../../GameplayContext';
 import { getPokemonModel } from '../../../../components/PokemonModel/helper';
 import Modal from '../../../../components/Modal';
-import TypeLabel from '../../../../components/Type';
 
 export interface ChoosePartyProps {
   onFinish: () => void;
@@ -64,7 +63,12 @@ export default function ChooseParty({ onFinish }: ChoosePartyProps) {
         <p>waiting for opponent...</p>
       </div>
     ) : (
-      <div>
+      <>
+        <PokemonSummaryContainer>
+          <PokemonSummary>
+            Pokemon Summary
+        </PokemonSummary>
+        </PokemonSummaryContainer>
         <h5>Choose your Pokémon</h5>
         <TileContainer>
           {availablePokemon.map(({ name, types }, index) => (
@@ -77,10 +81,6 @@ export default function ChooseParty({ onFinish }: ChoosePartyProps) {
                 src={getPokemonModel(name)}
                 alt={name}
               />
-              <TileDetail>
-                <div>{name}</div>
-                <TypeLabel types={types} icon />
-              </TileDetail>
             </Tile>
           ))}
         </TileContainer>
@@ -94,6 +94,6 @@ export default function ChooseParty({ onFinish }: ChoosePartyProps) {
           <Button onClick={() => setConfirmShown(false)}>No</Button>
           <Button onClick={onConfirmParty}>Yes</Button>
         </Modal>
-      </div>
+      </>
     );
 }
