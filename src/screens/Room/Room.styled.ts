@@ -8,7 +8,6 @@ export const LayoutContainer = styled(Centered) <{ location: GymLocation }>`
   background-image: url(${props => getLocationBackground(props.location)});
   background-size: cover;
   background-position: center;
-  justify-content: flex-start;
   height: 100vh;
   color: white;
 `;
@@ -21,12 +20,11 @@ export const TopArea = styled.header`
   box-sizing: border-box;
   padding: 16px;
 `;
+
 export const MainArea = styled.main`
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  width: 100%;
   position: relative;
+  height: 100%;
+  width: 100%;
 `;
 
 export const BottomArea = styled.footer`

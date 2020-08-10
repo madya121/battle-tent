@@ -1,23 +1,33 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Touchable } from '../../../../components/basics';
+import { Touchable, Button } from '../../../../components/basics';
 import { TouchableProps } from '../../../../components/basics/Touchable';
 
+export const LayoutContainer = styled.div`
+  height: 100%;
+  margin: 0 16px;
+  display: flex;
+  flex-direction: column;
+`;
+
 export const PokemonSummaryContainer = styled.div`
-  flex: 1;
+  height: 100%;
   background-color: rgb(252, 88, 73);
   box-shadow: rgb(192, 54, 45) -2px -4px 2px 1px inset;
   border-radius: 16px;
-  margin: 16px;
+  margin-bottom: 16px;
   padding: 6px 8px 9px 6px;
   display: flex;
 `;
 
 export const PokemonSummary = styled.div`
-  flex: 1;
+  max-height: 100%;
+  width: 100%;
   border-radius: 8px;
   box-shadow: grey 1px 2px 3px 1px inset;
   padding: 8px;
+  display: flex;
+  align-items: center;
   background:
     repeating-linear-gradient(
       90deg,
@@ -45,11 +55,29 @@ export const PokemonSummary = styled.div`
     ) fixed;
 `;
 
+export const LeftSummary = styled.div`
+`;
+
+export const RightSummary = styled.div`
+  height: 100%;
+  width: 100%;
+  overflow: scroll;
+`;
+
+export const PokemonName = styled.div`
+  text-transform: capitalize;
+  color: black;
+`;
+
 export const TileContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
-  margin: 16px;
   justify-content: center;
+
+  // apply black backdrop
+  background: #000d;
+  border-radius: 12px;
+  padding-bottom: 8px;
 `;
 
 export const Tile = styled(
@@ -60,9 +88,38 @@ export const Tile = styled(
   height: 100px;
   margin: 8px;
   filter: ${({ chosen }) =>
-    chosen ? 'drop-shadow(0 0 0.25rem lightyellow)' : 'none'
+    chosen ? 'drop-shadow(0 0 0.3rem lightyellow)' : 'none'
   };
   display: flex;
   justify-content: center;
   align-items: flex-end;
+`;
+
+export const FixedBottomArea = styled.div`
+  position: fixed;
+  left: calc(16px + 68px);
+  bottom: 12px;
+  width: calc(425px - 32px - 68px - 48px);
+  z-index: 1;
+`;
+
+export const BattleButton = styled(Button)`
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  background-size: 100% 100%;
+  && {
+    padding: 16px 32px;
+  }
+`;
+
+export const ChosenParty = styled.div`
+  flex: 1;
+  display: flex;
+`;
+
+export const PokemonIcon = styled.img`
+  object-fit: cover;
+  width: 42px;
+  height: 42px;
 `;

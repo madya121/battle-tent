@@ -21,14 +21,15 @@ export const PartyArea = styled.div`
 `;
 
 export const MoveOptionsBox = styled.div`
-  align-self: center;
-  width: 90%;
   height: 60px;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  max-width: 100%;
+  margin: 0 16px;
   background-color: rgba(20, 20, 20, 0.5);
   border-radius: 16px;
   z-index: 2;
+
+  display: grid;
+  grid-template-columns: 1fr 1fr;
 `;
 
 interface MoveTileProps extends TouchableProps {
@@ -50,7 +51,7 @@ export const MoveTile = styled(
 `;
 
 export const EnergyBarContainer = styled.div`
-  position: absolute;
+  position: fixed;
   bottom: 30px;
   left: 75px;
   width: 64%;

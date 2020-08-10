@@ -155,7 +155,7 @@ export default function Room() {
       />
       <Modal shown={playerLeftModalShowns} onClose={backToLobby}>
         The opponent left the room!
-          <Button onClick={backToLobby}>OK</Button>
+        <Button onClick={backToLobby}>OK</Button>
       </Modal>
     </LayoutContainer>
   );
