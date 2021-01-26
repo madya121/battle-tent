@@ -4,6 +4,11 @@ import { Button, Slider } from '../../components/basics';
 import Modal, { ModalProps } from '../../components/Modal';
 import audio from '../../audio';
 
+enum State {
+  Setting,
+  Quit,
+}
+
 export default function SettingModal({
   shown,
   onClose,
@@ -55,11 +60,6 @@ function QuitLayout({ onQuit, onCancel }: {
       <Button onClick={onCancel}>No</Button>
     </>
   );
-}
-
-enum State {
-  Setting,
-  Quit,
 }
 
 const SettingLayoutContainer = styled.div`

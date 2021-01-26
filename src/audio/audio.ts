@@ -28,7 +28,7 @@ class AudioManager {
     this.fadeInterval = fadeAudio(
       this.currentBgm,
       fadeTime,
-      targetVolume * .1,
+      targetVolume * .3,
     );
   }
 
@@ -79,7 +79,7 @@ class AudioManager {
     await this.stopBgm(delay);
 
     this.currentBgm = new Audio(audioSrc);
-    this.currentBgm.volume = this.bgmVolume * .1;
+    this.currentBgm.volume = this.bgmVolume * .3;
     if (loop !== undefined) this.currentBgm.loop = loop;
     this.currentBgm.play();
   }

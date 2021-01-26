@@ -2,12 +2,26 @@ import React, { useState, useContext } from 'react';
 import { Button } from '../../../../components/basics';
 import LoadingIndicator from '../../../../components/LoadingIndicator';
 import { emitPlayerReady, subscribeRoundStarted } from '../../../../api';
-import { TileContainer, Tile, TileDetail } from './ChooseParty.styled';
+import {
+  LayoutContainer,
+  PokemonSummaryContainer,
+  PokemonSummary,
+  PokemonName,
+  TileContainer,
+  Tile,
+  LeftSummary,
+  RightSummary,
+  FixedBottomArea,
+  BattleButton,
+  ChosenParty,
+  PokemonIcon,
+} from './ChooseParty.styled';
 import { append, without } from 'ramda';
 import GamplayContext from '../../GameplayContext';
 import { getPokemonModel } from '../../../../components/PokemonModel/helper';
 import Modal from '../../../../components/Modal';
-import TypeLabel from '../../../../components/Type';
+import Pokemon from '../../../../types/Pokemon';
+import { MoveTile } from '../Battle/Battle.styled';
 
 export interface ChoosePartyProps {
   onFinish: () => void;
@@ -15,6 +29,7 @@ export interface ChoosePartyProps {
 
 export default function ChooseParty({ onFinish }: ChoosePartyProps) {
   const [isWaiting, setIsWaiting] = useState(false);
+  const [highlighted, setHighlighted] = useState<Pokemon | null>(null);
   const [choosen, setChoosen] = useState<Array<number>>([]);
   const [alertShown, setAlertShown] = useState(false);
   const [confirmShown, setConfirmShown] = useState(false);
@@ -25,6 +40,7 @@ export default function ChooseParty({ onFinish }: ChoosePartyProps) {
   } = useContext(GamplayContext);
 
   function choosePokemon(index: number) {
+    setHighlighted(availablePokemon[index]);
     const updatedChoosen = choosen.includes(index)
       ? without([index], choosen)
       : choosen.length === 3
@@ -64,10 +80,39 @@ export default function ChooseParty({ onFinish }: ChoosePartyProps) {
         <p>waiting for opponent...</p>
       </div>
     ) : (
-      <div>
-        <h5>Choose your Pokémon</h5>
+      <LayoutContainer>
+        <PokemonSummaryContainer>
+          {highlighted && (
+            <PokemonSummary>
+              <LeftSummary>
+                <img
+                  alt={highlighted.name}
+                  src={require(`../../../../assets/images/pokemonPreview/${highlighted.id}.png`)}
+                  width="100px"
+                />
+                <PokemonName>{highlighted.name}</PokemonName>
+              </LeftSummary>
+              <RightSummary>
+                {highlighted.moves.map((move, index) => (
+                  <MoveTile
+                    type={move.type}
+                    chosen={false}
+                    disabled={false}
+                    key={index}
+                  >
+                    <div>{move.name}</div>
+                    <div style={{ display: 'flex', justifyContent: 'space-around' }}>
+                      <div>Power {move.power}</div>
+                      <div>Energy {move.energy}</div>
+                    </div>
+                  </MoveTile>
+                ))}
+              </RightSummary>
+            </PokemonSummary>
+          )}
+        </PokemonSummaryContainer>
         <TileContainer>
-          {availablePokemon.map(({ name, types }, index) => (
+          {availablePokemon.map(({ name }, index) => (
             <Tile
               chosen={choosen.includes(index)}
               onClick={() => choosePokemon(index)}
@@ -76,15 +121,31 @@ export default function ChooseParty({ onFinish }: ChoosePartyProps) {
               <img
                 src={getPokemonModel(name)}
                 alt={name}
+                style={{
+                  maxHeight: 100,
+                  maxWidth: 100,
+                  imageRendering: 'pixelated',
+                }}
               />
-              <TileDetail>
-                <div>{name}</div>
-                <TypeLabel types={types} icon />
-              </TileDetail>
             </Tile>
           ))}
         </TileContainer>
-        <Button onClick={onConfirmParty}>Battle!</Button>
+        <FixedBottomArea>
+          <BattleButton onClick={onConfirmParty}>
+            <ChosenParty>
+              {choosen.map(pokemonIndex => {
+                const pokemon = availablePokemon[pokemonIndex];
+                return (
+                  <PokemonIcon
+                    alt={pokemon.name}
+                    src={`https://img.pokemondb.net/sprites/sword-shield/icon/${pokemon.name}.png`}
+                  />
+                );
+              })}
+            </ChosenParty>
+            <div>Battle!</div>
+          </BattleButton>
+        </FixedBottomArea>
         <Modal shown={alertShown} onClose={() => setAlertShown(false)}>
           Please select pokemon for your party!
           <Button onClick={() => setAlertShown(false)}>OK</Button>
@@ -94,6 +155,6 @@ export default function ChooseParty({ onFinish }: ChoosePartyProps) {
           <Button onClick={() => setConfirmShown(false)}>No</Button>
           <Button onClick={onConfirmParty}>Yes</Button>
         </Modal>
-      </div>
+      </LayoutContainer>
     );
 }
