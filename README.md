@@ -57,14 +57,8 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/an
 
 This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
 
-### Advanced Configuration
+## Deployment
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
+Refer to this doc https://coderrocketfuel.com/article/deploy-a-create-react-app-website-to-digitalocean#deploy-website-to-your-server
 
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `yarn build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+tl;dr: `yarn build && scp -r ./build/* username@ip_address:/var/www/battle-tent.com/html`
