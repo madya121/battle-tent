@@ -39,7 +39,13 @@ export default function GymChallenge() {
       </header>
       <main style={{ flex: 1 }}>
         <Button onClick={() => emitChallengeGymLeader(0)}>Pewter</Button>
-        <Button onClick={() => emitChallengeGymLeader(1)}>Celadon</Button>
+        <Button onClick={() => emitChallengeGymLeader(1)}>Cerulean</Button>
+        <Button onClick={() => emitChallengeGymLeader(2)}>Vermilion</Button>
+        <Button onClick={() => emitChallengeGymLeader(3)}>Celadon</Button>
+        <Button onClick={() => emitChallengeGymLeader(4)}>Fuchsia</Button>
+        <Button onClick={() => emitChallengeGymLeader(5)}>Saffron</Button>
+        <Button onClick={() => emitChallengeGymLeader(6)}>Cinnabar</Button>
+        <Button onClick={() => emitChallengeGymLeader(7)}>Viridian</Button>
         <Button onClick={() => navigate(ScreenState.Lobby)}>Back</Button>
       </main>
     </LayoutContainer >

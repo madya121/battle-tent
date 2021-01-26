@@ -73,7 +73,7 @@ export default function Room() {
   const [playerLeftModalShowns, setPlayerLeftModalShowns] = useState(false);
   const [settingModalShown, setSettingModalShown] = useState(false);
   const [activeStep, setActiveStep] = useState(RoomStep.ChooseParty);
-  const [location, setLocation] = useState(GymLocation.None);
+  const [gymLocation, setGymLocation] = useState(GymLocation.None);
   const navigate = useContext(NavigationContext);
 
   const backToLobby = useCallback(
@@ -91,7 +91,7 @@ export default function Room() {
       availablePokemon,
       gymBattleIndex,
     }) => {
-      setLocation(gymBattleIndex);
+      setGymLocation(gymBattleIndex);
       const checkMatchingPlayer = ({ id }: Player) => id !== player?.id;
       const findOpponent = find(checkMatchingPlayer);
       const opponent = findOpponent(players);
@@ -121,18 +121,18 @@ export default function Room() {
 
   const goToBattleStep = () => {
     setActiveStep(RoomStep.Battle);
-    audio.playBgm(getLocationBgm(location), { delay: 0 });
+    audio.playBgm(getLocationBgm(gymLocation), { delay: 0 });
   }
 
   return (
-    <LayoutContainer location={location}>
+    <LayoutContainer location={gymLocation}>
       <TopArea>
         <IconButton aria-label="setting" onClick={openSettingModal}>
           <img alt="setting" src={SettingIcon} width="28px" />
         </IconButton>
         <OpponentInfo>
           <div>{opponent && opponent.name}</div>
-          <SmallAvatar code={opponent?.avatar} />
+          <SmallAvatar code={gymLocation === GymLocation.None ? opponent?.avatar : `${gymLocation}`} />
         </OpponentInfo>
       </TopArea>
       <MainArea>
