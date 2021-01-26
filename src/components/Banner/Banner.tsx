@@ -8,6 +8,7 @@ export default styled.div`
   background-image: url(${BannerBase});
   background-size: contain;
   padding: 12px 24px;
+  background-repeat: no-repeat;
   min-width: 200px;
   max-width: 230px;
   background-position: center 4px;
