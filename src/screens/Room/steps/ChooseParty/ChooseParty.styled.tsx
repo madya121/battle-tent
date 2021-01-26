@@ -11,7 +11,12 @@ export const LayoutContainer = styled.div`
 `;
 
 export const PokemonSummaryContainer = styled.div`
-  height: 100%;
+  // TODO: make the height flexible
+  // right now heigth: 100%; works if
+  // the content height is less than the remaining space
+
+  // deviceHeight - header - footer - selectionTiles - margin);
+  height: calc(100vh - 100px - 100px - 232px - 16px);
   background-color: rgb(252, 88, 73);
   box-shadow: rgb(192, 54, 45) -2px -4px 2px 1px inset;
   border-radius: 16px;
@@ -61,7 +66,7 @@ export const LeftSummary = styled.div`
 export const RightSummary = styled.div`
   height: 100%;
   width: 100%;
-  overflow: scroll;
+  overflow: auto;
 `;
 
 export const PokemonName = styled.div`
@@ -84,9 +89,8 @@ export const Tile = styled(
   ({ chosen, ...props }: { chosen?: boolean } & TouchableProps) =>
     <Touchable {...props} />
 )`
-  width: 100px;
-  height: 100px;
-  margin: 8px;
+  width: 96px;
+  height: 96px;
   filter: ${({ chosen }) =>
     chosen ? 'drop-shadow(0 0 0.3rem lightyellow)' : 'none'
   };
@@ -99,7 +103,7 @@ export const FixedBottomArea = styled.div`
   position: fixed;
   left: calc(16px + 68px);
   bottom: 12px;
-  width: calc(425px - 32px - 68px - 48px);
+  width: calc(100vw - 32px - 68px - 48px);
   z-index: 1;
 `;
 
