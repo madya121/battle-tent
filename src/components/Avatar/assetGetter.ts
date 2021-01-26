@@ -7,7 +7,7 @@ import Red from '../../assets/images/trainer/red.png';
 export function getAvatarUrl(code = '') {
   switch (parseInt(code)) {
     case GymLocation.Pewter: return Brock;
-    case GymLocation.Celadon: return Misty;
+    case GymLocation.Cerulean: return Misty;
     case GymLocation.Vermilion: return Surge;
     default: return Red;
   }
