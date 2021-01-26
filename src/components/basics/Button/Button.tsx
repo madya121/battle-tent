@@ -23,11 +23,13 @@ export default function Button({ disabled, ...props }:
 const StyledMaterialButton = styled(MaterialButton)`
   background-image: url(${ButtonBase});
   min-height: 56px;
-  background-size: contain;
+  background-size: 100% 100%;
   background-repeat: no-repeat;
 
   && {
     min-width: 160px;
+    padding-left: 20px;
+    padding-right: 20px;
   }
 
   .MuiButton-label {
