@@ -1,4 +1,4 @@
-import Pokemon from '../../types/Pokemon';
+import Pokemon from '../types/Pokemon';
 
 export function getPokemonModel(
   name: Pokemon['name'],

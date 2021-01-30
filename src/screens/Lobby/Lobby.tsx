@@ -19,6 +19,7 @@ import Banner from '../../components/Banner';
 import Logo from '../../assets/images/ui/logo.png';
 import Welcome from '../../assets/images/ui/welcome.png';
 import { PlayerContext } from '../../auth';
+import { PreloadContext } from '../../assets/preloading';
 
 const LobbyScreenBgm = require('../../assets/audio/bgm/2-41_Battle_Tower.mp3');
 
@@ -51,6 +52,7 @@ export default function Lobby() {
   }, [navigate]);
 
   const [player] = useContext(PlayerContext);
+  const { lobbyScreenLoading } = useContext(PreloadContext);
 
   async function onInviteMatch() {
     setIsFindingMatch(true);
@@ -85,19 +87,21 @@ export default function Lobby() {
       </header>
       <main style={{ flex: 1 }}>
         <InviteModal shown={inviteModalShown} onClose={closeInviteModal} />
-        {isFindingMatch ? (
-          <>
-            <LoadingIndicator />
-            <Button onClick={emitCancelFindMatch}>Cancel</Button>
-          </>
-        ) :
-          <div>
-            <Button onClick={emitPlaySinglePlayer}>Single Player</Button>
-            <Button onClick={() => navigate(ScreenState.GymChallenge)}>Gym Challenge</Button>
-            <Button onClick={emitFindMatch}>Find Match</Button>
-            <Button disabled onClick={openInviteModal}>Invite</Button>
-          </div>
-        }
+        {lobbyScreenLoading
+          ? <LoadingIndicator />
+          : isFindingMatch ? (
+            <>
+              <LoadingIndicator />
+              <Button onClick={emitCancelFindMatch}>Cancel</Button>
+            </>
+          ) : (
+              <>
+                <Button onClick={emitPlaySinglePlayer}>Single Player</Button>
+                <Button onClick={() => navigate(ScreenState.GymChallenge)}>Gym Challenge</Button>
+                <Button onClick={emitFindMatch}>Find Match</Button>
+                <Button disabled onClick={openInviteModal}>Invite</Button>
+              </>
+            )}
       </main>
     </LayoutContainer>
   );

@@ -18,7 +18,7 @@ import {
 } from './ChooseParty.styled';
 import { append, without } from 'ramda';
 import GamplayContext from '../../GameplayContext';
-import { getPokemonModel } from '../../../../components/PokemonModel/helper';
+import { getPokemonModel } from '../../../../assets/animatedPokemon';
 import Modal from '../../../../components/Modal';
 import Pokemon from '../../../../types/Pokemon';
 import { MoveTile } from '../Battle/Battle.styled';

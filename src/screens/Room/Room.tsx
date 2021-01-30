@@ -29,6 +29,8 @@ import SettingIcon from '../../assets/images/ui/setting.png';
 import { GymLocation, getLocationBgm } from '../../constants/location';
 import audio from '../../audio';
 import { SmallAvatar } from '../../components/Avatar';
+import { PreloadContext } from '../../assets/preloading';
+import LoadingIndicator from '../../components/LoadingIndicator';
 
 enum RoomStep {
   ChooseParty,
@@ -36,13 +38,16 @@ enum RoomStep {
 }
 
 export default function Room() {
+  const [player] = useContext(PlayerContext);
+  const { battleScreenLoading } = useContext(PreloadContext);
+
   /** GameplayContexts */
+
   const [availablePokemon, setAvailablePokemon] = useState<Pokemon[]>([]);
   const [opponent, setOpponent] = useState<Player | undefined>(undefined);
 
   const [party, setParty] = useState<BattlingPokemon[]>([]);
   const [opponentParty, setOpponentParty] = useState<BattlingPokemon[]>([]);
-  const [player] = useContext(PlayerContext);
 
   function updateParties(parties: Parties) {
     setParty(parties[player.id]);
@@ -136,13 +141,15 @@ export default function Room() {
         </OpponentInfo>
       </TopArea>
       <MainArea>
-        <GameplayContext.Provider value={gameplayContextValue}>
-          {activeStep === RoomStep.ChooseParty ? (
-            <Steps.ChooseParty onFinish={goToBattleStep} />
-          ) : activeStep === RoomStep.Battle ? (
-            <Steps.Battle />
-          ) : null}
-        </GameplayContext.Provider>
+        {battleScreenLoading ? <LoadingIndicator /> : (
+          <GameplayContext.Provider value={gameplayContextValue}>
+            {activeStep === RoomStep.ChooseParty ? (
+              <Steps.ChooseParty onFinish={goToBattleStep} />
+            ) : activeStep === RoomStep.Battle ? (
+              <Steps.Battle />
+            ) : null}
+          </GameplayContext.Provider>
+        )}
       </MainArea>
       <BottomArea>
         <SmallAvatar code={player.avatar} />

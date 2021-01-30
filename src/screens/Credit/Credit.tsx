@@ -21,9 +21,15 @@ export default function Credit() {
       </LogoHeader>
       <main style={{ flex: 2 }}>
         Credits
-        projectpokemon.org
-        Ken Sugimori pokedex art veekun.com
+        
+        Animated Sprites: projectpokemon.org
+
+        Pokemon Images:
+        Ken Sugimori pokedex art
+        veekun.com
         pokemondb.net
+
+        SFX:
         KH Insider
         <Button onClick={() => navigate(ScreenState.Lobby)}>Back</Button>
       </main>
