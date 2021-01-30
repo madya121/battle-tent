@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
 import GamplayContext from '../../GameplayContext';
-import { getPokemonModel } from '../../../../components/PokemonModel/helper';
+import { getPokemonModel } from '../../../../assets/animatedPokemon';
 import { Touchable } from '../../../../components/basics';
 import { TouchableProps } from '../../../../components/basics/Touchable/Touchable';
 import Pokemon from '../../../../types/Pokemon';
