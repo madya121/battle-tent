@@ -17,7 +17,7 @@ import {
   EnergyBar,
 } from './Battle.styled';
 import { animateAttacking, animateTakingDamage } from './animate';
-import { concat, head, pluck } from 'ramda';
+import { concat, head } from 'ramda';
 import { UseMoveParams } from '../../../../api/base';
 import BattlingPokemonTile from './BattlingPokemonTile'
 import GameOverModal from './GameOverModal'

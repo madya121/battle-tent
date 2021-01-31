@@ -18,7 +18,7 @@ import steel from './steel.png';
 import fairy from './fairy.png';
 import { Type } from '../../../types/Pokemon';
 
-export default <Record<Type, string>>{
+const typeIcons: Record<Type, string> = {
   normal,
   fire,
   fighting,
@@ -37,4 +37,7 @@ export default <Record<Type, string>>{
   dark,
   steel,
   fairy,
+  '???': normal
 };
+
+export default typeIcons;
