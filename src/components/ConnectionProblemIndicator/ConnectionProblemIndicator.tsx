@@ -2,10 +2,10 @@ import React, { useState, useEffect, useContext } from 'react';
 import styled from 'styled-components';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import {
-  subscribeDisconnected,
+  // subscribeDisconnected,
   subscribeReconnecting,
-  subscribeReconnectError,
-  subscribeReconnectFailed,
+  // subscribeReconnectError,
+  // subscribeReconnectFailed,
   subscribeReconnected,
 } from '../../api';
 import { NavigationContext, ScreenState } from '../../navigation';

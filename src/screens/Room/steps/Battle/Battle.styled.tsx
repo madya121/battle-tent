@@ -51,8 +51,8 @@ export const MoveTile = styled(
 `;
 
 export const EnergyBarContainer = styled.div`
-  position: fixed;
-  bottom: 30px;
+  position: absolute;
+  bottom: -30px; /* TODO fix this to align with any device */
   left: 75px;
   width: 64%;
   align-self: center;

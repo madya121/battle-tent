@@ -1,21 +1,22 @@
-import React, { useContext, useState } from 'react';
-import { PlayerContext } from '../../auth';
-import { NavigationContext, ScreenState } from '../../navigation';
+import React, { useState } from 'react';
+// import { PlayerContext } from '../../auth';
+// import { NavigationContext } from '../../navigation';
+// import { NavigationContext, ScreenState } from '../../navigation';
 import audio from '../../audio';
 import styled from 'styled-components';
 import { IconButton } from '@material-ui/core';
 import VolumeOn from '../../assets/images/ui/sound.png';
 import VolumeOff from '../../assets/images/ui/sound_off.png';
-import { guest } from '../../auth/PlayerContext';
+// import { guest } from '../../auth/PlayerContext';
 
 export default function Navbar() {
-  const [player, setPlayer] = useContext(PlayerContext);
-  const navigate = useContext(NavigationContext);
+  // const [player, setPlayer] = useContext(PlayerContext);
+  // const navigate = useContext(NavigationContext);
 
-  function signout() {
-    setPlayer(guest);
-    navigate(ScreenState.Login);
-  }
+  // function signout() {
+  //   setPlayer(guest);
+  //   navigate(ScreenState.Login);
+  // }
 
   return (
     <NavbarContainer>

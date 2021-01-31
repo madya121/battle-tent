@@ -75,9 +75,9 @@ export const PokemonName = styled.div`
 `;
 
 export const TileContainer = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  justify-items: center;
 
   // apply black backdrop
   background: #000d;
@@ -100,10 +100,10 @@ export const Tile = styled(
 `;
 
 export const FixedBottomArea = styled.div`
-  position: fixed;
+  position: absolute;
   left: calc(16px + 68px);
-  bottom: 12px;
-  width: calc(100vw - 32px - 68px - 48px);
+  bottom: -74px; /* height of this entire div */
+  width: calc(((100% - 32px) - 68px) - 48px);
   z-index: 1;
 `;
 
