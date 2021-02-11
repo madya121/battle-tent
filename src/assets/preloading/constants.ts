@@ -1,42 +1,7 @@
-import React, { useState, Dispatch, SetStateAction } from 'react';
-import { kantoDex } from '../constants/pokemonList';
-import { getPokemonModel } from './animatedPokemon';
+import { kantoDex } from '../../constants/pokemonList';
+import { getPokemonModel } from '../animatedPokemon';
 
-interface PreloadContextValue {
-  splashScreenLoading: boolean;
-  setSplashScreenLoading: Dispatch<SetStateAction<boolean>>;
-  lobbyScreenLoading: boolean;
-  setLobbyScreenLoading: Dispatch<SetStateAction<boolean>>;
-  battleScreenLoading: boolean;
-  setBattleScreenLoading: Dispatch<SetStateAction<boolean>>;
-}
-
-export const PreloadContext = React.createContext<PreloadContextValue>({
-  splashScreenLoading: true,
-  setSplashScreenLoading: () => { },
-  lobbyScreenLoading: true,
-  setLobbyScreenLoading: () => { },
-  battleScreenLoading: true,
-  setBattleScreenLoading: () => { },
-});
-
-export function PreloadContextProvider(props: { children: React.ReactNode }) {
-  const [splashScreenLoading, setSplashScreenLoading] = useState(true);
-  const [lobbyScreenLoading, setLobbyScreenLoading] = useState(true);
-  const [battleScreenLoading, setBattleScreenLoading] = useState(true);
-  return (
-    <PreloadContext.Provider
-      value={{
-        splashScreenLoading, setSplashScreenLoading,
-        lobbyScreenLoading, setLobbyScreenLoading,
-        battleScreenLoading, setBattleScreenLoading,
-      }}
-      {...props}
-    />
-  );
-}
-
-const images = [
+export const initialImages = [
   // Tier 0: load this at splash screen
   [
     // initial backgrounds
@@ -99,7 +64,7 @@ const images = [
   ],
 ];
 
-const audios = [
+export const initialAudios = [
   // Tier 0: load this at splash screen
   [
     // initial sfx
@@ -203,31 +168,3 @@ const audios = [
     require('./audio/sfx/moves/Scratch.mp3'),
   ],
 ];
-
-let tierIndex = 0;
-export async function preloadAssets(...callbacks: (() => void)[]) {
-  const imagePromises = images[tierIndex].map(src => new Promise<void>((resolve, reject) => {
-    const img = new Image();
-    img.src = src;
-    img.onload = () => resolve();
-    img.onerror = (...e) => { console.error(src, ...e); reject() };
-  }));
-
-  const audioPromises = audios[tierIndex].map(src => new Promise<void>((resolve, reject) => {
-    const audio = new Audio(src);
-    audio.oncanplaythrough = () => resolve();
-    audio.onerror = (...e) => { console.error(src, ...e); reject() };
-  }));
-
-  await Promise.all([
-    ...imagePromises,
-    ...audioPromises,
-  ]);
-
-  callbacks[tierIndex] && callbacks[tierIndex]();
-  tierIndex++;
-
-  if (tierIndex < images.length) {
-    preloadAssets(...callbacks);
-  }
-}

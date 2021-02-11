@@ -4,7 +4,7 @@ import { Touchable } from '../../components/basics';
 import { LayoutContainer, LogoHeader } from './TitleScreen.styled';
 import Logo from '../../assets/images/ui/logo.png';
 import LoadingIndicator from '../../components/LoadingIndicator';
-import { PreloadContext, preloadAssets } from '../../assets/preloading';
+import { PreloadContext, preloadInitialAssets } from '../../assets/preloading';
 
 export default function TitleScreen() {
   const navigate = useContext(NavigationContext);
@@ -17,7 +17,7 @@ export default function TitleScreen() {
   } = useContext(PreloadContext);
 
   useEffect(function triggerPreload() {
-    preloadAssets(
+    preloadInitialAssets(
       () => setSplashScreenLoading(false),
       () => setLobbyScreenLoading(false),
       () => setBattleScreenLoading(false),
