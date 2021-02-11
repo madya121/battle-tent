@@ -22,6 +22,7 @@ export function PreloadContextProvider(props: { children: React.ReactNode }) {
     preloadInitialAssets(
       () => setSplashScreenLoading(false),
       () => setLobbyScreenLoading(false),
+      () => { },
       () => setBattleScreenLoading(false),
     );
   }, []);
