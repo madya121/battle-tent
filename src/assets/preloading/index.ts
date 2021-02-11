@@ -5,5 +5,4 @@ export {
 
 export {
   preloadImages,
-  preloadInitialAssets,
 } from './preloadAssets';

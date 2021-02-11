@@ -21,18 +21,21 @@ async function preloadAudios(audios: any[]) {
   await Promise.all(promises);
 }
 
-export async function preloadInitialAssets(...callbacks: (() => void)[]) {
-  let tierIndex = 0;
+let tierIndex = 0;
 
+export async function preloadInitialAssets(...callbacks: (() => void)[]) {
   await Promise.all([
-    preloadImages(initialImages[tierIndex]),
-    preloadAudios(initialAudios[tierIndex]),
+    preloadImages(initialImages[tierIndex] || []),
+    preloadAudios(initialAudios[tierIndex] || []),
   ]);
 
   callbacks[tierIndex] && callbacks[tierIndex]();
   tierIndex++;
 
-  if (tierIndex < initialImages.length) {
+  if (
+    tierIndex < initialImages.length ||
+    tierIndex < initialAudios.length
+  ) {
     preloadInitialAssets(...callbacks);
   }
 }
