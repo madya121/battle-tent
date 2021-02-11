@@ -1,28 +1,15 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 import { NavigationContext, ScreenState } from '../../navigation';
 import { Touchable } from '../../components/basics';
 import { LayoutContainer, LogoHeader } from './TitleScreen.styled';
 import Logo from '../../assets/images/ui/logo.png';
 import LoadingIndicator from '../../components/LoadingIndicator';
-import { PreloadContext, preloadAssets } from '../../assets/preloading';
+import { PreloadContext } from '../../assets/preloading';
 
 export default function TitleScreen() {
   const navigate = useContext(NavigationContext);
 
-  const {
-    splashScreenLoading,
-    setSplashScreenLoading,
-    setLobbyScreenLoading,
-    setBattleScreenLoading,
-  } = useContext(PreloadContext);
-
-  useEffect(function triggerPreload() {
-    preloadAssets(
-      () => setSplashScreenLoading(false),
-      () => setLobbyScreenLoading(false),
-      () => setBattleScreenLoading(false),
-    );
-  }, []);
+  const { splashScreenLoading } = useContext(PreloadContext);
 
   function onClickScreen() {
     navigate(ScreenState.Login);

@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Button } from '../../../../components/basics';
 import LoadingIndicator from '../../../../components/LoadingIndicator';
 import { emitPlayerReady, subscribeRoundStarted } from '../../../../api';
@@ -17,9 +17,10 @@ import {
   PokemonIcon,
 } from './ChooseParty.styled';
 import { append, without } from 'ramda';
-import GamplayContext from '../../GameplayContext';
-import { getPokemonModel } from '../../../../assets/animatedPokemon';
+import GameplayContext from '../../GameplayContext';
 import Modal from '../../../../components/Modal';
+import { getPokemonModel } from '../../../../assets/animatedPokemon';
+import { preloadImages } from '../../../../assets/preloading';
 import Pokemon from '../../../../types/Pokemon';
 import { MoveTile } from '../Battle/Battle.styled';
 
@@ -33,11 +34,35 @@ export default function ChooseParty({ onFinish }: ChoosePartyProps) {
   const [choosen, setChoosen] = useState<Array<number>>([]);
   const [alertShown, setAlertShown] = useState(false);
   const [confirmShown, setConfirmShown] = useState(false);
+  const [previewImageLoading, setPreviewImageLoading] = useState(true);
   const {
     availablePokemon,
     updateParties,
     changeTurn,
-  } = useContext(GamplayContext);
+  } = useContext(GameplayContext);
+
+  const getPreviewImageSrc = (id: string) =>
+    require(`../../../../assets/images/pokemonPreview/${id}.png`);
+
+  useEffect(function preloadAssets() {
+    async function preloadPreviews() {
+      const pokemonPreviews = availablePokemon.map(
+        ({ id }) => getPreviewImageSrc(id)
+      );
+      await preloadImages(pokemonPreviews);
+      setPreviewImageLoading(false);
+    }
+
+    async function preloadBackModels() {
+      const pokemonBackModels = availablePokemon.map(
+        ({ name }) => getPokemonModel(name, 'back')
+      );
+      await preloadImages(pokemonBackModels);
+    }
+
+    preloadPreviews()
+      .then(preloadBackModels);
+  }, []);
 
   function choosePokemon(index: number) {
     setHighlighted(availablePokemon[index]);
@@ -85,11 +110,13 @@ export default function ChooseParty({ onFinish }: ChoosePartyProps) {
           {highlighted && (
             <PokemonSummary>
               <LeftSummary>
-                <img
-                  alt={highlighted.name}
-                  src={require(`../../../../assets/images/pokemonPreview/${highlighted.id}.png`)}
-                  width="100px"
-                />
+                {previewImageLoading ? <LoadingIndicator /> : (
+                  <img
+                    alt={highlighted.name}
+                    src={getPreviewImageSrc(highlighted.id)}
+                    width="100px"
+                  />
+                )}
                 <PokemonName>{highlighted.name}</PokemonName>
               </LeftSummary>
               <RightSummary>
