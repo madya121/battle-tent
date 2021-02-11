@@ -1,0 +1,163 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Room screen should render 1`] = `
+<DocumentFragment>
+  <div
+    class="sc-AxhCb sc-fzpkqZ khUyuk"
+  >
+    <header
+      class="sc-fznAgC DMmHa"
+    >
+      <button
+        aria-label="setting"
+        class="MuiButtonBase-root MuiIconButton-root sc-AxiKw bOTXee"
+        tabindex="0"
+        type="button"
+      >
+        <span
+          class="MuiIconButton-label"
+        >
+          <img
+            alt="setting"
+            src="setting.png"
+            width="28px"
+          />
+        </span>
+        <span
+          class="MuiTouchRipple-root"
+        />
+      </button>
+      <div
+        class="sc-fzomuh hLNKfy"
+      >
+        <div />
+        <div
+          class="sc-fzqAui gjHduE"
+        >
+          <div
+            class="sc-fzqMdD eybfVz"
+            src="red.png"
+          />
+        </div>
+      </div>
+    </header>
+    <main
+      class="sc-fznLPX fSjwvh"
+    >
+      <div
+        class="MuiCircularProgress-root MuiCircularProgress-colorPrimary MuiCircularProgress-indeterminate"
+        role="progressbar"
+        style="width: 40px; height: 40px;"
+      >
+        <svg
+          class="MuiCircularProgress-svg"
+          viewBox="22 22 44 44"
+        >
+          <circle
+            class="MuiCircularProgress-circle MuiCircularProgress-circleIndeterminate"
+            cx="44"
+            cy="44"
+            fill="none"
+            r="20.2"
+            stroke-width="3.6"
+          />
+        </svg>
+      </div>
+    </main>
+    <footer
+      class="sc-fzoaKM hhEkwV"
+    >
+      <div
+        class="sc-fzqAui gjHduE"
+      >
+        <div
+          class="sc-fzqMdD eybfVz"
+          src="red.png"
+        />
+      </div>
+      <div
+        class="sc-fzoant irVQgi"
+      >
+        <div
+          class="sc-fzqAbL huSWPu"
+        >
+          <div
+            class="sc-fzqMAW irqGFZ"
+          >
+            OK!
+          </div>
+          <div
+            class="sc-fzqMAW irqGFZ"
+          >
+            good game!
+          </div>
+          <div
+            class="sc-fzqMAW irqGFZ"
+          >
+            well played!
+          </div>
+          <div
+            class="sc-fzqMAW irqGFZ"
+          >
+            prepare!
+          </div>
+          <div
+            class="sc-fzqMAW irqGFZ"
+          >
+            take this!
+          </div>
+          <div
+            class="sc-fzqMAW irqGFZ"
+          >
+            stop it!
+          </div>
+          <div
+            class="sc-fzqMAW irqGFZ"
+          >
+            enough!
+          </div>
+          <div
+            class="sc-fzqMAW irqGFZ"
+          >
+            rematch!
+          </div>
+          <div
+            class="sc-fzqMAW irqGFZ"
+          >
+            thank you!
+          </div>
+        </div>
+        <div
+          class="sc-fzoydu sc-fzoJMP irPjqh"
+        />
+        <button
+          class="MuiButtonBase-root MuiIconButton-root sc-AxiKw bOTXee sc-fzomME hqDKyE"
+          tabindex="0"
+          type="button"
+        >
+          <span
+            class="MuiIconButton-label"
+          >
+            <svg
+              aria-hidden="true"
+              class="MuiSvgIcon-root"
+              focusable="false"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM9 11H7V9h2v2zm4 0h-2V9h2v2zm4 0h-2V9h2v2z"
+              />
+            </svg>
+          </span>
+          <span
+            class="MuiTouchRipple-root"
+          />
+        </button>
+        <div
+          class="sc-fzoydu sc-fzoYHE fLFUok"
+        />
+      </div>
+    </footer>
+  </div>
+</DocumentFragment>
+`;

@@ -3,38 +3,69 @@
 exports[`App should render 1`] = `
 <DocumentFragment>
   <div
-    class="sc-AxirZ sc-AxiKw dOnIda"
+    class="sc-fzqMdD juQyXy"
   >
-    <header>
-      <div>
-        Welcome to
-      </div>
-      <h1>
-        Battle Tent
-      </h1>
-    </header>
-    <main>
-      <h5>
-        What is your display name?
-      </h5>
-      <input
-        placeholder="...Trainer123"
-      />
-      <button
-        class="MuiButtonBase-root MuiButton-root MuiButton-text sc-AxjAm faKiNC"
-        tabindex="0"
-        type="button"
+    <div>
+      <div
+        class="MuiCircularProgress-root MuiCircularProgress-colorPrimary MuiCircularProgress-indeterminate"
+        role="progressbar"
+        style="width: 40px; height: 40px;"
       >
-        <span
-          class="MuiButton-label"
+        <svg
+          class="MuiCircularProgress-svg"
+          viewBox="22 22 44 44"
         >
-          Enter
-        </span>
-        <span
-          class="MuiTouchRipple-root"
-        />
-      </button>
-    </main>
+          <circle
+            class="MuiCircularProgress-circle MuiCircularProgress-circleIndeterminate"
+            cx="44"
+            cy="44"
+            fill="none"
+            r="20.2"
+            stroke-width="3.6"
+          />
+        </svg>
+      </div>
+      <div
+        style="position: absolute; visibility: hidden;"
+      >
+        <p
+          style="font-family: NormalTextFont;"
+        >
+          preload NormalTextFont
+        </p>
+        <p
+          style="font-family: HeadTextFont;"
+        >
+          preload HeadTextFont
+        </p>
+      </div>
+    </div>
+    <div
+      class="sc-fzqAui hxGwcG"
+    >
+      <div
+        class="MuiCircularProgress-root MuiCircularProgress-colorPrimary MuiCircularProgress-indeterminate"
+        role="progressbar"
+        style="width: 40px; height: 40px;"
+      >
+        <svg
+          class="MuiCircularProgress-svg"
+          viewBox="22 22 44 44"
+        >
+          <circle
+            class="MuiCircularProgress-circle MuiCircularProgress-circleIndeterminate"
+            cx="44"
+            cy="44"
+            fill="none"
+            r="20.2"
+            stroke-width="3.6"
+          />
+        </svg>
+      </div>
+      <p>
+        Reconnecting...
+      </p>
+    </div>
   </div>
 </DocumentFragment>
 `;

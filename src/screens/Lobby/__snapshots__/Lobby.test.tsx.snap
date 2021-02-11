@@ -3,55 +3,78 @@
 exports[`Lobby screen should render 1`] = `
 <DocumentFragment>
   <div
-    class="sc-AxirZ sc-fzplWN iSSJWi"
+    class="sc-AxhCb sc-fzqMdD aTPwe"
   >
-    <header>
-      <h1>
-        Battle Tent
-      </h1>
+    <header
+      style="margin-top: 80px;"
+    >
+      <nav
+        class="sc-fzpans kxQwva"
+      >
+        <button
+          aria-label="volume"
+          class="MuiButtonBase-root MuiIconButton-root"
+          tabindex="0"
+          type="button"
+        >
+          <span
+            class="MuiIconButton-label"
+          >
+            <img
+              alt="music-volume"
+              src="sound.png"
+              width="28px"
+            />
+          </span>
+          <span
+            class="MuiTouchRipple-root"
+          />
+        </button>
+      </nav>
+      <div
+        class="sc-AxhCb kCMqZl"
+      >
+        <img
+          alt="Battle Tent"
+          src="logo.png"
+          style="width: 200px;"
+        />
+        <img
+          alt="Welcome"
+          src="welcome.png"
+          style="width: 250px;"
+        />
+        <div
+          class="sc-fzplWN ibMnsj"
+          style="margin-bottom: 20px;"
+        >
+          Guest
+        </div>
+      </div>
     </header>
-    <div>
-      <button
-        class="MuiButtonBase-root MuiButton-root MuiButton-text sc-AxjAm faKiNC"
-        tabindex="0"
-        type="button"
+    <main
+      style="flex: 1;"
+    >
+      <div
+        class="MuiCircularProgress-root MuiCircularProgress-colorPrimary MuiCircularProgress-indeterminate"
+        role="progressbar"
+        style="width: 40px; height: 40px;"
       >
-        <span
-          class="MuiButton-label"
+        <svg
+          class="MuiCircularProgress-svg"
+          viewBox="22 22 44 44"
         >
-          Find match
-        </span>
-        <span
-          class="MuiTouchRipple-root"
-        />
-      </button>
-      <button
-        class="MuiButtonBase-root MuiButton-root MuiButton-text sc-AxjAm faKiNC Mui-disabled Mui-disabled"
-        disabled=""
-        tabindex="-1"
-        type="button"
-      >
-        <span
-          class="MuiButton-label"
-        >
-          Invite
-        </span>
-      </button>
-      <button
-        class="MuiButtonBase-root MuiButton-root MuiButton-text sc-AxjAm faKiNC"
-        tabindex="0"
-        type="button"
-      >
-        <span
-          class="MuiButton-label"
-        >
-          Change name
-        </span>
-        <span
-          class="MuiTouchRipple-root"
-        />
-      </button>
-    </div>
+          <circle
+            class="MuiCircularProgress-circle MuiCircularProgress-circleIndeterminate"
+            cx="44"
+            cy="44"
+            fill="none"
+            r="20.2"
+            stroke-width="3.6"
+          />
+        </svg>
+      </div>
+    </main>
   </div>
 </DocumentFragment>
 `;

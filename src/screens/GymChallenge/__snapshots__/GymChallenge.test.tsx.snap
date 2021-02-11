@@ -1,0 +1,195 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`GymChallenge screen should render 1`] = `
+<DocumentFragment>
+  <div
+    class="sc-AxhCb sc-fzqMdD aTPwe"
+  >
+    <header
+      style="margin-top: 80px;"
+    >
+      <nav
+        class="sc-AxmLO kzsFQl"
+      >
+        <button
+          aria-label="volume"
+          class="MuiButtonBase-root MuiIconButton-root"
+          tabindex="0"
+          type="button"
+        >
+          <span
+            class="MuiIconButton-label"
+          >
+            <img
+              alt="music-volume"
+              src="sound.png"
+              width="28px"
+            />
+          </span>
+          <span
+            class="MuiTouchRipple-root"
+          />
+        </button>
+      </nav>
+      <div
+        class="sc-AxhCb kCMqZl"
+      >
+        <div
+          class="sc-fzplWN ibMnsj"
+          style="margin-bottom: 20px;"
+        >
+          Gym Challenge
+        </div>
+      </div>
+    </header>
+    <main
+      style="flex: 1;"
+    >
+      <div>
+        <button
+          class="MuiButtonBase-root MuiButton-root MuiButton-text sc-AxirZ kOlOeA"
+          tabindex="0"
+          type="button"
+        >
+          <span
+            class="MuiButton-label"
+          >
+            Pewter
+          </span>
+          <span
+            class="MuiTouchRipple-root"
+          />
+        </button>
+      </div>
+      <div>
+        <button
+          class="MuiButtonBase-root MuiButton-root MuiButton-text sc-AxirZ kOlOeA"
+          tabindex="0"
+          type="button"
+        >
+          <span
+            class="MuiButton-label"
+          >
+            Cerulean
+          </span>
+          <span
+            class="MuiTouchRipple-root"
+          />
+        </button>
+      </div>
+      <div>
+        <button
+          class="MuiButtonBase-root MuiButton-root MuiButton-text sc-AxirZ kOlOeA"
+          tabindex="0"
+          type="button"
+        >
+          <span
+            class="MuiButton-label"
+          >
+            Vermilion
+          </span>
+          <span
+            class="MuiTouchRipple-root"
+          />
+        </button>
+      </div>
+      <div>
+        <button
+          class="MuiButtonBase-root MuiButton-root MuiButton-text sc-AxirZ kOlOeA"
+          tabindex="0"
+          type="button"
+        >
+          <span
+            class="MuiButton-label"
+          >
+            Celadon
+          </span>
+          <span
+            class="MuiTouchRipple-root"
+          />
+        </button>
+      </div>
+      <div>
+        <button
+          class="MuiButtonBase-root MuiButton-root MuiButton-text sc-AxirZ kOlOeA"
+          tabindex="0"
+          type="button"
+        >
+          <span
+            class="MuiButton-label"
+          >
+            Fuchsia
+          </span>
+          <span
+            class="MuiTouchRipple-root"
+          />
+        </button>
+      </div>
+      <div>
+        <button
+          class="MuiButtonBase-root MuiButton-root MuiButton-text sc-AxirZ kOlOeA"
+          tabindex="0"
+          type="button"
+        >
+          <span
+            class="MuiButton-label"
+          >
+            Saffron
+          </span>
+          <span
+            class="MuiTouchRipple-root"
+          />
+        </button>
+      </div>
+      <div>
+        <button
+          class="MuiButtonBase-root MuiButton-root MuiButton-text sc-AxirZ kOlOeA"
+          tabindex="0"
+          type="button"
+        >
+          <span
+            class="MuiButton-label"
+          >
+            Cinnabar
+          </span>
+          <span
+            class="MuiTouchRipple-root"
+          />
+        </button>
+      </div>
+      <div>
+        <button
+          class="MuiButtonBase-root MuiButton-root MuiButton-text sc-AxirZ kOlOeA"
+          tabindex="0"
+          type="button"
+        >
+          <span
+            class="MuiButton-label"
+          >
+            Viridian
+          </span>
+          <span
+            class="MuiTouchRipple-root"
+          />
+        </button>
+      </div>
+      <div>
+        <button
+          class="MuiButtonBase-root MuiButton-root MuiButton-text sc-AxirZ kOlOeA"
+          tabindex="0"
+          type="button"
+        >
+          <span
+            class="MuiButton-label"
+          >
+            Back
+          </span>
+          <span
+            class="MuiTouchRipple-root"
+          />
+        </button>
+      </div>
+    </main>
+  </div>
+</DocumentFragment>
+`;

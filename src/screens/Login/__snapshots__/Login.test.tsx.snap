@@ -3,38 +3,19 @@
 exports[`Login screen should render 1`] = `
 <DocumentFragment>
   <div
-    class="sc-AxirZ sc-fzplWN pdsMX"
+    class="sc-AxhCb sc-fzqAui gvTfoq"
   >
-    <header>
-      <div>
-        Welcome to
-      </div>
-      <h1>
-        Battle Tent
-      </h1>
-    </header>
-    <main>
-      <h5>
-        What is your display name?
-      </h5>
-      <input
-        placeholder="...Trainer123"
+    <header
+      class="sc-fzqMdD dvUZEP"
+    >
+      <img
+        alt="Battle Tent"
+        src="logo.png"
       />
-      <button
-        class="MuiButtonBase-root MuiButton-root MuiButton-text sc-AxjAm faKiNC"
-        tabindex="0"
-        type="button"
-      >
-        <span
-          class="MuiButton-label"
-        >
-          Enter
-        </span>
-        <span
-          class="MuiTouchRipple-root"
-        />
-      </button>
-    </main>
+    </header>
+    <main
+      style="flex: 2;"
+    />
   </div>
 </DocumentFragment>
 `;
