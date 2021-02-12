@@ -1,6 +1,3 @@
-import { kantoDex } from '../../constants/pokemonList';
-import { getPokemonModel } from '../animatedPokemon';
-
 export const initialImages = [
   /**
     * Tier 0: Title Screen assets
@@ -50,9 +47,6 @@ export const initialImages = [
    * Tier 3: Room Screen assets
    */
   [
-    // animated sprites
-    ...kantoDex.map((name) => getPokemonModel(name, 'idle')),
-
     // trainers
     require('../images/trainer/agatha.png'),
     require('../images/trainer/brendan.png'),
