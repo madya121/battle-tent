@@ -39,7 +39,7 @@ enum RoomStep {
 
 export default function Room() {
   const [player] = useContext(PlayerContext);
-  const { battleScreenLoading } = useContext(PreloadContext);
+  const { roomScreenLoading } = useContext(PreloadContext);
 
   /** GameplayContexts */
 
@@ -141,7 +141,7 @@ export default function Room() {
         </OpponentInfo>
       </TopArea>
       <MainArea>
-        {battleScreenLoading ? <LoadingIndicator /> : (
+        {roomScreenLoading ? <LoadingIndicator /> : (
           <GameplayContext.Provider value={gameplayContextValue}>
             {activeStep === RoomStep.ChooseParty ? (
               <Steps.ChooseParty onFinish={goToBattleStep} />

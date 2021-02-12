@@ -22,6 +22,8 @@ import { UseMoveParams } from '../../../../api/base';
 import BattlingPokemonTile from './BattlingPokemonTile'
 import GameOverModal from './GameOverModal'
 import { Button } from '../../../../components/basics';
+import { PreloadContext } from '../../../../assets/preloading';
+import LoadingIndicator from '../../../../components/LoadingIndicator';
 
 type NullableIdx = number | null;
 
@@ -48,6 +50,8 @@ export default function Battle() {
     availableMoves, setAvailableMoves,
     energy, maxEnergy, setEnergy,
   } = useContext(GamplayContext);
+
+  const { battleStepLoading } = useContext(PreloadContext);
 
   function getImageTileElement(
     tileRef: React.RefObject<HTMLImageElement>[],
@@ -153,7 +157,7 @@ export default function Battle() {
     new Array(Math.abs(maxEnergy - energy)).fill({ empty: true })
   );
 
-  return (
+  return battleStepLoading ? <LoadingIndicator /> : (
     <>
       <BattleArea>
         <PartyArea style={{ alignSelf: 'flex-end', justifyContent: 'flex-end' }}>

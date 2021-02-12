@@ -10,6 +10,8 @@ export const initialImages = [
     // initial backgrounds
     require('../images/background/title.jpg'),
     require('../images/background/title-blur.jpg'),
+
+    // next screen background
     require('../images/background/lobby.jpg'),
 
     // UI
@@ -18,35 +20,35 @@ export const initialImages = [
     require('../images/ui/setting.png'),
     require('../images/ui/text_field_bg.png'),
     require('../images/ui/button_base.png'),
-    require('../images/ui/lose.png'),
     require('../images/ui/sound.png'),
     require('../images/ui/welcome.png'),
     require('../images/ui/close_button.png'),
     require('../images/ui/modal_bg.png'),
     require('../images/ui/sound_off.png'),
-    require('../images/ui/win.png'),
   ],
 
   /**
-    * Tier 1: Lobby Screen initial background
-    */
+   * Tier 1: Lobby Screen initial background
+   */
   [
+    // next screen background
     // battle backgrounds
     require('../images/background/arena.png'),
   ],
 
   /**
-    * Tier 2: Lobby Screen remaining backgrounds
-    */
+   * Tier 2: Lobby Screen remaining backgrounds
+   */
   [
+    // next screen backgrounds
     // battle backgrounds
     require('../images/background/cerulean-gym.png'),
     require('../images/background/pewter-gym.png'),
   ],
 
   /**
-    * Tier 3: Room Screen assets
-    */
+   * Tier 3: Room Screen assets
+   */
   [
     // animated sprites
     ...kantoDex.map((name) => getPokemonModel(name, 'idle')),
@@ -70,11 +72,20 @@ export const initialImages = [
     require('../images/trainer/lorelei.png'),
     require('../images/trainer/red.png'),
   ],
+
+  /**
+   * Tier 4: Battle screen
+   */
+  [
+    // UI
+    require('../images/ui/win.png'),
+    require('../images/ui/lose.png'),
+  ],
 ];
 
 export const initialAudios = [
   /**
-    * Tier 0: Title Screen assets
+   * Tier 0: Title Screen assets
     * load this at splash screen
     */
   [
@@ -89,24 +100,29 @@ export const initialAudios = [
     * Tier 1: Lobby Screen initial bgm
     */
   [
-    require('../audio/bgm/25_Pokemon_Gym.mp3'),
     require('../audio/bgm/2-41_Battle_Tower.mp3'),
   ],
 
   /**
-    * Tier 2: Lobby Screen remaining bgm
-    */
+   * Tier 2: Lobby Screen remaining bgm
+   */
+  [
+    require('../audio/bgm/25_Pokemon_Gym.mp3'),
+  ],
+
+  /**
+   * Tier 3: Room Screen
+   */
+  [],
+
+  /**
+   * Tier 4: Battle Step move sfx
+   */
   [
     // battle bgm
     require('../audio/bgm/11_Battle_(Trainer_Battle).mp3'),
     require('../audio/bgm/27_Battle_(Gym_Leader_Battle).mp3'),
-  ],
 
-
-  /**
-    * Tier 3: Room Screen initial bgm
-    */
-  [
     // moves sfx
     require('../audio/sfx/moves/Absorb.mp3'),
     require('../audio/sfx/moves/Acid Armor.mp3'),
