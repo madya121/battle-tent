@@ -4,26 +4,30 @@ import { preloadInitialAssets } from './preloadAssets';
 interface PreloadContextValue {
   splashScreenLoading: boolean;
   lobbyScreenLoading: boolean;
-  battleScreenLoading: boolean;
+  roomScreenLoading: boolean;
+  battleStepLoading: boolean;
 }
 
 export const PreloadContext = React.createContext<PreloadContextValue>({
   splashScreenLoading: true,
   lobbyScreenLoading: true,
-  battleScreenLoading: true,
+  roomScreenLoading: true,
+  battleStepLoading: true,
 });
 
 export function PreloadContextProvider(props: { children: React.ReactNode }) {
   const [splashScreenLoading, setSplashScreenLoading] = useState(true);
   const [lobbyScreenLoading, setLobbyScreenLoading] = useState(true);
-  const [battleScreenLoading, setBattleScreenLoading] = useState(true);
+  const [roomScreenLoading, setRoomScreenLoading] = useState(true);
+  const [battleStepLoading, setBattleStepLoading] = useState(true);
 
   useEffect(function triggerPreload() {
     preloadInitialAssets(
       () => setSplashScreenLoading(false),
       () => setLobbyScreenLoading(false),
       () => { },
-      () => setBattleScreenLoading(false),
+      () => setRoomScreenLoading(false),
+      () => setBattleStepLoading(false),
     );
   }, []);
 
@@ -32,7 +36,8 @@ export function PreloadContextProvider(props: { children: React.ReactNode }) {
       value={{
         splashScreenLoading,
         lobbyScreenLoading,
-        battleScreenLoading,
+        roomScreenLoading,
+        battleStepLoading,
       }}
       {...props}
     />
