@@ -1,6 +1,6 @@
 {
   "name": "battle-tent",
-  "version": "0.1.3a",
+  "version": "0.1.3b",
   "private": true,
   "dependencies": {
     "@material-ui/core": "^4.9.14",
@@ -20,6 +20,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
+    "deploy": "yarn build && scp -r ./build/* carlos@178.128.16.86:/var/www/battle-tent.com/html",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {

@@ -23,6 +23,7 @@ import { getPokemonModel } from '../../../../assets/animatedPokemon';
 import { preloadImages } from '../../../../assets/preloading';
 import Pokemon from '../../../../types/Pokemon';
 import { MoveTile } from '../Battle/Battle.styled';
+import { kantoDex } from '../../../../constants/pokemonList';
 
 export interface ChoosePartyProps {
   onFinish: () => void;
@@ -34,7 +35,7 @@ export default function ChooseParty({ onFinish }: ChoosePartyProps) {
   const [choosen, setChoosen] = useState<Array<number>>([]);
   const [alertShown, setAlertShown] = useState(false);
   const [confirmShown, setConfirmShown] = useState(false);
-  const [previewImageLoading, setPreviewImageLoading] = useState(true);
+  const [imagesLoading, setImagesLoading] = useState(true);
   const {
     availablePokemon,
     updateParties,
@@ -45,12 +46,15 @@ export default function ChooseParty({ onFinish }: ChoosePartyProps) {
     require(`../../../../assets/images/pokemonPreview/${id}.png`);
 
   useEffect(function preloadAssets() {
+    async function preloadIdleModels() {
+      const pokemonIdleModels = kantoDex.map(name => getPokemonModel(name));
+      await preloadImages(pokemonIdleModels);
+    }
     async function preloadPreviews() {
       const pokemonPreviews = availablePokemon.map(
         ({ id }) => getPreviewImageSrc(id)
       );
       await preloadImages(pokemonPreviews);
-      setPreviewImageLoading(false);
     }
 
     async function preloadBackModels() {
@@ -59,9 +63,13 @@ export default function ChooseParty({ onFinish }: ChoosePartyProps) {
       );
       await preloadImages(pokemonBackModels);
     }
-
-    preloadPreviews()
-      .then(preloadBackModels);
+    Promise.all([
+      preloadIdleModels(),
+      preloadPreviews(),
+    ]).then(() => {
+      setImagesLoading(false);
+      preloadBackModels();
+    });
   }, []);
 
   function choosePokemon(index: number) {
@@ -110,7 +118,7 @@ export default function ChooseParty({ onFinish }: ChoosePartyProps) {
           {highlighted && (
             <PokemonSummary>
               <LeftSummary>
-                {previewImageLoading ? <LoadingIndicator /> : (
+                {imagesLoading ? <LoadingIndicator /> : (
                   <img
                     alt={highlighted.name}
                     src={getPreviewImageSrc(highlighted.id)}
