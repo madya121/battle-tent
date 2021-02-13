@@ -20,7 +20,6 @@ export const PokemonSummaryContainer = styled.div`
   background-color: rgb(252, 88, 73);
   box-shadow: rgb(192, 54, 45) -2px -4px 2px 1px inset;
   border-radius: 16px;
-  margin-bottom: 16px;
   padding: 6px 8px 9px 6px;
   display: flex;
 `;
@@ -107,19 +106,18 @@ export const FixedBottomArea = styled.div`
   z-index: 1;
 `;
 
-export const BattleButton = styled(Button)`
-  width: 100%;
+export const ChooseButton = styled(Button)`
   display: flex;
   justify-content: space-between;
   background-size: 100% 100%;
-  && {
-    padding: 16px 32px;
-  }
 `;
 
 export const ChosenParty = styled.div`
-  flex: 1;
   display: flex;
+  padding: 2px 12px;
+  background: #fffb;
+  border-radius: 50px;
+  margin-left: 8px;
 `;
 
 export const PokemonIcon = styled.img`
