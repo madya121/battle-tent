@@ -106,7 +106,7 @@ export default function ChooseParty({ onFinish }: ChoosePartyProps) {
     ready();
   }
 
-  return isWaiting
+  return isWaiting || imagesLoading
     ? (
       <div>
         <LoadingIndicator />
@@ -118,13 +118,11 @@ export default function ChooseParty({ onFinish }: ChoosePartyProps) {
           {highlighted && (
             <PokemonSummary>
               <LeftSummary>
-                {imagesLoading ? <LoadingIndicator /> : (
-                  <img
-                    alt={highlighted.name}
-                    src={getPreviewImageSrc(highlighted.id)}
-                    width="100px"
-                  />
-                )}
+                <img
+                  alt={highlighted.name}
+                  src={getPreviewImageSrc(highlighted.id)}
+                  width="100px"
+                />
                 <PokemonName>{highlighted.name}</PokemonName>
               </LeftSummary>
               <RightSummary>
