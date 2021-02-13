@@ -12,16 +12,15 @@ import {
   LeftSummary,
   RightSummary,
   FixedBottomArea,
-  BattleButton,
+  ChooseButton,
   ChosenParty,
   PokemonIcon,
 } from './ChooseParty.styled';
-import { append, without } from 'ramda';
+import { append, isNil, without } from 'ramda';
 import GameplayContext from '../../GameplayContext';
 import Modal from '../../../../components/Modal';
 import { getPokemonModel } from '../../../../assets/animatedPokemon';
 import { preloadImages } from '../../../../assets/preloading';
-import Pokemon from '../../../../types/Pokemon';
 import { MoveTile } from '../Battle/Battle.styled';
 import { kantoDex } from '../../../../constants/pokemonList';
 
@@ -31,9 +30,8 @@ export interface ChoosePartyProps {
 
 export default function ChooseParty({ onFinish }: ChoosePartyProps) {
   const [isWaiting, setIsWaiting] = useState(false);
-  const [highlighted, setHighlighted] = useState<Pokemon | null>(null);
-  const [choosen, setChoosen] = useState<Array<number>>([]);
-  const [alertShown, setAlertShown] = useState(false);
+  const [highlightedIndex, setHighlightedIndex] = useState<number | null>(null);
+  const [chosen, setChosen] = useState<Array<number>>([]);
   const [confirmShown, setConfirmShown] = useState(false);
   const [imagesLoading, setImagesLoading] = useState(true);
   const {
@@ -72,14 +70,20 @@ export default function ChooseParty({ onFinish }: ChoosePartyProps) {
     });
   }, []);
 
-  function choosePokemon(index: number) {
-    setHighlighted(availablePokemon[index]);
-    const updatedChoosen = choosen.includes(index)
-      ? without([index], choosen)
-      : choosen.length === 3
-        ? choosen // party is full
-        : append(index, choosen);
-    setChoosen(updatedChoosen);
+  useEffect(function monitorChosen() {
+    if (chosen.length === 3) {
+      setConfirmShown(true);
+    }
+  }, [chosen]);
+
+  function choosePokemon() {
+    if (isNil(highlightedIndex)) return;
+    const updatedChosen = chosen.includes(highlightedIndex)
+      ? without([highlightedIndex], chosen)
+      : chosen.length === 3
+        ? chosen // party is full
+        : append(highlightedIndex, chosen);
+    setChosen(updatedChosen);
   }
 
   function ready() {
@@ -90,22 +94,12 @@ export default function ChooseParty({ onFinish }: ChoosePartyProps) {
       changeTurn(battleState);
       onFinish();
     });
-    emitPlayerReady(choosen);
+    emitPlayerReady(chosen);
     setIsWaiting(true);
   }
 
-  function onConfirmParty() {
-    const { length } = choosen;
-    if (length === 0) {
-      setAlertShown(true);
-      return;
-    } else if (length < 3 && confirmShown === false) {
-      setConfirmShown(true);
-      return;
-    }
-    ready();
-  }
-
+  const highlightedPokemon = isNil(highlightedIndex) ? null : availablePokemon[highlightedIndex];
+  const isHighlightedChosen = highlightedIndex !== null && chosen.includes(highlightedIndex);
   return isWaiting || imagesLoading
     ? (
       <div>
@@ -115,18 +109,18 @@ export default function ChooseParty({ onFinish }: ChoosePartyProps) {
     ) : (
       <LayoutContainer>
         <PokemonSummaryContainer>
-          {highlighted && (
+          {highlightedPokemon && (
             <PokemonSummary>
               <LeftSummary>
                 <img
-                  alt={highlighted.name}
-                  src={getPreviewImageSrc(highlighted.id)}
+                  alt={highlightedPokemon.name}
+                  src={getPreviewImageSrc(highlightedPokemon.id)}
                   width="100px"
                 />
-                <PokemonName>{highlighted.name}</PokemonName>
+                <PokemonName>{highlightedPokemon.name}</PokemonName>
               </LeftSummary>
               <RightSummary>
-                {highlighted.moves.map((move, index) => (
+                {highlightedPokemon.moves.map((move, index) => (
                   <MoveTile
                     type={move.type}
                     chosen={false}
@@ -141,14 +135,21 @@ export default function ChooseParty({ onFinish }: ChoosePartyProps) {
                   </MoveTile>
                 ))}
               </RightSummary>
+
             </PokemonSummary>
           )}
         </PokemonSummaryContainer>
+        <ChooseButton
+          onClick={choosePokemon}
+          disabled={!isHighlightedChosen && (isNil(highlightedPokemon) || chosen.length === 3)}
+        >
+          {isHighlightedChosen ? 'Put back' : 'Choose'}
+        </ChooseButton>
         <TileContainer>
           {availablePokemon.map(({ name }, index) => (
             <Tile
-              chosen={choosen.includes(index)}
-              onClick={() => choosePokemon(index)}
+              chosen={chosen.includes(index)}
+              onClick={() => setHighlightedIndex(index)}
               key={index}
             >
               <img
@@ -164,29 +165,24 @@ export default function ChooseParty({ onFinish }: ChoosePartyProps) {
           ))}
         </TileContainer>
         <FixedBottomArea>
-          <BattleButton onClick={onConfirmParty}>
-            <ChosenParty>
-              {choosen.map(pokemonIndex => {
-                const pokemon = availablePokemon[pokemonIndex];
-                return (
-                  <PokemonIcon
-                    alt={pokemon.name}
-                    src={`https://img.pokemondb.net/sprites/sword-shield/icon/${pokemon.name}.png`}
-                  />
-                );
-              })}
-            </ChosenParty>
-            <div>Battle!</div>
-          </BattleButton>
+          <ChosenParty>
+            {chosen.map(pokemonIndex => {
+              const pokemon = availablePokemon[pokemonIndex];
+              return (
+                <PokemonIcon
+                  alt={pokemon.name}
+                  src={`https://img.pokemondb.net/sprites/sword-shield/icon/${pokemon.name}.png`}
+                />
+              );
+            })}
+          </ChosenParty>
         </FixedBottomArea>
-        <Modal shown={alertShown} onClose={() => setAlertShown(false)}>
-          Please select pokemon for your party!
-          <Button onClick={() => setAlertShown(false)}>OK</Button>
-        </Modal>
         <Modal shown={confirmShown} onClose={() => setConfirmShown(false)}>
-          You only selected {choosen.length} pokemon for your party. Are you sure?
-          <Button onClick={() => setConfirmShown(false)}>No</Button>
-          <Button onClick={onConfirmParty}>Yes</Button>
+          Fight along with these pokemon?
+          <div style={{ display: 'flex' }}>
+            <Button onClick={() => setConfirmShown(false)}>No</Button>
+            <Button onClick={ready}>Yes</Button>
+          </div>
         </Modal>
       </LayoutContainer>
     );
