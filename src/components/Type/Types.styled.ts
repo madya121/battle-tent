@@ -10,9 +10,7 @@ export const TypeLabel = styled.div`
   border-radius: 4px;
   display: flex;
   align-items: center;
-  margin: 5px 0;
-  min-width: 24px;
-  min-height: 28px;
+  min-width: 28px;
 
   &:not(:first-child) {
     margin-left: 4px;
@@ -43,5 +41,5 @@ export const TypeText = styled.div<{ color: string; hidden: boolean }>`
   background-color: ${props => props.color};
   padding: 1px 4px 2px;
   border-radius: 0 4px 4px 0;
-  margin-left: 24px;
+  margin: 8px 0 8px 24px;
 `;
