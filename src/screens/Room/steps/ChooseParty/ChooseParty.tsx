@@ -21,8 +21,9 @@ import GameplayContext from '../../GameplayContext';
 import Modal from '../../../../components/Modal';
 import { getPokemonModel } from '../../../../assets/animatedPokemon';
 import { preloadImages } from '../../../../assets/preloading';
-import { MoveTile } from '../Battle/Battle.styled';
+import MoveTile from '../../../../components/MoveTile';
 import { kantoDex } from '../../../../constants/pokemonList';
+import Types from '../../../../components/Type';
 
 export interface ChoosePartyProps {
   onFinish: () => void;
@@ -118,21 +119,11 @@ export default function ChooseParty({ onFinish }: ChoosePartyProps) {
                   width="100px"
                 />
                 <PokemonName>{highlightedPokemon.name}</PokemonName>
+                {highlightedPokemon.types.map(type => <Types types={[type]} />)}
               </LeftSummary>
               <RightSummary>
                 {highlightedPokemon.moves.map((move, index) => (
-                  <MoveTile
-                    type={move.type}
-                    chosen={false}
-                    disabled={false}
-                    key={index}
-                  >
-                    <div>{move.name}</div>
-                    <div style={{ display: 'flex', justifyContent: 'space-around' }}>
-                      <div>Power {move.power}</div>
-                      <div>Energy {move.energy}</div>
-                    </div>
-                  </MoveTile>
+                  <MoveTile {...move} key={index} />
                 ))}
               </RightSummary>
 

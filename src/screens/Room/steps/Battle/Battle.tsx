@@ -12,7 +12,6 @@ import {
   BattleArea,
   PartyArea,
   MoveOptionsBox,
-  MoveTile,
   EnergyBarContainer,
   EnergyBar,
 } from './Battle.styled';
@@ -24,6 +23,7 @@ import GameOverModal from './GameOverModal'
 import { Button } from '../../../../components/basics';
 import { PreloadContext } from '../../../../assets/preloading';
 import LoadingIndicator from '../../../../components/LoadingIndicator';
+import MoveTile from '../../../../components/MoveTile';
 
 type NullableIdx = number | null;
 
@@ -197,18 +197,12 @@ export default function Battle() {
                 const isDisabled = move.used || move.energy > energy;
                 return (
                   <MoveTile
-                    type={move.type}
+                    {...move}
                     chosen={choosenMoveIdx === index}
                     disabled={isDisabled}
                     onClick={() => isDisabled || setChoosenMoveIdx(index)}
                     key={index}
-                  >
-                    <div>{move.name}</div>
-                    <div style={{ display: 'flex', justifyContent: 'space-around' }}>
-                      <div>Power {move.power}</div>
-                      <div>Energy {move.energy}</div>
-                    </div>
-                  </MoveTile>
+                  />
                 );
               })
             }

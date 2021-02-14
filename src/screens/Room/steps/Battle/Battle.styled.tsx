@@ -1,9 +1,4 @@
-import React from 'react';
 import styled from 'styled-components';
-import { Touchable } from '../../../../components/basics';
-import { TouchableProps } from '../../../../components/basics/Touchable/Touchable';
-import { Type } from '../../../../types/Pokemon';
-import { getTypeColor } from '../../../../components/Type';
 
 export const BattleArea = styled.div`
   height: 375px;
@@ -30,24 +25,6 @@ export const MoveOptionsBox = styled.div`
 
   display: grid;
   grid-template-columns: 1fr 1fr;
-`;
-
-interface MoveTileProps extends TouchableProps {
-  type: Type;
-  chosen: boolean;
-  disabled: boolean;
-}
-
-export const MoveTile = styled(
-  ({ type, chosen, ...props }: MoveTileProps) => <Touchable {...props} />
-)`
-  height: 36px;
-  margin: 4px;
-  padding: 8px;
-  border-radius: 12px;
-  background-color: ${props => getTypeColor(props.type)};
-  ${props => props.chosen ? 'border: 1px solid white;' : ''}
-  ${props => props.disabled ? 'color: gray;' : ''}
 `;
 
 export const EnergyBarContainer = styled.div`
