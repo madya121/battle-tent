@@ -16,13 +16,12 @@ import {
   ChosenParty,
   PokemonIcon,
 } from './ChooseParty.styled';
-import { append, isNil, without } from 'ramda';
+import { append, isNil, length, without } from 'ramda';
 import GameplayContext from '../../GameplayContext';
 import Modal from '../../../../components/Modal';
 import { getPokemonModel } from '../../../../assets/animatedPokemon';
 import { preloadImages } from '../../../../assets/preloading';
 import MoveTile from '../../../../components/MoveTile';
-import { kantoDex } from '../../../../constants/pokemonList';
 import Types from '../../../../components/Type';
 
 export interface ChoosePartyProps {
@@ -45,10 +44,16 @@ export default function ChooseParty({ onFinish }: ChoosePartyProps) {
     require(`../../../../assets/images/pokemonPreview/${id}.png`);
 
   useEffect(function preloadAssets() {
+    // Early return if we don't have the available pokemon.
+    //  Keep loading
+    if (length(availablePokemon) == 0)
+      return;
+
     async function preloadIdleModels() {
-      const pokemonIdleModels = kantoDex.map(name => getPokemonModel(name));
+      const pokemonIdleModels = availablePokemon.map(({ name }) => getPokemonModel(name));
       await preloadImages(pokemonIdleModels);
     }
+
     async function preloadPreviews() {
       const pokemonPreviews = availablePokemon.map(
         ({ id }) => getPreviewImageSrc(id)
@@ -62,14 +67,15 @@ export default function ChooseParty({ onFinish }: ChoosePartyProps) {
       );
       await preloadImages(pokemonBackModels);
     }
+
     Promise.all([
       preloadIdleModels(),
       preloadPreviews(),
+      preloadBackModels(),
     ]).then(() => {
       setImagesLoading(false);
-      preloadBackModels();
     });
-  }, []);
+  }, [availablePokemon]);
 
   useEffect(function monitorChosen() {
     if (chosen.length === 3) {
