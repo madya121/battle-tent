@@ -18,8 +18,6 @@ export default function MoveTile({
   type,
   power,
   energy,
-  chosen,
-  disabled,
   ...props
 }: MoveTileProps) {
   return (
