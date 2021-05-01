@@ -45,7 +45,7 @@ export default function BattlingPokemonTile({
         <img src={src} alt={name} ref={imageRef} />
       </TileImageContainer>
       <TileDetail fainted={isFainted}>
-        <div>{name}</div>
+        <PokemonName>{name}</PokemonName>
         <HealthBar percentage={health / maxHealth * 100} />
       </TileDetail>
     </Container>
@@ -109,4 +109,8 @@ export const HealthBar = styled.div<{ percentage: number }>`
   border: 1px solid white;
   border-radius: 8px;
   box-sizing: border-box;
+`;
+
+export const PokemonName = styled.div`
+  text-shadow: 0 0 5px black;
 `;

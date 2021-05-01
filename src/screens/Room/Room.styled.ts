@@ -41,3 +41,7 @@ export const OpponentInfo = styled.div`
   display: flex;
   justify-content: flex-start;
 `;
+
+export const OpponentName = styled.div`
+  text-shadow: 0 0 5px black;
+`;

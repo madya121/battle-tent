@@ -17,6 +17,7 @@ import {
   MainArea,
   BottomArea,
   OpponentInfo,
+  OpponentName,
 } from './Room.styled';
 import { find } from 'ramda';
 import { PlayerContext } from '../../auth';
@@ -136,7 +137,7 @@ export default function Room() {
           <img alt="setting" src={SettingIcon} width="28px" />
         </IconButton>
         <OpponentInfo>
-          <div>{opponent && opponent.name}</div>
+          <OpponentName>{opponent && opponent.name}</OpponentName>
           <SmallAvatar code={gymLocation === GymLocation.None ? opponent?.avatar : `${gymLocation}`} />
         </OpponentInfo>
       </TopArea>

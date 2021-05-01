@@ -177,7 +177,15 @@ export default function Battle() {
           {party.map(({ health, maxHealth, pokemon: { name } }, index) => (
             <BattlingPokemonTile
               chosen={choosenPokemonIdx === index}
-              onClick={() => myTurn && setChoosenPokemonIdx(index)}
+              onClick={() => {
+                if (myTurn) {
+                  setChoosenPokemonIdx(index)
+
+                  // if we're switching active pokemon, reset the move active index
+                  if (choosenPokemonIdx !== index)
+                    setChoosenMoveIdx(null)
+                }
+              }}
               name={name}
               health={health}
               maxHealth={maxHealth}
@@ -198,7 +206,7 @@ export default function Battle() {
                 return (
                   <MoveTile
                     {...move}
-                    chosen={choosenMoveIdx === index}
+                    chosen={choosenMoveIdx === index && !isDisabled}
                     disabled={isDisabled}
                     onClick={() => isDisabled || setChoosenMoveIdx(index)}
                     key={index}

@@ -99,7 +99,7 @@ export default function Lobby() {
                 <Button onClick={emitPlaySinglePlayer}>Single Player</Button>
                 <Button onClick={() => navigate(ScreenState.GymChallenge)}>Gym Challenge</Button>
                 <Button onClick={emitFindMatch}>Find Match</Button>
-                <Button disabled onClick={openInviteModal}>Invite</Button>
+                {/*<Button disabled onClick={openInviteModal}>Invite</Button>*/}
               </>
             )}
       </main>
