@@ -16,7 +16,7 @@ import {
   ChosenParty,
   PokemonIcon,
 } from './ChooseParty.styled';
-import { append, isNil, length, without } from 'ramda';
+import { append, isEmpty, isNil, length, without } from 'ramda';
 import GameplayContext from '../../GameplayContext';
 import Modal from '../../../../components/Modal';
 import { getPokemonModel } from '../../../../assets/animatedPokemon';
@@ -107,6 +107,7 @@ export default function ChooseParty({ onFinish }: ChoosePartyProps) {
 
   const highlightedPokemon = isNil(highlightedIndex) ? null : availablePokemon[highlightedIndex];
   const isHighlightedChosen = highlightedIndex !== null && chosen.includes(highlightedIndex);
+  const disableChooseButton = !isHighlightedChosen && (isNil(highlightedPokemon) || chosen.length === 3);
   return isWaiting || imagesLoading
     ? (
       <div>
@@ -136,12 +137,14 @@ export default function ChooseParty({ onFinish }: ChoosePartyProps) {
             </PokemonSummary>
           )}
         </PokemonSummaryContainer>
-        <ChooseButton
-          onClick={choosePokemon}
-          disabled={!isHighlightedChosen && (isNil(highlightedPokemon) || chosen.length === 3)}
-        >
-          {isHighlightedChosen ? 'Put back' : 'Choose'}
-        </ChooseButton>
+        <div>
+          <ChooseButton
+            onClick={choosePokemon}
+            disabled={disableChooseButton}
+          >
+            {isHighlightedChosen ? 'Put back' : 'Choose'}
+          </ChooseButton>
+        </div>
         <TileContainer>
           {availablePokemon.map(({ name }, index) => (
             <Tile
@@ -162,17 +165,22 @@ export default function ChooseParty({ onFinish }: ChoosePartyProps) {
           ))}
         </TileContainer>
         <FixedBottomArea>
-          <ChosenParty>
-            {chosen.map(pokemonIndex => {
-              const pokemon = availablePokemon[pokemonIndex];
-              return (
-                <PokemonIcon
-                  alt={pokemon.name}
-                  src={`https://img.pokemondb.net/sprites/sword-shield/icon/${pokemon.name}.png`}
-                />
-              );
-            })}
-          </ChosenParty>
+          {
+            isEmpty(chosen) ? null :
+              (
+                <ChosenParty>
+                  {chosen.map(pokemonIndex => {
+                    const pokemon = availablePokemon[pokemonIndex];
+                    return (
+                      <PokemonIcon
+                        alt={pokemon.name}
+                        src={`https://img.pokemondb.net/sprites/sword-shield/icon/${pokemon.name}.png`}
+                      />
+                    );
+                  })}
+                </ChosenParty>
+              )
+          }
         </FixedBottomArea>
         <Modal shown={confirmShown} onClose={() => setConfirmShown(false)}>
           Fight along with these pokemon?

@@ -31,7 +31,7 @@ export default function MoveTile({
         </div>
 
         <div style={{ display: 'flex', alignItems: 'center' }}>
-          <EnergyBar style={{ borderRadius: 4, marginRight: 2 }} />
+          <EnergyBar style={{ borderRadius: 4, marginRight: 5 }} />
           {energy}
         </div>
 
@@ -48,6 +48,6 @@ const Container = styled(
   padding: 8px;
   border-radius: 12px;
   background-color: ${props => getTypeColor(props.type)};
-  ${props => props.chosen ? 'border: 1px solid white;' : ''}
+  ${props => props.chosen ? 'box-shadow: 0px 0px 2px 3px white inset;' : ''}
   ${props => props.disabled ? 'color: gray;' : ''}
 `;
