@@ -166,7 +166,7 @@ export default function ChooseParty({ onFinish }: ChoosePartyProps) {
         </TileContainer>
         <FixedBottomArea>
           {
-            chosen.length === 0 ? <noscript /> :
+            isEmpty(chosen) ? null :
                 (
                     <ChosenParty>
                       {chosen.map(pokemonIndex => {
