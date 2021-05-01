@@ -16,7 +16,7 @@ import {
   ChosenParty,
   PokemonIcon,
 } from './ChooseParty.styled';
-import { append, isNil, length, without } from 'ramda';
+import { append, isEmpty, isNil, length, without } from 'ramda';
 import GameplayContext from '../../GameplayContext';
 import Modal from '../../../../components/Modal';
 import { getPokemonModel } from '../../../../assets/animatedPokemon';
@@ -167,19 +167,19 @@ export default function ChooseParty({ onFinish }: ChoosePartyProps) {
         <FixedBottomArea>
           {
             isEmpty(chosen) ? null :
-                (
-                    <ChosenParty>
-                      {chosen.map(pokemonIndex => {
-                        const pokemon = availablePokemon[pokemonIndex];
-                        return (
-                            <PokemonIcon
-                                alt={pokemon.name}
-                                src={`https://img.pokemondb.net/sprites/sword-shield/icon/${pokemon.name}.png`}
-                            />
-                        );
-                      })}
-                    </ChosenParty>
-                )
+              (
+                <ChosenParty>
+                  {chosen.map(pokemonIndex => {
+                    const pokemon = availablePokemon[pokemonIndex];
+                    return (
+                      <PokemonIcon
+                        alt={pokemon.name}
+                        src={`https://img.pokemondb.net/sprites/sword-shield/icon/${pokemon.name}.png`}
+                      />
+                    );
+                  })}
+                </ChosenParty>
+              )
           }
         </FixedBottomArea>
         <Modal shown={confirmShown} onClose={() => setConfirmShown(false)}>
