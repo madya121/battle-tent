@@ -3,10 +3,10 @@
 exports[`Login screen should render 1`] = `
 <DocumentFragment>
   <div
-    class="sc-AxhCb sc-fzqAui gvTfoq"
+    class="sc-AxhCb sc-fzowVh hMnbBg"
   >
     <header
-      class="sc-fzqMdD dvUZEP"
+      class="sc-fzoJus rDlGE"
     >
       <img
         alt="Battle Tent"

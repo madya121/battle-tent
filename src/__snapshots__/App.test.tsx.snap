@@ -3,7 +3,7 @@
 exports[`App should render 1`] = `
 <DocumentFragment>
   <div
-    class="sc-fzqMdD juQyXy"
+    class="sc-fzoJus exFyat"
   >
     <div>
       <div
@@ -41,7 +41,7 @@ exports[`App should render 1`] = `
       </div>
     </div>
     <div
-      class="sc-fzqAui hxGwcG"
+      class="sc-fzowVh gbgkyc"
     >
       <div
         class="MuiCircularProgress-root MuiCircularProgress-colorPrimary MuiCircularProgress-indeterminate"

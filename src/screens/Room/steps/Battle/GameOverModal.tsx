@@ -36,7 +36,8 @@ export default function GameOverModal({
         style={{ width: 240 }}
       />
       <div style={{ display: 'flex' }}>
-        <Button onClick={onRematch}>Rematch</Button >
+        {/* TODO */}
+        {/* <Button onClick={onRematch}>Rematch</Button > */}
         <Button onClick={backToLobby}>Quit</Button>
       </div>
     </Modal >

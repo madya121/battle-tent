@@ -3,10 +3,10 @@
 exports[`Room screen should render 1`] = `
 <DocumentFragment>
   <div
-    class="sc-AxhCb sc-fzpkqZ khUyuk"
+    class="sc-AxhCb sc-fznAgC hrhglL"
   >
     <header
-      class="sc-fznAgC DMmHa"
+      class="sc-fznLPX eJtHlj"
     >
       <button
         aria-label="setting"
@@ -28,21 +28,23 @@ exports[`Room screen should render 1`] = `
         />
       </button>
       <div
-        class="sc-fzomuh hLNKfy"
+        class="sc-fzqAui qbhzR"
       >
-        <div />
         <div
-          class="sc-fzqAui gjHduE"
+          class="sc-fzqMdD hZJXXb"
+        />
+        <div
+          class="sc-fzowVh dpZlzW"
         >
           <div
-            class="sc-fzqMdD eybfVz"
+            class="sc-fzoJus fNhbUc"
             src="red.png"
           />
         </div>
       </div>
     </header>
     <main
-      class="sc-fznLPX fSjwvh"
+      class="sc-fzoaKM ikgUwX"
     >
       <div
         class="MuiCircularProgress-root MuiCircularProgress-colorPrimary MuiCircularProgress-indeterminate"
@@ -65,73 +67,73 @@ exports[`Room screen should render 1`] = `
       </div>
     </main>
     <footer
-      class="sc-fzoaKM hhEkwV"
+      class="sc-fzomuh kxRxuq"
     >
       <div
-        class="sc-fzqAui gjHduE"
+        class="sc-fzowVh dpZlzW"
       >
         <div
-          class="sc-fzqMdD eybfVz"
+          class="sc-fzoJus fNhbUc"
           src="red.png"
         />
       </div>
       <div
-        class="sc-fzoant irVQgi"
+        class="sc-fzomME fLFJFI"
       >
         <div
-          class="sc-fzqAbL huSWPu"
+          class="sc-fzqMAW ipguxq"
         >
           <div
-            class="sc-fzqMAW irqGFZ"
+            class="sc-fzoydu gHXmzE"
           >
             OK!
           </div>
           <div
-            class="sc-fzqMAW irqGFZ"
+            class="sc-fzoydu gHXmzE"
           >
             good game!
           </div>
           <div
-            class="sc-fzqMAW irqGFZ"
+            class="sc-fzoydu gHXmzE"
           >
             well played!
           </div>
           <div
-            class="sc-fzqMAW irqGFZ"
+            class="sc-fzoydu gHXmzE"
           >
             prepare!
           </div>
           <div
-            class="sc-fzqMAW irqGFZ"
+            class="sc-fzoydu gHXmzE"
           >
             take this!
           </div>
           <div
-            class="sc-fzqMAW irqGFZ"
+            class="sc-fzoydu gHXmzE"
           >
             stop it!
           </div>
           <div
-            class="sc-fzqMAW irqGFZ"
+            class="sc-fzoydu gHXmzE"
           >
             enough!
           </div>
           <div
-            class="sc-fzqMAW irqGFZ"
+            class="sc-fzoydu gHXmzE"
           >
             rematch!
           </div>
           <div
-            class="sc-fzqMAW irqGFZ"
+            class="sc-fzoydu gHXmzE"
           >
             thank you!
           </div>
         </div>
         <div
-          class="sc-fzoydu sc-fzoJMP irPjqh"
+          class="sc-fzoJMP sc-fzoYHE BuMHa"
         />
         <button
-          class="MuiButtonBase-root MuiIconButton-root sc-AxiKw bOTXee sc-fzomME hqDKyE"
+          class="MuiButtonBase-root MuiIconButton-root sc-AxiKw bOTXee sc-fzqAbL dESkkI"
           tabindex="0"
           type="button"
         >
@@ -154,7 +156,7 @@ exports[`Room screen should render 1`] = `
           />
         </button>
         <div
-          class="sc-fzoydu sc-fzoYHE fLFUok"
+          class="sc-fzoJMP sc-fzpkqZ fwrEcb"
         />
       </div>
     </footer>
