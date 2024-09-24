@@ -6,7 +6,10 @@ import { QuickChatOption } from '../screens/Room/QuickChat/constants';
 import { GymLocation } from '../constants/location';
 
 export const socket = io.connect(
-  "wss://battle-tent-staging.madya121.com:8443"
+  "wss://battle-tent-staging.madya121.com:8443",
+    {
+      transports: ['websocket'],
+    }
 );
 
 enum PlayerState {
